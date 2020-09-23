@@ -96,6 +96,11 @@ begin
 
     FrmGame.Initialize(D[0], D[1]);
     FrmGame.Show;
+
+    if pubModeServer then
+      Log('Please, wait for all players to connect and then click "Start Game".')
+    else
+      Log('Please, wait while server is starting the game. In the meantime you can use chat.');
   end else
   begin
     Log('Login rejected: '+Data);

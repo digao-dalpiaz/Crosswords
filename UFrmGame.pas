@@ -2,8 +2,8 @@ unit UFrmGame;
 
 interface
 
-uses Vcl.Forms, Vcl.Controls, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.ExtCtrls,
-  System.Classes, System.ImageList, Vcl.ImgList,
+uses Vcl.Forms, System.ImageList, Vcl.ImgList, Vcl.Controls, Vcl.StdCtrls,
+  Vcl.Buttons, Vcl.ComCtrls, Vcl.ExtCtrls, System.Classes,
   //
   System.Types, UMatrix;
 
@@ -17,15 +17,15 @@ type
     LPlayers: TListBox;
     LLetters: TListBox;
     Panel2: TPanel;
-    BtnStartGame: TButton;
-    BtnDisconnect: TButton;
+    BtnStartGame: TBitBtn;
+    BtnDisconnect: TBitBtn;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     IL: TImageList;
-    BtnDone: TButton;
-    BtnAgree: TButton;
-    BtnDisagree: TButton;
+    BtnDone: TBitBtn;
+    BtnAgree: TBitBtn;
+    BtnDisagree: TBitBtn;
     procedure EdChatMsgKeyPress(Sender: TObject; var Key: Char);
     procedure BtnStartGameClick(Sender: TObject);
     procedure BtnDisconnectClick(Sender: TObject);

@@ -2,7 +2,8 @@ unit UFrmStart;
 
 interface
 
-uses Vcl.Forms, Vcl.StdCtrls, Vcl.Controls, Vcl.ComCtrls, System.Classes;
+uses Vcl.Forms, Vcl.StdCtrls, Vcl.Buttons, Vcl.Controls, Vcl.ComCtrls,
+  System.Classes;
 
 type
   TFrmStart = class(TForm)
@@ -20,8 +21,8 @@ type
     LbTableSizeX: TLabel;
     LbDictionary: TLabel;
     EdDictionary: TComboBox;
-    BtnJoin: TButton;
-    BtnExit: TButton;
+    BtnJoin: TBitBtn;
+    BtnExit: TBitBtn;
     Label1: TLabel;
     EdInitialLetters: TEdit;
     Label2: TLabel;

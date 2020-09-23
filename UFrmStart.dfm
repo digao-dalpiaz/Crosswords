@@ -163,7 +163,7 @@ object FrmStart: TFrmStart
     Height = 21
     TabOrder = 0
   end
-  object BtnJoin: TButton
+  object BtnJoin: TBitBtn
     Left = 192
     Top = 328
     Width = 121
@@ -172,7 +172,7 @@ object FrmStart: TFrmStart
     TabOrder = 2
     OnClick = BtnJoinClick
   end
-  object BtnExit: TButton
+  object BtnExit: TBitBtn
     Left = 320
     Top = 328
     Width = 121

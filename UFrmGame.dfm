@@ -146,7 +146,7 @@ object FrmGame: TFrmGame
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
-      object BtnStartGame: TButton
+      object BtnStartGame: TBitBtn
         Left = 8
         Top = 40
         Width = 113
@@ -155,7 +155,7 @@ object FrmGame: TFrmGame
         TabOrder = 0
         OnClick = BtnStartGameClick
       end
-      object BtnDisconnect: TButton
+      object BtnDisconnect: TBitBtn
         Left = 128
         Top = 40
         Width = 113
@@ -164,7 +164,7 @@ object FrmGame: TFrmGame
         TabOrder = 1
         OnClick = BtnDisconnectClick
       end
-      object BtnDone: TButton
+      object BtnDone: TBitBtn
         Left = 8
         Top = 8
         Width = 73
@@ -173,7 +173,7 @@ object FrmGame: TFrmGame
         TabOrder = 2
         OnClick = BtnDoneClick
       end
-      object BtnAgree: TButton
+      object BtnAgree: TBitBtn
         Left = 80
         Top = 8
         Width = 81
@@ -182,7 +182,7 @@ object FrmGame: TFrmGame
         TabOrder = 3
         OnClick = BtnAgreeClick
       end
-      object BtnDisagree: TButton
+      object BtnDisagree: TBitBtn
         Left = 160
         Top = 8
         Width = 81

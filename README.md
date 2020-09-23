@@ -2,7 +2,7 @@
 
 ## Delphi Client/Server Scrabble Game using Socket communication
 
-**Attention! This game is in development, still in its alpha version.**
+**Attention! This game is under development, still in its alpha version.**
 
 ### Required components:
 

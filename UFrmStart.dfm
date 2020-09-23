@@ -23,9 +23,9 @@ object FrmStart: TFrmStart
     Alignment = taCenter
     AutoSize = False
     Caption = 'Welcome to Scrabble'
-    Color = 3489038
+    Color = clYellow
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWhite
+    Font.Color = clBlack
     Font.Height = -24
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]

@@ -21,7 +21,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Windows10 Green');
+  TStyleManager.TrySetStyle('Charcoal Dark Slate');
   Application.CreateForm(TDMClient, DMClient);
   Application.CreateForm(TDMServer, DMServer);
   Application.CreateForm(TFrmMain, FrmMain);

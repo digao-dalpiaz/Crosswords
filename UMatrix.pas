@@ -129,8 +129,8 @@ begin
   SetLength(Data, 0); //clear
   SetLength(Data, Y, X);
 
-  Width := BoxW * X;
-  Height := BoxH * Y;
+  Width := (BoxW * X)+1;
+  Height := (BoxH * Y)+1;
 
   SelBox := TPoint.Create(-1, -1);
 
@@ -240,7 +240,7 @@ begin
 
       for Col := 0 to High(Data[Line]) do
       begin
-        R := TRect.Create(X, Y, X+BoxW, Y+BoxH);
+        R := TRect.Create(X, Y, X+BoxW+1, Y+BoxH+1);
 
         if (SelBox.X=Col) and (SelBox.Y=Line) then
           B.Canvas.Brush.Color := clYellow

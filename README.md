@@ -34,3 +34,4 @@
 - Password to connect
 - Allow server change settings while waiting players
 - Implement end of game
+- Logic to check if inserted letters is according with game rules

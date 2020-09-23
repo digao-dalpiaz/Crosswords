@@ -17,3 +17,18 @@
 ![Welcome screen](Images/demo_welcome.png)
 
 ![Playing screen](Images/demo_playing.png)
+
+### To Do
+
+- Get better sounds
+- Configurations screen (turn on/off sounds)
+- Review start screen center (is not considering title bar)
+- Make the score work
+- Review random letters logic
+- Include English dictionary
+- App translation to Portuguese Brazil?
+- Review game rules
+- Behavior when user drop connection when the game is running
+- Password to connect
+- Allow server change settings while waiting players
+- Implement end of game

@@ -10,11 +10,11 @@ const
 
 type
   TDictionary = record
-    Language, Resource: string;
+    ID, LanguageName: string;
   end;
 
 const LST_DICTIONARY: array[0..0] of TDictionary = (
-  (Language: 'Portuguese Brazil'; Resource: 'BR')
+  (ID: 'BR'; LanguageName: 'Portuguese Brazil')
 );
 
 var
@@ -24,7 +24,7 @@ var
   //SERVER PROPERTIES
   pubServerProps: record
     SizeW, SizeH: Integer;
-    DictionaryIndex: Integer;
+    DictionaryID: string;
     InitialLetters, RebuyLetters: Integer;
 
     Letters: string;
@@ -33,6 +33,7 @@ var
   //SETTINGS
   pubEnableSounds: Boolean;
 
+function GetDictionaryIndexByID(const ID: string): Integer;
 procedure LoadDictionaryLetters;
 function GetRandomLetter: Char;
 
@@ -42,20 +43,27 @@ implementation
 
 uses System.Classes, System.SysUtils, Winapi.MMSystem, System.Types;
 
+function GetDictionaryIndexByID(const ID: string): Integer;
+var
+  I: Integer;
+begin
+  for I := 0 to High(LST_DICTIONARY) do
+    if LST_DICTIONARY[I].ID = ID then Exit(I);
+
+  raise Exception.Create('Internal: Dictionary not found');
+end;
+
 procedure LoadDictionaryLetters;
 var
-  ResName: string;
   R: TResourceStream;
   S: TStringList;
   I: Integer;
   Name, Value: string;
   Letters: string;
 begin
-  ResName := LST_DICTIONARY[pubServerProps.DictionaryIndex].Resource;
-
   S := TStringList.Create;
   try
-    R := TResourceStream.Create(HInstance, 'DIC_'+ResName, RT_RCDATA);
+    R := TResourceStream.Create(HInstance, 'DIC_'+pubServerProps.DictionaryID, RT_RCDATA);
     try
       S.LoadFromStream(R);
     finally

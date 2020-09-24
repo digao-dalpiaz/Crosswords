@@ -34,7 +34,7 @@ implementation
 {$R *.dfm}
 
 uses UDMClient, UDMServer, UVars, UDams, System.SysUtils,
-  UFrmLog;
+  UFrmLog, UFrmRules;
 
 procedure TFrmStart.FormCreate(Sender: TObject);
 begin
@@ -67,6 +67,8 @@ begin
   if pubModeServer then
   begin
     //SERVER MODE
+    TRules.Load; //load game rules
+
     DMClient.C.Host := 'localhost';
     DMServer.Initialize;
   end else

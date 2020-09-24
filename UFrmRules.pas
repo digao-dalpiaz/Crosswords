@@ -24,6 +24,14 @@ type
     procedure LoadDictionaryList;
   end;
 
+  TRules = class
+  private
+    class function GetIniFile: String;
+  public
+    class procedure Save(F: TFrmRules);
+    class procedure Load;
+  end;
+
 var
   FrmRules: TFrmRules;
 
@@ -33,7 +41,46 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, System.SysUtils, UDams, UDMServer;
+uses UVars, System.SysUtils, UDams, UDMServer, System.IniFiles;
+
+class function TRules.GetIniFile: String;
+begin
+  Result := ExtractFilePath(Application.ExeName)+'Scrabble.ini';
+end;
+
+class procedure TRules.Load;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(GetIniFile);
+  try
+    pubServerProps.SizeW := Ini.ReadInteger('Rules', 'SizeW', 30);
+    pubServerProps.SizeH := Ini.ReadInteger('Rules', 'SizeH', 20);
+    pubServerProps.DictionaryID := Ini.ReadString('Rules', 'DictionaryID', 'BR');
+    pubServerProps.InitialLetters := Ini.ReadInteger('Rules', 'InitialLetters', 10);
+    pubServerProps.RebuyLetters := Ini.ReadInteger('Rules', 'RebuyLetters', 5);
+  finally
+    Ini.Free;
+  end;
+end;
+
+class procedure TRules.Save(F: TFrmRules);
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(GetIniFile);
+  try
+    Ini.WriteInteger('Rules', 'SizeW', StrToInt(F.EdSizeW.Text));
+    Ini.WriteInteger('Rules', 'SizeH', StrToInt(F.EdSizeH.Text));
+    Ini.WriteString('Rules', 'DictionaryID', LST_DICTIONARY[F.EdDictionary.ItemIndex].ID);
+    Ini.WriteInteger('Rules', 'InitialLetters', StrToInt(F.EdInitialLetters.Text));
+    Ini.WriteInteger('Rules', 'RebuyLetters', StrToInt(F.EdRebuyLetters.Text));
+  finally
+    Ini.Free;
+  end;
+end;
+
+//
 
 procedure ShowGameRules;
 begin
@@ -50,7 +97,7 @@ begin
 
   EdSizeW.Text := IntToStr(pubServerProps.SizeW);
   EdSizeH.Text := IntToStr(pubServerProps.SizeH);
-  EdDictionary.ItemIndex := pubServerProps.DictionaryIndex;
+  EdDictionary.ItemIndex := GetDictionaryIndexByID(pubServerProps.DictionaryID);
   EdInitialLetters.Text := IntToStr(pubServerProps.InitialLetters);
   EdRebuyLetters.Text := IntToStr(pubServerProps.RebuyLetters);
 end;
@@ -59,7 +106,7 @@ procedure TFrmRules.LoadDictionaryList;
 var D: TDictionary;
 begin
   for D in LST_DICTIONARY do
-    EdDictionary.Items.Add(D.Language);
+    EdDictionary.Items.Add(D.LanguageName);
 end;
 
 procedure TFrmRules.BtnOKClick(Sender: TObject);
@@ -99,11 +146,8 @@ begin
 
   //
 
-  pubServerProps.SizeW := StrToInt(EdSizeW.Text);
-  pubServerProps.SizeH := StrToInt(EdSizeH.Text);
-  pubServerProps.DictionaryIndex := EdDictionary.ItemIndex;
-  pubServerProps.InitialLetters := StrToInt(EdInitialLetters.Text);
-  pubServerProps.RebuyLetters := StrToInt(EdRebuyLetters.Text);
+  TRules.Save(Self);
+  TRules.Load; //reload rules
 
   //
 

@@ -44,125 +44,16 @@ object FrmStart: TFrmStart
     Caption = 'Your name:'
   end
   object Label1: TLabel
-    Left = 312
-    Top = 56
+    Left = 16
+    Top = 264
     Width = 107
     Height = 13
     Caption = 'Connection password:'
   end
-  object Pages: TPageControl
-    Left = 16
-    Top = 112
-    Width = 593
-    Height = 201
-    ActivePage = TabServer
-    TabOrder = 2
-    TabStop = False
-    object TabClient: TTabSheet
-      Caption = 'Client'
-      object LbServerAddress: TLabel
-        Left = 16
-        Top = 16
-        Width = 77
-        Height = 13
-        Caption = 'Server address:'
-      end
-      object EdServerAddress: TEdit
-        Left = 16
-        Top = 32
-        Width = 321
-        Height = 21
-        TabOrder = 0
-      end
-    end
-    object TabServer: TTabSheet
-      Caption = 'Server'
-      ImageIndex = 1
-      object LbTableSize: TLabel
-        Left = 16
-        Top = 19
-        Width = 51
-        Height = 13
-        Caption = 'Table size:'
-      end
-      object LbTableSizeX: TLabel
-        Left = 136
-        Top = 19
-        Width = 6
-        Height = 13
-        Caption = 'x'
-      end
-      object LbDictionary: TLabel
-        Left = 16
-        Top = 56
-        Width = 52
-        Height = 13
-        Caption = 'Dictionary:'
-      end
-      object LbInitialLetters: TLabel
-        Left = 16
-        Top = 123
-        Width = 99
-        Height = 13
-        Caption = 'Initial letters pocket:'
-      end
-      object LbRebuyLetters: TLabel
-        Left = 16
-        Top = 147
-        Width = 69
-        Height = 13
-        Caption = 'Rebuy letters:'
-      end
-      object EdSizeW: TEdit
-        Left = 88
-        Top = 16
-        Width = 41
-        Height = 21
-        Alignment = taRightJustify
-        NumbersOnly = True
-        TabOrder = 0
-      end
-      object EdSizeH: TEdit
-        Left = 152
-        Top = 16
-        Width = 41
-        Height = 21
-        Alignment = taRightJustify
-        NumbersOnly = True
-        TabOrder = 1
-      end
-      object EdDictionary: TComboBox
-        Left = 16
-        Top = 72
-        Width = 265
-        Height = 21
-        Style = csDropDownList
-        TabOrder = 2
-      end
-      object EdInitialLetters: TEdit
-        Left = 128
-        Top = 120
-        Width = 41
-        Height = 21
-        Alignment = taRightJustify
-        NumbersOnly = True
-        TabOrder = 3
-      end
-      object EdRebuyLetters: TEdit
-        Left = 128
-        Top = 144
-        Width = 41
-        Height = 21
-        Alignment = taRightJustify
-        NumbersOnly = True
-        TabOrder = 4
-      end
-    end
-  end
   object EdPlayerName: TEdit
     Left = 16
     Top = 72
-    Width = 249
+    Width = 257
     Height = 21
     TabOrder = 0
   end
@@ -199,7 +90,7 @@ object FrmStart: TFrmStart
       C080FFC080FFC080FFC080FFC080FFC080FF5E3C0EA06617A06617A06617A066
       17A06617845513C080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC0
       80FFC080FF3D27098253139B63168E5A1459390DC080FFC080FF}
-    TabOrder = 3
+    TabOrder = 4
     OnClick = BtnJoinClick
   end
   object BtnExit: TBitBtn
@@ -235,14 +126,48 @@ object FrmStart: TFrmStart
       3A3EFF373AF00D0D37C080FFC080FFC080FFC080FFC080FFC080FF0E0A28402E
       BE4532CC3728A4C080FFC080FFC080FF2A2DB90D0D37C080FFC080FFC080FFC0
       80FFC080FFC080FFC080FFC080FF0E0A28332596C080FFC080FF}
-    TabOrder = 4
+    TabOrder = 5
     OnClick = BtnExitClick
   end
   object EdPassword: TEdit
-    Left = 312
-    Top = 72
+    Left = 16
+    Top = 280
     Width = 225
     Height = 21
+    TabOrder = 3
+  end
+  object BoxOper: TRadioGroup
+    Left = 16
+    Top = 112
+    Width = 161
+    Height = 73
+    Caption = 'Operation mode'
+    Items.Strings = (
+      'Client'
+      'Server')
     TabOrder = 1
+    OnClick = BoxOperClick
+  end
+  object BoxClient: TPanel
+    Left = 8
+    Top = 200
+    Width = 337
+    Height = 57
+    BevelOuter = bvNone
+    TabOrder = 2
+    object LbServerAddress: TLabel
+      Left = 8
+      Top = 8
+      Width = 77
+      Height = 13
+      Caption = 'Server address:'
+    end
+    object EdServerAddress: TEdit
+      Left = 8
+      Top = 24
+      Width = 321
+      Height = 21
+      TabOrder = 0
+    end
   end
 end

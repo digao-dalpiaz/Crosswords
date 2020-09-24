@@ -122,6 +122,10 @@
             <Form>FrmSettings</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UFrmRules.pas">
+            <Form>FrmRules</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="Sounds\pling.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>

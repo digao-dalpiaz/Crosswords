@@ -3,37 +3,25 @@ unit UFrmStart;
 interface
 
 uses Vcl.Forms, Vcl.StdCtrls, Vcl.Buttons, Vcl.Controls, Vcl.ComCtrls,
-  System.Classes;
+  System.Classes, Vcl.ExtCtrls;
 
 type
   TFrmStart = class(TForm)
     LbTitle: TLabel;
-    Pages: TPageControl;
-    TabClient: TTabSheet;
-    TabServer: TTabSheet;
     LbPlayerName: TLabel;
     EdPlayerName: TEdit;
-    EdServerAddress: TEdit;
-    LbServerAddress: TLabel;
-    LbTableSize: TLabel;
-    EdSizeW: TEdit;
-    EdSizeH: TEdit;
-    LbTableSizeX: TLabel;
-    LbDictionary: TLabel;
-    EdDictionary: TComboBox;
     BtnJoin: TBitBtn;
     BtnExit: TBitBtn;
-    LbInitialLetters: TLabel;
-    EdInitialLetters: TEdit;
-    LbRebuyLetters: TLabel;
-    EdRebuyLetters: TEdit;
     EdPassword: TEdit;
     Label1: TLabel;
+    BoxOper: TRadioGroup;
+    BoxClient: TPanel;
+    LbServerAddress: TLabel;
+    EdServerAddress: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure BtnExitClick(Sender: TObject);
     procedure BtnJoinClick(Sender: TObject);
-  private
-    procedure LoadDictionaryList;
+    procedure BoxOperClick(Sender: TObject);
   public
     procedure EnableControls(En: Boolean);
   end;
@@ -50,28 +38,18 @@ uses UDMClient, UDMServer, UVars, UDams, System.SysUtils,
 
 procedure TFrmStart.FormCreate(Sender: TObject);
 begin
-  Pages.ActivePageIndex := 0;
-
   EdPlayerName.MaxLength := 30;
 
-  LoadDictionaryList;
+  BoxOper.ItemIndex := 0;
+  BoxOperClick(nil);
 
-  //Default client settings
   EdServerAddress.Text := 'localhost';
-
-  //Default server settings
-  EdSizeW.Text := '30';
-  EdSizeH.Text := '20';
-  EdDictionary.ItemIndex := 0;
-  EdInitialLetters.Text := '10';
-  EdRebuyLetters.Text := '5';
 end;
 
-procedure TFrmStart.LoadDictionaryList;
-var D: TDictionary;
+procedure TFrmStart.BoxOperClick(Sender: TObject);
 begin
-  for D in LST_DICTIONARY do
-    EdDictionary.Items.Add(D.Language);
+  pubModeServer := (BoxOper.ItemIndex=1);
+  BoxClient.Visible := not pubModeServer;
 end;
 
 procedure TFrmStart.BtnJoinClick(Sender: TObject);
@@ -86,58 +64,14 @@ begin
 
   //
 
-  pubModeServer := (Pages.ActivePage = TabServer);
-
   if pubModeServer then
   begin
     //SERVER MODE
-
-    if StrToIntDef(EdSizeW.Text, 0) = 0 then
-    begin
-      MsgError('Please, type the table width size.');
-      EdSizeW.SetFocus;
-      Exit;
-    end;
-    if StrToIntDef(EdSizeH.Text, 0) = 0 then
-    begin
-      MsgError('Please, type the table height size.');
-      EdSizeH.SetFocus;
-      Exit;
-    end;
-
-    if EdDictionary.ItemIndex = -1 then
-    begin
-      MsgError('Please, specify dictionary language.');
-      EdDictionary.SetFocus;
-      Exit;
-    end;
-
-    if StrToIntDef(EdInitialLetters.Text, 0) = 0 then
-    begin
-      MsgError('Please, type the initial letters pocket.');
-      EdInitialLetters.SetFocus;
-      Exit;
-    end;
-    if StrToIntDef(EdRebuyLetters.Text, 0) = 0 then
-    begin
-      MsgError('Please, type the rebuy letters.');
-      EdRebuyLetters.SetFocus;
-      Exit;
-    end;
-
-    pubServerProps.Password := EdPassword.Text;
-    pubServerProps.Letters := GetDictionaryLetters(LST_DICTIONARY[EdDictionary.ItemIndex]);
-    pubServerProps.SizeW := StrToInt(EdSizeW.Text);
-    pubServerProps.SizeH := StrToInt(EdSizeH.Text);
-    pubServerProps.InitialLetters := StrToInt(EdInitialLetters.Text);
-    pubServerProps.RebuyLetters := StrToInt(EdRebuyLetters.Text);
-
     DMClient.C.Host := 'localhost';
     DMServer.Initialize;
   end else
   begin
     //CLIENT MODE
-
     EdServerAddress.Text := Trim(EdServerAddress.Text);
     if EdServerAddress.Text = string.Empty then
     begin

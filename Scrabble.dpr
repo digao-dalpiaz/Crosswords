@@ -15,7 +15,8 @@ uses
   UFrmStart in 'UFrmStart.pas' {FrmStart},
   UFrmGame in 'UFrmGame.pas' {FrmGame},
   UFrmLog in 'UFrmLog.pas' {FrmLog},
-  UFrmSettings in 'UFrmSettings.pas' {FrmSettings};
+  UFrmSettings in 'UFrmSettings.pas' {FrmSettings},
+  UFrmRules in 'UFrmRules.pas' {FrmRules};
 
 {$R *.res}
 

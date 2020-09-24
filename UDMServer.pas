@@ -39,6 +39,7 @@ type
   public
     procedure Initialize;
     procedure StartGame;
+    procedure SendRules(Socket: TDzSocket);
   end;
 
 var
@@ -102,7 +103,7 @@ begin
   end;
 
   //Check game password
-  if D[2] <> pubServerProps.Password then
+  if D[2] <> pubPassword then
   begin
     Accept := False;
     ResponseData := 'The password to this game is incorrect.';
@@ -129,9 +130,6 @@ begin
   C := TClient.Create;
   C.PlayerName := D[1];
   Socket.Data := C;
-
-  //Send back table size to client
-  ResponseData := ArrayToData([pubServerProps.SizeW, pubServerProps.SizeH]);
 end;
 
 procedure TDMServer.SClientLoginSuccess(Sender: TObject; Socket: TDzSocket);
@@ -142,6 +140,7 @@ begin
   S.SendAllEx(Socket, 'C', C.PlayerName);
 
   SendPlayersList;
+  SendRules(Socket);
 end;
 
 procedure TDMServer.SClientDisconnect(Sender: TObject; Socket: TDzSocket);
@@ -210,6 +209,8 @@ var
   C: TClient;
 begin
   GameRunning := True;
+
+  LoadDictionaryLetters;
 
   //--Get players letters and send to each one
   S.Lock;
@@ -453,6 +454,23 @@ begin
 
   SendLetters(Socket);
   S.Send(Socket, 'B', pubServerProps.RebuyLetters.ToString);
+end;
+
+procedure TDMServer.SendRules(Socket: TDzSocket);
+var
+  A: string;
+begin
+  A := ArrayToData([
+    LST_DICTIONARY[pubServerProps.DictionaryIndex].Language,
+    pubServerProps.SizeW,
+    pubServerProps.SizeH,
+    pubServerProps.InitialLetters,
+    pubServerProps.RebuyLetters]);
+
+  if Socket<>nil then
+    S.Send(Socket, 'U', A)
+  else
+    S.SendAll('U', A);
 end;
 
 end.

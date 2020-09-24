@@ -23,16 +23,17 @@ var
 
   //SERVER PROPERTIES
   pubServerProps: record
-    Password: string;
-    Letters: string;
     SizeW, SizeH: Integer;
+    DictionaryIndex: Integer;
     InitialLetters, RebuyLetters: Integer;
+
+    Letters: string;
   end;
 
   //SETTINGS
   pubEnableSounds: Boolean;
 
-function GetDictionaryLetters(Dic: TDictionary): string;
+procedure LoadDictionaryLetters;
 function GetRandomLetter: Char;
 
 procedure DoSound(const ResName: string);
@@ -41,17 +42,20 @@ implementation
 
 uses System.Classes, System.SysUtils, Winapi.MMSystem, System.Types;
 
-function GetDictionaryLetters(Dic: TDictionary): string;
+procedure LoadDictionaryLetters;
 var
+  ResName: string;
   R: TResourceStream;
   S: TStringList;
   I: Integer;
   Name, Value: string;
   Letters: string;
 begin
+  ResName := LST_DICTIONARY[pubServerProps.DictionaryIndex].Resource;
+
   S := TStringList.Create;
   try
-    R := TResourceStream.Create(HInstance, 'DIC_'+Dic.Resource, RT_RCDATA);
+    R := TResourceStream.Create(HInstance, 'DIC_'+ResName, RT_RCDATA);
     try
       S.LoadFromStream(R);
     finally
@@ -78,7 +82,7 @@ begin
     S.Free;
   end;
 
-  Result := Letters;
+  pubServerProps.Letters := Letters;
 end;
 
 function GetRandomLetter: Char;

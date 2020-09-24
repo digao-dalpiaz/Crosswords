@@ -3,7 +3,7 @@ object FrmMain: TFrmMain
   Top = 0
   Caption = 'Scrabble'
   ClientHeight = 359
-  ClientWidth = 588
+  ClientWidth = 742
   Color = clBlack
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,16 +21,18 @@ object FrmMain: TFrmMain
   object BoxTitle: TPanel
     Left = 0
     Top = 0
-    Width = 588
+    Width = 742
     Height = 25
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 588
     object LbVersion: TLabel
       Left = 112
-      Top = 6
+      Top = 0
       Width = 35
-      Height = 13
+      Height = 25
+      Align = alLeft
       Caption = 'Version'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clGray
@@ -38,13 +40,18 @@ object FrmMain: TFrmMain
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ShowAccelChar = False
+      Layout = tlCenter
       StyleElements = [seClient, seBorder]
+      ExplicitTop = 6
+      ExplicitHeight = 13
     end
     object LbMode: TLabel
-      Left = 250
-      Top = 6
+      Left = 195
+      Top = 0
       Width = 12
-      Height = 13
+      Height = 25
+      Align = alLeft
       Caption = '---'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
@@ -52,41 +59,55 @@ object FrmMain: TFrmMain
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ShowAccelChar = False
+      Layout = tlCenter
       StyleElements = [seClient, seBorder]
+      ExplicitLeft = 250
+      ExplicitTop = 6
+      ExplicitHeight = 13
     end
     object LbLbMode: TLabel
-      Left = 216
-      Top = 6
-      Width = 30
-      Height = 13
-      Caption = 'Mode:'
+      Left = 162
+      Top = 0
+      Width = 33
+      Height = 25
+      Align = alLeft
+      Caption = 'Mode: '
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clYellow
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ShowAccelChar = False
+      Layout = tlCenter
       StyleElements = [seClient, seBorder]
+      ExplicitHeight = 13
     end
     object LbLbPlayer: TLabel
-      Left = 320
-      Top = 6
-      Width = 34
-      Height = 13
-      Caption = 'Player:'
+      Left = 222
+      Top = 0
+      Width = 37
+      Height = 25
+      Align = alLeft
+      Caption = 'Player: '
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clYellow
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ShowAccelChar = False
+      Layout = tlCenter
       StyleElements = [seClient, seBorder]
+      ExplicitHeight = 13
     end
     object LbPlayer: TLabel
-      Left = 358
-      Top = 6
+      Left = 259
+      Top = 0
       Width = 12
-      Height = 13
+      Height = 25
+      Align = alLeft
       Caption = '---'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
@@ -94,25 +115,126 @@ object FrmMain: TFrmMain
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ShowAccelChar = False
+      Layout = tlCenter
       StyleElements = [seClient, seBorder]
+      ExplicitLeft = 350
+      ExplicitTop = 6
+      ExplicitHeight = 13
     end
-    object LbLink: TLinkLabel
-      Left = 8
-      Top = 6
-      Width = 86
-      Height = 17
-      Caption = '<a href="http://digaodalpiaz.com/">digaodalpiaz.com</a>'
-      TabOrder = 0
-      OnLinkClick = LbLinkLinkClick
+    object Label1: TLabel
+      Left = 286
+      Top = 0
+      Width = 33
+      Height = 25
+      Align = alLeft
+      Caption = 'Rules: '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clYellow
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      ShowAccelChar = False
+      Layout = tlCenter
+      StyleElements = [seClient, seBorder]
+      ExplicitHeight = 13
+    end
+    object LbRules: TLabel
+      Left = 319
+      Top = 0
+      Width = 12
+      Height = 25
+      Align = alLeft
+      Caption = '---'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      ShowAccelChar = False
+      Layout = tlCenter
+      StyleElements = [seClient, seBorder]
+      ExplicitLeft = 438
+      ExplicitTop = 4
+      ExplicitHeight = 13
+    end
+    object LbLink: TLabel
+      Left = 15
+      Top = 0
+      Width = 82
+      Height = 25
+      Cursor = crHandPoint
+      Align = alLeft
+      Caption = 'digaodalpiaz.com'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clTeal
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsUnderline]
+      ParentFont = False
+      ShowAccelChar = False
+      Layout = tlCenter
+      StyleElements = [seClient, seBorder]
+      OnClick = LbLinkClick
+      ExplicitLeft = 16
+      ExplicitTop = 8
+      ExplicitHeight = 13
+    end
+    object Label3: TLabel
+      Left = 0
+      Top = 0
+      Width = 15
+      Height = 25
+      Align = alLeft
+      AutoSize = False
+    end
+    object Label2: TLabel
+      Left = 97
+      Top = 0
+      Width = 15
+      Height = 25
+      Align = alLeft
+      AutoSize = False
+      ExplicitLeft = 112
+    end
+    object Label4: TLabel
+      Left = 147
+      Top = 0
+      Width = 15
+      Height = 25
+      Align = alLeft
+      AutoSize = False
+      ExplicitLeft = 152
+    end
+    object Label5: TLabel
+      Left = 207
+      Top = 0
+      Width = 15
+      Height = 25
+      Align = alLeft
+      AutoSize = False
+      ExplicitLeft = 216
+    end
+    object Label6: TLabel
+      Left = 271
+      Top = 0
+      Width = 15
+      Height = 25
+      Align = alLeft
+      AutoSize = False
+      ExplicitLeft = 272
     end
     object BoxTitleSide: TPanel
-      Left = 528
+      Left = 682
       Top = 0
       Width = 60
       Height = 25
       Align = alRight
       BevelOuter = bvNone
-      TabOrder = 1
+      TabOrder = 0
+      ExplicitLeft = 528
       object BtnSettings: TSpeedButton
         Left = 31
         Top = 0

@@ -26,6 +26,7 @@ type
     BtnDone: TBitBtn;
     BtnAgree: TBitBtn;
     BtnDisagree: TBitBtn;
+    BtnRules: TBitBtn;
     procedure EdChatMsgKeyPress(Sender: TObject; var Key: Char);
     procedure BtnStartGameClick(Sender: TObject);
     procedure BtnDisconnectClick(Sender: TObject);
@@ -39,10 +40,12 @@ type
     procedure BtnDoneClick(Sender: TObject);
     procedure BtnAgreeClick(Sender: TObject);
     procedure BtnDisagreeClick(Sender: TObject);
+    procedure BtnRulesClick(Sender: TObject);
   public
     InGame, MyTurn: Boolean;
+    PB: TMatrixImage;
 
-    procedure Initialize(SizeW, SizeH: Integer);
+    procedure Initialize;
     procedure ChatLog(const Player, Text: string);
     procedure MatrixReceived(const A: string);
     procedure InitMyTurn;
@@ -50,7 +53,6 @@ type
     procedure AgreementFinishReceived;
     procedure DisagreeReceived;
   private
-    PB: TMatrixImage;
     procedure ShowAgreementButtons(Flag: Boolean);
   end;
 
@@ -62,7 +64,8 @@ implementation
 {$R *.dfm}
 
 uses System.SysUtils, UDMClient, UVars, UDMServer, UDams, DzSocket, UFrmMain,
-  Vcl.Graphics, Winapi.Windows, Winapi.Messages, System.StrUtils, UFrmLog;
+  Vcl.Graphics, Winapi.Windows, Winapi.Messages, System.StrUtils, UFrmLog,
+  UFrmRules;
 
 procedure TFrmGame.FormCreate(Sender: TObject);
 begin
@@ -70,7 +73,7 @@ begin
   PB.Parent := SB;
 end;
 
-procedure TFrmGame.Initialize(SizeW, SizeH: Integer);
+procedure TFrmGame.Initialize;
 begin
   InGame := False;
   MyTurn := False;
@@ -78,7 +81,7 @@ begin
   BtnDone.Visible := False;
   ShowAgreementButtons(False);
 
-  PB.SetMatrixSize(SizeW, SizeH);
+  PB.SetMatrixSize(0, 0);
   LPlayers.Clear;
   LLetters.Clear;
 end;
@@ -86,6 +89,7 @@ end;
 procedure TFrmGame.FormShow(Sender: TObject);
 begin
   BtnStartGame.Visible := pubModeServer;
+  BtnRules.Visible := pubModeServer;
 
   FrmMain.LbMode.Caption := IfThen(pubModeServer, 'Server', 'Client');
   FrmMain.LbPlayer.Caption := pubPlayerName;
@@ -95,11 +99,17 @@ procedure TFrmGame.FormHide(Sender: TObject);
 begin
   FrmMain.LbMode.Caption := string.Empty;
   FrmMain.LbPlayer.Caption := string.Empty;
+  FrmMain.LbRules.Caption := string.Empty;
 end;
 
 procedure TFrmGame.BtnDisconnectClick(Sender: TObject);
 begin
   DMClient.C.Disconnect;
+end;
+
+procedure TFrmGame.BtnRulesClick(Sender: TObject);
+begin
+  ShowGameRules;
 end;
 
 procedure TFrmGame.BtnStartGameClick(Sender: TObject);
@@ -108,6 +118,8 @@ begin
     MsgRaise('We need at least two players to start the game!');
 
   BtnStartGame.Visible := False;
+  BtnRules.Visible := False;
+
   DMServer.StartGame;
 end;
 

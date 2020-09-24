@@ -26,6 +26,7 @@ type
     procedure PlayersListReceived(const A: string);
     procedure LettersReceived(const A: string);
     procedure GameStartedReceived;
+    procedure RulesReceived(const A: string);
   public
     procedure SendLetter(X, Y: Integer; const Letter: Char);
     procedure SendAgreement(Agree: Boolean);
@@ -40,7 +41,7 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, UFrmGame, UFrmLog, UFrmStart, System.SysUtils, UDMServer;
+uses UVars, UFrmGame, UFrmLog, UFrmStart, UFrmMain, System.SysUtils, UDMServer;
 
 procedure TDMClient.DataModuleCreate(Sender: TObject);
 begin
@@ -84,7 +85,6 @@ end;
 
 procedure TDMClient.CLoginResponse(Sender: TObject; Socket: TDzSocket;
   Accepted: Boolean; const Data: string);
-var D: TMsgArray;
 begin
   if Accepted then
   begin
@@ -92,9 +92,7 @@ begin
 
     FrmStart.Hide;
 
-    D := DataToArray(Data);
-
-    FrmGame.Initialize(D[0], D[1]);
+    FrmGame.Initialize;
     FrmGame.Show;
 
     if pubModeServer then
@@ -113,6 +111,7 @@ begin
   case Cmd of
     'C': Log(Format('Player %s just joined.', [A]));
     'D': Log(Format('Player %s left.', [A]));
+    'U': RulesReceived(A);
     'M': MessageReceived(A);
     'L': PlayersListReceived(A);
     'R': GameStartedReceived;
@@ -135,6 +134,18 @@ begin
            DoSound('DONE');
          end;
   end;
+end;
+
+procedure TDMClient.RulesReceived(const A: string);
+var D: TMsgArray;
+begin
+  D := DataToArray(A);
+
+  FrmGame.PB.SetMatrixSize(D[1], D[2]);
+
+  FrmMain.LbRules.Caption :=
+    Format('Dictionary: %s / Size: %s x %s / Init. Letters: %s / Rebuy: %s', [
+    D[0], D[1], D[2], D[3], D[4]]);
 end;
 
 procedure TDMClient.GameStartedReceived;

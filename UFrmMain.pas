@@ -9,7 +9,6 @@ type
   TFrmMain = class(TForm)
     Dam: TDam;
     BoxTitle: TPanel;
-    LbLink: TLinkLabel;
     LbVersion: TLabel;
     LbMode: TLabel;
     LbLbMode: TLabel;
@@ -18,12 +17,19 @@ type
     _QuestionCloseApp: TDamMsg;
     BoxTitleSide: TPanel;
     BtnSettings: TSpeedButton;
+    Label1: TLabel;
+    LbRules: TLabel;
+    LbLink: TLabel;
+    Label3: TLabel;
+    Label2: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
-    procedure LbLinkLinkClick(Sender: TObject; const Link: string;
-      LinkType: TSysLinkType);
     procedure BtnSettingsClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure LbLinkClick(Sender: TObject);
   private
     procedure InitStartPage;
     procedure InitGamePage;
@@ -74,10 +80,9 @@ begin
   FrmStart.Top := BoxTitle.Height + ((ClientHeight-FrmStart.Height-BoxTitle.Height-FrmLog.Height) div 2);
 end;
 
-procedure TFrmMain.LbLinkLinkClick(Sender: TObject; const Link: string;
-  LinkType: TSysLinkType);
+procedure TFrmMain.LbLinkClick(Sender: TObject);
 begin
-  ShellExecute(0, '', PChar(Link), '', '', 0);
+  ShellExecute(0, '', 'http://digaodalpiaz.com/', '', '', 0);
 end;
 
 procedure TFrmMain.BtnSettingsClick(Sender: TObject);

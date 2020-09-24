@@ -264,6 +264,11 @@ object FrmMain: TFrmMain
   object Dam: TDam
     Language = dgEnglish
     HandleExceptions = True
+    MessageFont.Charset = DEFAULT_CHARSET
+    MessageFont.Color = clWhite
+    MessageFont.Height = -13
+    MessageFont.Name = 'Segoe UI'
+    MessageFont.Style = []
     DamDefault = True
     DamUnitName = 'UDams'
     Left = 40

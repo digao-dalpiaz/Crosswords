@@ -24,7 +24,7 @@ var
   I: Integer;
 begin
   if not Letters.IsEmpty then
-    raise Exception.Create('Player letters should be empty');
+    raise Exception.Create('Internal: Player letters should be empty');
 
   for I := 1 to pubServerProps.InitialLetters do
     Letters := Letters + GetRandomLetter;

@@ -96,14 +96,14 @@ object FrmStart: TFrmStart
         Height = 13
         Caption = 'Dictionary:'
       end
-      object Label1: TLabel
+      object LbInitialLetters: TLabel
         Left = 16
         Top = 123
         Width = 99
         Height = 13
         Caption = 'Initial letters pocket:'
       end
-      object Label2: TLabel
+      object LbRebuyLetters: TLabel
         Left = 16
         Top = 147
         Width = 69

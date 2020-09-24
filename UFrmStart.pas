@@ -23,9 +23,9 @@ type
     EdDictionary: TComboBox;
     BtnJoin: TBitBtn;
     BtnExit: TBitBtn;
-    Label1: TLabel;
+    LbInitialLetters: TLabel;
     EdInitialLetters: TEdit;
-    Label2: TLabel;
+    LbRebuyLetters: TLabel;
     EdRebuyLetters: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure BtnExitClick(Sender: TObject);
@@ -123,7 +123,7 @@ begin
       Exit;
     end;
 
-    pubServerProps.Dictionary := LST_DICTIONARY[EdDictionary.ItemIndex];
+    pubServerProps.Letters := GetDictionaryLetters(LST_DICTIONARY[EdDictionary.ItemIndex]);
     pubServerProps.SizeW := StrToInt(EdSizeW.Text);
     pubServerProps.SizeH := StrToInt(EdSizeH.Text);
     pubServerProps.InitialLetters := StrToInt(EdInitialLetters.Text);

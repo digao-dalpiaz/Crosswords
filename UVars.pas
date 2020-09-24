@@ -3,62 +3,92 @@ unit UVars;
 interface
 
 const
-  STR_VERSION = '1.0 alfa';
+  STR_VERSION = '1.0 alpha';
   INT_TCP_PORT = 6631;
 
   BLANK_LETTER = #0;
 
 type
   TDictionary = record
-    Language: string;
-    LettersMAX,
-    LettersMED,
-    LettersMIN: string;
+    Language, Resource: string;
   end;
 
 const LST_DICTIONARY: array[0..0] of TDictionary = (
-  (Language: 'Portuguese Brazil'; LettersMAX: 'AEO'; LettersMED: 'BCDFGILMNPRSTUV'; LettersMIN: 'HJKQXYWZ')
+  (Language: 'Portuguese Brazil'; Resource: 'BR')
 );
 
 var
   pubPlayerName: string;
   pubModeServer: Boolean;
 
+  //SERVER PROPERTIES
   pubServerProps: record
-    Dictionary: TDictionary;
+    Letters: String;
     SizeW, SizeH: Integer;
     InitialLetters, RebuyLetters: Integer;
   end;
 
+  //SETTINGS
+  pubEnableSounds: Boolean;
+
+function GetDictionaryLetters(Dic: TDictionary): string;
 function GetRandomLetter: Char;
 
 procedure DoSound(const ResName: string);
 
 implementation
 
-uses System.SysUtils, Winapi.MMSystem;
+uses System.Classes, System.SysUtils, Winapi.MMSystem, System.Types;
+
+function GetDictionaryLetters(Dic: TDictionary): string;
+var
+  R: TResourceStream;
+  S: TStringList;
+  I: Integer;
+  Name, Value: string;
+  Letters: string;
+begin
+  S := TStringList.Create;
+  try
+    R := TResourceStream.Create(HInstance, 'DIC_'+Dic.Resource, RT_RCDATA);
+    try
+      S.LoadFromStream(R);
+    finally
+      R.Free;
+    end;
+
+    if S.Count=0 then
+      raise Exception.Create('Internal: No letters found in the resource');
+
+    for I := 0 to S.Count-1 do
+    begin
+      Name := S.Names[I];
+      Value := S.ValueFromIndex[I];
+
+      if Name.Length<>1 then
+        raise Exception.Create('Internal: Letter must contain exactly one character');
+
+      if StrToIntDef(Value, 0)<=0 then
+        raise Exception.Create('Internal: Letter occurrences number are invalid');
+
+      Letters := Letters + StringOfChar(Name[1], Value.ToInteger);
+    end;
+  finally
+    S.Free;
+  end;
+
+  Result := Letters;
+end;
 
 function GetRandomLetter: Char;
-var
-  IGrp: Integer;
-  LetGrp: string;
 begin
-  repeat
-    IGrp := Random(12);
-    case IGrp of
-      0..2 : LetGrp := pubServerProps.Dictionary.LettersMIN;
-      3..6 : LetGrp := pubServerProps.Dictionary.LettersMED;
-      7..11: LetGrp := pubServerProps.Dictionary.LettersMAX;
-      else raise Exception.Create('Invalid group index');
-    end;
-  until not LetGrp.IsEmpty; //it's possible that some group don't have letters
-
-  Result := LetGrp[Random(LetGrp.Length)+1];
+  Result := pubServerProps.Letters[Random(pubServerProps.Letters.Length)+1];
 end;
 
 procedure DoSound(const ResName: string);
 begin
-  PlaySound(PChar(ResName), HInstance, SND_RESOURCE or SND_ASYNC);
+  if pubEnableSounds then
+    PlaySound(PChar('SND_'+ResName), HInstance, SND_RESOURCE or SND_ASYNC);
 end;
 
 end.

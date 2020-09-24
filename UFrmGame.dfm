@@ -28,7 +28,7 @@ object FrmGame: TFrmGame
     BorderStyle = bsNone
     TabOrder = 0
   end
-  object Panel1: TPanel
+  object BoxSide: TPanel
     Left = 639
     Top = 0
     Width = 248
@@ -36,8 +36,7 @@ object FrmGame: TFrmGame
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 633
-    object Label1: TLabel
+    object LbPlayers: TLabel
       Left = 0
       Top = 0
       Width = 248
@@ -48,7 +47,7 @@ object FrmGame: TFrmGame
       Caption = 'Players'
       ExplicitWidth = 35
     end
-    object Label2: TLabel
+    object LbLetters: TLabel
       Left = 0
       Top = 201
       Width = 248
@@ -68,10 +67,7 @@ object FrmGame: TFrmGame
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 191
-      ExplicitWidth = 249
-      ExplicitHeight = 185
-      object Label3: TLabel
+      object LbChat: TLabel
         Left = 0
         Top = 0
         Width = 248
@@ -89,12 +85,17 @@ object FrmGame: TFrmGame
         Height = 74
         TabStop = False
         Align = alClient
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         ReadOnly = True
         ScrollBars = ssVertical
         TabOrder = 0
         StyleElements = [seClient, seBorder]
         Zoom = 100
-        ExplicitHeight = 151
       end
       object EdChatMsg: TEdit
         Left = 0
@@ -104,8 +105,6 @@ object FrmGame: TFrmGame
         Align = alBottom
         TabOrder = 1
         OnKeyPress = EdChatMsgKeyPress
-        ExplicitTop = 164
-        ExplicitWidth = 249
       end
     end
     object LPlayers: TListBox
@@ -138,10 +137,8 @@ object FrmGame: TFrmGame
       ParentFont = False
       TabOrder = 1
       OnDrawItem = LLettersDrawItem
-      ExplicitTop = 110
-      ExplicitWidth = 249
     end
-    object Panel2: TPanel
+    object BoxOperations: TPanel
       Left = 0
       Top = 403
       Width = 248
@@ -149,7 +146,6 @@ object FrmGame: TFrmGame
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
-      ExplicitTop = 376
       object BtnStartGame: TBitBtn
         Left = 8
         Top = 8

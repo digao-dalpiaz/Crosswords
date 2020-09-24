@@ -3,22 +3,27 @@ unit UFrmMain;
 interface
 
 uses Vcl.Forms, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls, System.Classes,
-  DamUnit;
+  DamUnit, Vcl.Buttons;
 
 type
   TFrmMain = class(TForm)
     Dam: TDam;
-    Panel1: TPanel;
-    LinkLabel1: TLinkLabel;
+    BoxTitle: TPanel;
+    LbLink: TLinkLabel;
     LbVersion: TLabel;
     LbMode: TLabel;
-    Label1: TLabel;
-    Label2: TLabel;
+    LbLbMode: TLabel;
+    LbLbPlayer: TLabel;
     LbPlayer: TLabel;
+    _QuestionCloseApp: TDamMsg;
+    BoxTitleSide: TPanel;
+    BtnSettings: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
-    procedure LinkLabel1LinkClick(Sender: TObject; const Link: string;
+    procedure LbLinkLinkClick(Sender: TObject; const Link: string;
       LinkType: TSysLinkType);
+    procedure BtnSettingsClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     procedure InitStartPage;
     procedure InitGamePage;
@@ -31,13 +36,16 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, UFrmStart, UFrmGame, UFrmLog, Winapi.ShellAPI;
+uses UVars, UFrmStart, UFrmGame, UFrmLog, UFrmSettings, UDams,
+  Winapi.ShellAPI, UDMClient;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
 begin
   ReportMemoryLeaksOnShutdown := True;
 
   LbVersion.Caption := 'Version '+STR_VERSION;
+
+  TSettings.Load;
 
   Randomize;
 
@@ -66,10 +74,21 @@ begin
   FrmStart.Top := (ClientHeight-FrmLog.Height - FrmStart.Height) div 2;
 end;
 
-procedure TFrmMain.LinkLabel1LinkClick(Sender: TObject; const Link: string;
+procedure TFrmMain.LbLinkLinkClick(Sender: TObject; const Link: string;
   LinkType: TSysLinkType);
 begin
   ShellExecute(0, '', PChar(Link), '', '', 0);
+end;
+
+procedure TFrmMain.BtnSettingsClick(Sender: TObject);
+begin
+   ShowSettings;
+end;
+
+procedure TFrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  if DMClient.C.Connected then
+    if not QuestionCloseApp then CanClose := False;
 end;
 
 end.

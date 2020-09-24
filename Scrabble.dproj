@@ -96,6 +96,7 @@
         </DelphiCompile>
         <DCCReference Include="UVars.pas"/>
         <DCCReference Include="UClient.pas"/>
+        <DCCReference Include="UMatrix.pas"/>
         <DCCReference Include="UDMClient.pas">
             <Form>DMClient</Form>
             <FormType>dfm</FormType>
@@ -117,51 +118,59 @@
         <DCCReference Include="UFrmLog.pas">
             <Form>FrmLog</Form>
         </DCCReference>
-        <DCCReference Include="UMatrix.pas"/>
+        <DCCReference Include="UFrmSettings.pas">
+            <Form>FrmSettings</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="Sounds\pling.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
-            <ResourceId>PLING</ResourceId>
+            <ResourceId>SND_PLING</ResourceId>
         </RcItem>
         <RcItem Include="Sounds\reject.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
-            <ResourceId>REJECT</ResourceId>
+            <ResourceId>SND_REJECT</ResourceId>
         </RcItem>
         <RcItem Include="Sounds\start.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
-            <ResourceId>START</ResourceId>
+            <ResourceId>SND_START</ResourceId>
         </RcItem>
         <RcItem Include="Sounds\wait.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
-            <ResourceId>WAIT</ResourceId>
+            <ResourceId>SND_WAIT</ResourceId>
         </RcItem>
         <RcItem Include="Sounds\buy.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
-            <ResourceId>BUY</ResourceId>
+            <ResourceId>SND_BUY</ResourceId>
         </RcItem>
         <RcItem Include="Sounds\done.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
-            <ResourceId>DONE</ResourceId>
+            <ResourceId>SND_DONE</ResourceId>
         </RcItem>
         <RcItem Include="Sounds\agreement.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
-            <ResourceId>AGREEMENT</ResourceId>
+            <ResourceId>SND_AGREEMENT</ResourceId>
         </RcItem>
         <RcItem Include="Sounds\agreement_end.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
-            <ResourceId>AGREEMENT_END</ResourceId>
+            <ResourceId>SND_AGREEMENT_END</ResourceId>
         </RcItem>
         <RcItem Include="Sounds\bell.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
-            <ResourceId>BELL</ResourceId>
+            <ResourceId>SND_BELL</ResourceId>
+        </RcItem>
+        <RcItem Include="Dictionaries\PortugueseBrazil.dic">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>DIC_BR</ResourceId>
         </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -214,6 +223,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Sounds\buy.wav" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Dictionaries\PortugueseBrazil.dic" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>

@@ -10,18 +10,18 @@ uses Vcl.Forms, System.ImageList, Vcl.ImgList, Vcl.Controls, Vcl.StdCtrls,
 type
   TFrmGame = class(TForm)
     SB: TScrollBox;
-    Panel1: TPanel;
+    BoxSide: TPanel;
     BoxChat: TPanel;
     EdChatLog: TRichEdit;
     EdChatMsg: TEdit;
     LPlayers: TListBox;
     LLetters: TListBox;
-    Panel2: TPanel;
+    BoxOperations: TPanel;
     BtnStartGame: TBitBtn;
     BtnDisconnect: TBitBtn;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
+    LbPlayers: TLabel;
+    LbLetters: TLabel;
+    LbChat: TLabel;
     IL: TImageList;
     BtnDone: TBitBtn;
     BtnAgree: TBitBtn;

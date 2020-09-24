@@ -8,13 +8,14 @@ uses
   Vcl.Styles,
   UVars in 'UVars.pas',
   UClient in 'UClient.pas',
+  UMatrix in 'UMatrix.pas',
   UDMClient in 'UDMClient.pas' {DMClient: TDataModule},
   UDMServer in 'UDMServer.pas' {DMServer: TDataModule},
   UFrmMain in 'UFrmMain.pas' {FrmMain},
   UFrmStart in 'UFrmStart.pas' {FrmStart},
   UFrmGame in 'UFrmGame.pas' {FrmGame},
   UFrmLog in 'UFrmLog.pas' {FrmLog},
-  UMatrix in 'UMatrix.pas';
+  UFrmSettings in 'UFrmSettings.pas' {FrmSettings};
 
 {$R *.res}
 

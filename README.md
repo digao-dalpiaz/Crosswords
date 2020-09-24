@@ -25,7 +25,7 @@
 - Get better sounds
 - ~~Configurations screen (turn on/off sounds)~~
 - ~~Review start screen center (is not considering title bar)~~
-- Make the score work
+- ~~Make the score work~~
 - ~~Review random letters logic~~
 - Include English dictionary
 - App translation to Portuguese Brazil and support any language translation?
@@ -33,5 +33,5 @@
 - Behavior when user drop connection when the game is running
 - ~~Password to connect~~
 - ~~Allow server change settings while waiting players~~
-- Implement end of game
+- ~~Implement end of game~~
 - Logic to check if inserted letters is according with game rules

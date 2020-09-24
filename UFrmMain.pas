@@ -71,7 +71,7 @@ end;
 procedure TFrmMain.FormResize(Sender: TObject);
 begin
   FrmStart.Left := (ClientWidth - FrmStart.Width) div 2;
-  FrmStart.Top := (ClientHeight-FrmLog.Height - FrmStart.Height) div 2;
+  FrmStart.Top := BoxTitle.Height + ((ClientHeight-FrmStart.Height-BoxTitle.Height-FrmLog.Height) div 2);
 end;
 
 procedure TFrmMain.LbLinkLinkClick(Sender: TObject; const Link: string;

@@ -43,20 +43,23 @@ object FrmStart: TFrmStart
     Height = 13
     Caption = 'Your name:'
   end
+  object Label1: TLabel
+    Left = 312
+    Top = 56
+    Width = 107
+    Height = 13
+    Caption = 'Connection password:'
+  end
   object Pages: TPageControl
     Left = 16
     Top = 112
     Width = 593
     Height = 201
     ActivePage = TabServer
-    TabOrder = 1
+    TabOrder = 2
     TabStop = False
     object TabClient: TTabSheet
       Caption = 'Client'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LbServerAddress: TLabel
         Left = 16
         Top = 16
@@ -67,7 +70,7 @@ object FrmStart: TFrmStart
       object EdServerAddress: TEdit
         Left = 16
         Top = 32
-        Width = 297
+        Width = 321
         Height = 21
         TabOrder = 0
       end
@@ -196,7 +199,7 @@ object FrmStart: TFrmStart
       C080FFC080FFC080FFC080FFC080FFC080FF5E3C0EA06617A06617A06617A066
       17A06617845513C080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC0
       80FFC080FF3D27098253139B63168E5A1459390DC080FFC080FF}
-    TabOrder = 2
+    TabOrder = 3
     OnClick = BtnJoinClick
   end
   object BtnExit: TBitBtn
@@ -232,7 +235,14 @@ object FrmStart: TFrmStart
       3A3EFF373AF00D0D37C080FFC080FFC080FFC080FFC080FFC080FF0E0A28402E
       BE4532CC3728A4C080FFC080FFC080FF2A2DB90D0D37C080FFC080FFC080FFC0
       80FFC080FFC080FFC080FFC080FF0E0A28332596C080FFC080FF}
-    TabOrder = 3
+    TabOrder = 4
     OnClick = BtnExitClick
+  end
+  object EdPassword: TEdit
+    Left = 312
+    Top = 72
+    Width = 225
+    Height = 21
+    TabOrder = 1
   end
 end

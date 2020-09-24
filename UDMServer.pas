@@ -92,6 +92,8 @@ var
   C: TClient;
 begin
   D := DataToArray(RequestData);
+
+  //Check app version
   if D[0] <> STR_VERSION then
   begin
     Accept := False;
@@ -99,13 +101,15 @@ begin
     Exit;
   end;
 
-  if PlayerNameAlreadyExists(D[1]) then
+  //Check game password
+  if D[2] <> pubServerProps.Password then
   begin
     Accept := False;
-    ResponseData := 'This player name already exists!';
+    ResponseData := 'The password to this game is incorrect.';
     Exit;
   end;
 
+  //Check if game is already running
   if GameRunning then
   begin
     Accept := False;
@@ -113,7 +117,15 @@ begin
     Exit;
   end;
 
-  //Login is valid
+  //Check if player name already exists
+  if PlayerNameAlreadyExists(D[1]) then
+  begin
+    Accept := False;
+    ResponseData := 'This player name already exists!';
+    Exit;
+  end;
+
+  //LOGIN IS VALID!
   C := TClient.Create;
   C.PlayerName := D[1];
   Socket.Data := C;

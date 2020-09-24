@@ -27,6 +27,8 @@ type
     EdInitialLetters: TEdit;
     LbRebuyLetters: TLabel;
     EdRebuyLetters: TEdit;
+    EdPassword: TEdit;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure BtnExitClick(Sender: TObject);
     procedure BtnJoinClick(Sender: TObject);
@@ -123,6 +125,7 @@ begin
       Exit;
     end;
 
+    pubServerProps.Password := EdPassword.Text;
     pubServerProps.Letters := GetDictionaryLetters(LST_DICTIONARY[EdDictionary.ItemIndex]);
     pubServerProps.SizeW := StrToInt(EdSizeW.Text);
     pubServerProps.SizeH := StrToInt(EdSizeH.Text);
@@ -149,6 +152,7 @@ begin
   EnableControls(False);
 
   pubPlayerName := EdPlayerName.Text;
+  pubPassword := EdPassword.Text;
 
   Log('Connecting...');
   DMClient.C.Connect;

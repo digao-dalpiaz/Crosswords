@@ -18,12 +18,13 @@ const LST_DICTIONARY: array[0..0] of TDictionary = (
 );
 
 var
-  pubPlayerName: string;
+  pubPlayerName, pubPassword: string;
   pubModeServer: Boolean;
 
   //SERVER PROPERTIES
   pubServerProps: record
-    Letters: String;
+    Password: string;
+    Letters: string;
     SizeW, SizeH: Integer;
     InitialLetters, RebuyLetters: Integer;
   end;

@@ -79,7 +79,7 @@ end;
 procedure TDMClient.CLoginRequest(Sender: TObject; Socket: TDzSocket;
   var Data: string);
 begin
-  Data := ArrayToData([STR_VERSION, pubPlayerName]);
+  Data := ArrayToData([STR_VERSION, pubPlayerName, pubPassword]);
 end;
 
 procedure TDMClient.CLoginResponse(Sender: TObject; Socket: TDzSocket;

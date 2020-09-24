@@ -47,6 +47,10 @@ For each language, there is a dictionary file, which basically indicates all the
 
 ![Playing screen](Images/demo_playing.png)
 
+### Technical information
+
+The server works on Port TCP 6631.
+
 ### To Do
 
 - Get better sounds

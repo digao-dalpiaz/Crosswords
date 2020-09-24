@@ -18,7 +18,7 @@ type
     class function GetIniFile: String;
   public
     class procedure Load;
-    class procedure Save;
+    class procedure Save(F: TFrmSettings);
   end;
 
 var
@@ -49,13 +49,13 @@ begin
   end;
 end;
 
-class procedure TSettings.Save;
+class procedure TSettings.Save(F: TFrmSettings);
 var
   Ini: TIniFile;
 begin
   Ini := TIniFile.Create(GetIniFile);
   try
-    Ini.WriteBool('Global', 'Sounds', pubEnableSounds);
+    Ini.WriteBool('Global', 'Sounds', F.CkSounds.Checked);
   finally
     Ini.Free;
   end;
@@ -79,9 +79,8 @@ end;
 
 procedure TFrmSettings.BtnOKClick(Sender: TObject);
 begin
-  pubEnableSounds := CkSounds.Checked;
-
-  TSettings.Save;
+  TSettings.Save(Self);
+  TSettings.Load; //reload settings
 
   ModalResult := mrOk;
 end;

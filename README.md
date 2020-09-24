@@ -31,7 +31,7 @@
 - App translation to Portuguese Brazil and support any language translation?
 - Review game rules
 - Behavior when user drop connection when the game is running
-- Password to connect
+- ~~Password to connect~~
 - Allow server change settings while waiting players
 - Implement end of game
 - Logic to check if inserted letters is according with game rules

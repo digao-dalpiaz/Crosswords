@@ -27,6 +27,10 @@ For now, the game supports letters in:
 - English
 - Portuguese Brazil
 
+For each language, there is a dictionary file, which basically indicates all the letters of the alphabet supported and how many times each occurs.
+
+> You can send me a dictionary in the desired language, and so we will increase support for new dictionaries.
+
 ### Required components:
 
 - Dam: https://github.com/digao-dalpiaz/Dam

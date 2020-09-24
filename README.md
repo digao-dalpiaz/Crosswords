@@ -68,3 +68,4 @@ The server works on Port TCP 6631.
 - ~~Allow server change settings while waiting players~~
 - ~~Implement end of game~~
 - Logic to check if inserted letters is according with game rules
+- Better way to show that it's your turn?

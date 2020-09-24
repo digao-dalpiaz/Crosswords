@@ -31,6 +31,8 @@ For each language, there is a dictionary file, which basically indicates all the
 
 > You can send me a dictionary in the desired language, and so we will increase support for new dictionaries.
 
+*I'm planning to implement translation support for game screens too.*
+
 ### Required components:
 
 - Dam: https://github.com/digao-dalpiaz/Dam

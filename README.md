@@ -4,6 +4,23 @@
 
 **Attention! This game is under development, still in alpha version.**
 
+### How to play
+
+You can play with as many opponents as you like.
+Choose one to be the server, and the rest will be the clients that will connect to the server.
+On the server, remember to allow incoming connections to the Windows firewall (usually the first time the game is opened in server mode, Windows itself will ask if you want to open the game port for external access).
+The server can define the rules of the game, while waiting for all players to connect.
+When all players are connected, the server can start the game.
+Throughout the game, it is possible to communicate through the chat panel.
+
+Each player has his turn, in sequential order, indicated on the side panel.
+All players will initially receive the same amount of letters.
+The idea is to build words, using as many letters as possible.
+The game ends when a player has no letters left.
+Each time you complete your move, all other players must accept the words you entered. If any player does not accept, you will have to review your move. You can use chat to argue.
+If you are unable to form a word in a move, you will automatically receive more letters in your pot.
+**A move can only be completed when all words entered are complete and valid.**
+
 ### Required components:
 
 - Dam: https://github.com/digao-dalpiaz/Dam

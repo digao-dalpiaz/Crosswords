@@ -14,8 +14,6 @@ type
   end;
 
   TSettings = class
-  private
-    class function GetIniFile: String;
   public
     class procedure Load;
     class procedure Save(F: TFrmSettings);
@@ -32,16 +30,11 @@ implementation
 
 uses UVars, System.IniFiles, System.SysUtils;
 
-class function TSettings.GetIniFile: String;
-begin
-  Result := ExtractFilePath(Application.ExeName)+'Scrabble.ini';
-end;
-
 class procedure TSettings.Load;
 var
   Ini: TIniFile;
 begin
-  Ini := TIniFile.Create(GetIniFile);
+  Ini := TIniFile.Create(GetIniFilePath);
   try
     pubEnableSounds := Ini.ReadBool('Global', 'Sounds', True);
   finally
@@ -53,7 +46,7 @@ class procedure TSettings.Save(F: TFrmSettings);
 var
   Ini: TIniFile;
 begin
-  Ini := TIniFile.Create(GetIniFile);
+  Ini := TIniFile.Create(GetIniFilePath);
   try
     Ini.WriteBool('Global', 'Sounds', F.CkSounds.Checked);
   finally

@@ -25,8 +25,6 @@ type
   end;
 
   TRules = class
-  private
-    class function GetIniFile: String;
   public
     class procedure Save(F: TFrmRules);
     class procedure Load;
@@ -43,16 +41,11 @@ implementation
 
 uses UVars, System.SysUtils, UDams, UDMServer, System.IniFiles;
 
-class function TRules.GetIniFile: String;
-begin
-  Result := ExtractFilePath(Application.ExeName)+'Scrabble.ini';
-end;
-
 class procedure TRules.Load;
 var
   Ini: TIniFile;
 begin
-  Ini := TIniFile.Create(GetIniFile);
+  Ini := TIniFile.Create(GetIniFilePath);
   try
     pubServerProps.SizeW := Ini.ReadInteger('Rules', 'SizeW', 30);
     pubServerProps.SizeH := Ini.ReadInteger('Rules', 'SizeH', 20);
@@ -68,7 +61,7 @@ class procedure TRules.Save(F: TFrmRules);
 var
   Ini: TIniFile;
 begin
-  Ini := TIniFile.Create(GetIniFile);
+  Ini := TIniFile.Create(GetIniFilePath);
   try
     Ini.WriteInteger('Rules', 'SizeW', StrToInt(F.EdSizeW.Text));
     Ini.WriteInteger('Rules', 'SizeH', StrToInt(F.EdSizeH.Text));

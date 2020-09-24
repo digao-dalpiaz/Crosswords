@@ -26,7 +26,6 @@ object FrmMain: TFrmMain
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 588
     object LbVersion: TLabel
       Left = 112
       Top = 0
@@ -43,7 +42,6 @@ object FrmMain: TFrmMain
       ShowAccelChar = False
       Layout = tlCenter
       StyleElements = [seClient, seBorder]
-      ExplicitTop = 6
       ExplicitHeight = 13
     end
     object LbMode: TLabel
@@ -62,8 +60,6 @@ object FrmMain: TFrmMain
       ShowAccelChar = False
       Layout = tlCenter
       StyleElements = [seClient, seBorder]
-      ExplicitLeft = 250
-      ExplicitTop = 6
       ExplicitHeight = 13
     end
     object LbLbMode: TLabel
@@ -118,11 +114,9 @@ object FrmMain: TFrmMain
       ShowAccelChar = False
       Layout = tlCenter
       StyleElements = [seClient, seBorder]
-      ExplicitLeft = 350
-      ExplicitTop = 6
       ExplicitHeight = 13
     end
-    object Label1: TLabel
+    object LbLbRules: TLabel
       Left = 286
       Top = 0
       Width = 33
@@ -156,8 +150,6 @@ object FrmMain: TFrmMain
       ShowAccelChar = False
       Layout = tlCenter
       StyleElements = [seClient, seBorder]
-      ExplicitLeft = 438
-      ExplicitTop = 4
       ExplicitHeight = 13
     end
     object LbLink: TLabel
@@ -178,11 +170,9 @@ object FrmMain: TFrmMain
       Layout = tlCenter
       StyleElements = [seClient, seBorder]
       OnClick = LbLinkClick
-      ExplicitLeft = 16
-      ExplicitTop = 8
       ExplicitHeight = 13
     end
-    object Label3: TLabel
+    object LbSpace1: TLabel
       Left = 0
       Top = 0
       Width = 15
@@ -190,7 +180,7 @@ object FrmMain: TFrmMain
       Align = alLeft
       AutoSize = False
     end
-    object Label2: TLabel
+    object LbSpace2: TLabel
       Left = 97
       Top = 0
       Width = 15
@@ -199,7 +189,7 @@ object FrmMain: TFrmMain
       AutoSize = False
       ExplicitLeft = 112
     end
-    object Label4: TLabel
+    object LbSpace3: TLabel
       Left = 147
       Top = 0
       Width = 15
@@ -208,7 +198,7 @@ object FrmMain: TFrmMain
       AutoSize = False
       ExplicitLeft = 152
     end
-    object Label5: TLabel
+    object LbSpace4: TLabel
       Left = 207
       Top = 0
       Width = 15
@@ -217,7 +207,7 @@ object FrmMain: TFrmMain
       AutoSize = False
       ExplicitLeft = 216
     end
-    object Label6: TLabel
+    object LbSpace5: TLabel
       Left = 271
       Top = 0
       Width = 15
@@ -234,7 +224,6 @@ object FrmMain: TFrmMain
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 528
       object BtnSettings: TSpeedButton
         Left = 31
         Top = 0

@@ -39,9 +39,11 @@ function GetRandomLetter: Char;
 
 procedure DoSound(const ResName: string);
 
+function GetIniFilePath: String;
+
 implementation
 
-uses System.Classes, System.SysUtils, Winapi.MMSystem, System.Types;
+uses System.Classes, System.SysUtils, Winapi.MMSystem, System.Types, Vcl.Forms;
 
 function GetDictionaryIndexByID(const ID: string): Integer;
 var
@@ -102,6 +104,11 @@ procedure DoSound(const ResName: string);
 begin
   if pubEnableSounds then
     PlaySound(PChar('SND_'+ResName), HInstance, SND_RESOURCE or SND_ASYNC);
+end;
+
+function GetIniFilePath: String;
+begin
+  Result := ExtractFilePath(Application.ExeName)+'Scrabble.ini';
 end;
 
 end.

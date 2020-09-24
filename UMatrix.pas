@@ -15,7 +15,6 @@ type
 
     procedure &Set(const Letter: Char; Temp: Boolean);
 
-    procedure Clear;
     procedure ClearTemp;
   end;
   TMatrixData = array of array of TBlock;
@@ -53,11 +52,6 @@ begin
   FTemp := Temp and (Letter<>BLANK_LETTER);
 end;
 
-procedure TBlock.Clear;
-begin
-  &Set(BLANK_LETTER, False);
-end;
-
 procedure TBlock.ClearTemp;
 begin
   FTemp := False;
@@ -74,14 +68,12 @@ begin
   S := TStringList.Create;
   try
     for Y := 0 to High(Data) do
-    begin
       for X := 0 to High(Data[Y]) do
       begin
         B := Data[Y, X];
         if B.Letter<>BLANK_LETTER then
           S.Add(Format('%dx%d=%s%s', [X, Y, B.Letter, IfThen(B.Temp, '*')]));
       end;
-    end;
 
     Result := S.Text;
   finally
@@ -98,7 +90,7 @@ var
 begin
   for Y := 0 to High(Data) do
     for X := 0 to High(Data[Y]) do
-      Data[Y, X].Clear;
+      Data[Y, X].&Set(BLANK_LETTER, False);
 
   S := TStringList.Create;
   try

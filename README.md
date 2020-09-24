@@ -11,7 +11,7 @@ Choose one to be the server, and the rest will be the clients that will connect 
 On the server, remember to allow incoming connections to the Windows firewall (usually the first time the game is opened in server mode, Windows itself will ask if you want to open the game port for external access).
 The server can define the rules of the game, while waiting for all players to connect.
 When all players are connected, the server can start the game.
-Throughout the game, it is possible to communicate through the chat panel.
+You can chat to all players at any time using side panel.
 
 Each player has his turn, in sequential order, indicated on the side panel.
 All players will initially receive the same amount of letters.

@@ -133,6 +133,7 @@ begin
            Log('Your words were accepted and your turn to play is over.');
            DoSound('DONE');
          end;
+    'E': FrmGame.GameOverReceived;
   end;
 end;
 

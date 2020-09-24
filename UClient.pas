@@ -13,6 +13,7 @@ type
     Agree: Boolean;
 
     procedure RandomizeInitialLetters;
+    procedure ResetGameData;
   end;
 
 implementation
@@ -28,6 +29,13 @@ begin
 
   for I := 1 to pubServerProps.InitialLetters do
     Letters := Letters + GetRandomLetter;
+end;
+
+procedure TClient.ResetGameData;
+begin
+  Letters := string.Empty;
+  Score := 0;
+  Agree := False;
 end;
 
 end.

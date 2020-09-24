@@ -8,6 +8,8 @@ uses Vcl.Forms, System.ImageList, Vcl.ImgList, Vcl.Controls, Vcl.StdCtrls,
   System.Types, UMatrix;
 
 type
+  TButtonsPage = (bpPreparing, bpPlaying, bpMyTurn, bpAgreement, bpGameOver);
+
   TFrmGame = class(TForm)
     SB: TScrollBox;
     BoxSide: TPanel;
@@ -27,6 +29,7 @@ type
     BtnAgree: TBitBtn;
     BtnDisagree: TBitBtn;
     BtnRules: TBitBtn;
+    BtnRestart: TBitBtn;
     procedure EdChatMsgKeyPress(Sender: TObject; var Key: Char);
     procedure BtnStartGameClick(Sender: TObject);
     procedure BtnDisconnectClick(Sender: TObject);
@@ -41,6 +44,7 @@ type
     procedure BtnAgreeClick(Sender: TObject);
     procedure BtnDisagreeClick(Sender: TObject);
     procedure BtnRulesClick(Sender: TObject);
+    procedure BtnRestartClick(Sender: TObject);
   public
     InGame, MyTurn: Boolean;
     PB: TMatrixImage;
@@ -52,8 +56,9 @@ type
     procedure AgreementRequestReceived;
     procedure AgreementFinishReceived;
     procedure DisagreeReceived;
+    procedure GameOverReceived;
   private
-    procedure ShowAgreementButtons(Flag: Boolean);
+    procedure SetButtonsPage(Pg: TButtonsPage);
   end;
 
 var
@@ -78,8 +83,7 @@ begin
   InGame := False;
   MyTurn := False;
 
-  BtnDone.Visible := False;
-  ShowAgreementButtons(False);
+  SetButtonsPage(bpPreparing);
 
   PB.SetMatrixSize(0, 0);
   LPlayers.Clear;
@@ -88,9 +92,6 @@ end;
 
 procedure TFrmGame.FormShow(Sender: TObject);
 begin
-  BtnStartGame.Visible := pubModeServer;
-  BtnRules.Visible := pubModeServer;
-
   FrmMain.LbMode.Caption := IfThen(pubModeServer, 'Server', 'Client');
   FrmMain.LbPlayer.Caption := pubPlayerName;
 end;
@@ -100,6 +101,19 @@ begin
   FrmMain.LbMode.Caption := string.Empty;
   FrmMain.LbPlayer.Caption := string.Empty;
   FrmMain.LbRules.Caption := string.Empty;
+end;
+
+procedure TFrmGame.SetButtonsPage(Pg: TButtonsPage);
+begin
+  BtnStartGame.Visible := (Pg = bpPreparing) and pubModeServer;
+  BtnRules.Visible := (Pg = bpPreparing) and pubModeServer;
+
+  BtnDone.Visible := (Pg = bpMyTurn);
+
+  BtnAgree.Visible := (Pg = bpAgreement);
+  BtnDisagree.Visible := (Pg = bpAgreement);
+
+  BtnRestart.Visible := (Pg = bpGameOver) and pubModeServer;
 end;
 
 procedure TFrmGame.BtnDisconnectClick(Sender: TObject);
@@ -117,8 +131,7 @@ begin
   if LPlayers.Count<2 then
     MsgRaise('We need at least two players to start the game!');
 
-  BtnStartGame.Visible := False;
-  BtnRules.Visible := False;
+  SetButtonsPage(bpPlaying);
 
   DMServer.StartGame;
 end;
@@ -144,6 +157,9 @@ begin
     EdChatMsg.Text := Trim(EdChatMsg.Text);
     if EdChatMsg.Text = string.Empty then Exit;
 
+    if not (LPlayers.Count>1) then
+      MsgRaise('There are no other players to chat with.');
+
     ChatLog(pubPlayerName, EdChatMsg.Text);
     DMClient.C.Send('M', EdChatMsg.Text);
     EdChatMsg.Clear;
@@ -159,6 +175,15 @@ end;
 
 procedure TFrmGame.LPlayersDrawItem(Control: TWinControl; Index: Integer;
   Rect: TRect; State: TOwnerDrawState);
+
+  procedure TextRight(X, Y: Integer; const A: string);
+  var
+    W: Integer;
+  begin
+    W := LPlayers.Canvas.TextWidth(A);
+    LPlayers.Canvas.TextOut(X-W, Y, A);
+  end;
+
 var D: TMsgArray;
 begin
   LPlayers.Canvas.FillRect(Rect);
@@ -166,8 +191,8 @@ begin
   D := DataToArray(LPlayers.Items[Index]);
 
   LPlayers.Canvas.TextOut(25, Rect.Top+2, D[0]); //player name
-  LPlayers.Canvas.TextOut(186, Rect.Top+2, D[1]); //letters
-  LPlayers.Canvas.TextOut(208, Rect.Top+2, D[2]); //score
+  TextRight(186, Rect.Top+2, D[1]); //letters
+  TextRight(220, Rect.Top+2, D[2]); //score
 
   if D[3] then
     IL.Draw(LPlayers.Canvas, 3, Rect.Top+1, 0); //this player turn
@@ -184,7 +209,7 @@ end;
 procedure TFrmGame.InitMyTurn;
 begin
   MyTurn := True;
-  BtnDone.Visible := True;
+  SetButtonsPage(bpMyTurn);
 
   Log('Go, it''s your turn!');
   DoSound('BELL');
@@ -193,19 +218,13 @@ end;
 procedure TFrmGame.BtnDoneClick(Sender: TObject);
 begin
   DMClient.C.Send('!');
-  BtnDone.Visible := False;
+  SetButtonsPage(bpPlaying);
   MyTurn := False;
-end;
-
-procedure TFrmGame.ShowAgreementButtons(Flag: Boolean);
-begin
-  BtnAgree.Visible := Flag;
-  BtnDisagree.Visible := Flag;
 end;
 
 procedure TFrmGame.AgreementRequestReceived;
 begin
-  ShowAgreementButtons(True);
+  SetButtonsPage(bpAgreement);
 
   Log('Please, make sure you agree with your opponent''s words.');
   DoSound('AGREEMENT');
@@ -213,7 +232,7 @@ end;
 
 procedure TFrmGame.AgreementFinishReceived;
 begin
-  ShowAgreementButtons(False);
+  SetButtonsPage(bpPlaying);
 
   Log('The agreement period has ended.');
   DoSound('AGREEMENT_END');
@@ -236,11 +255,25 @@ end;
 procedure TFrmGame.DisagreeReceived;
 begin
   MyTurn := True;
-  BtnDone.Visible := True;
+  SetButtonsPage(bpMyTurn);
 
   Log('At least one player does not agree with your words. Please, review it or use chat.');
 
   DoSound('REJECT');
+end;
+
+procedure TFrmGame.GameOverReceived;
+begin
+  InGame := False;
+  Log('Game over.');
+
+  SetButtonsPage(bpGameOver);
+end;
+
+procedure TFrmGame.BtnRestartClick(Sender: TObject);
+begin
+  SetButtonsPage(bpPreparing);
+  DMServer.RestartGame;
 end;
 
 end.

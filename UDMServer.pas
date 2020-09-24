@@ -40,6 +40,7 @@ type
     procedure Initialize;
     procedure StartGame;
     procedure SendRules(Socket: TDzSocket);
+    procedure RestartGame;
   end;
 
 var
@@ -435,11 +436,18 @@ begin
     end;
   end;
 
+  Inc(C.Score, Length(C.Letters) - Length(StoLetters));
   C.Letters := StoLetters;
 
   SendMatrix;
   S.Send(Socket, 'F'); //finish turn log
-  SelectNextPlayer;
+  if C.Letters.IsEmpty then
+  begin
+    CurrentPlayerIndex := -1;
+    SendPlayersList;
+    S.SendAll('E'); //send end game signal
+  end else
+    SelectNextPlayer;
 end;
 
 procedure TDMServer.RebuyLetters(Socket: TDzSocket);
@@ -471,6 +479,31 @@ begin
     S.Send(Socket, 'u', A)
   else
     S.SendAll('U', A);
+end;
+
+procedure TDMServer.RestartGame;
+var
+  Sok: TDzSocket;
+begin
+  GameRunning := False;
+
+  SetLength(Matrix, 0);
+  SendMatrix;
+
+  //--Reset players game data and send letters to each one
+  S.Lock;
+  try
+    for Sok in S do
+    begin
+      TClient(Sok.Data).ResetGameData;
+      SendLetters(Sok);
+    end;
+  finally
+    S.Unlock;
+  end;
+  //--
+
+  SendPlayersList;
 end;
 
 end.

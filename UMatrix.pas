@@ -198,8 +198,6 @@ var P: TPoint;
 begin
   inherited;
 
-  if not FrmGame.InGame then Exit;
-
   P := TPoint.Create(X div BoxW, Y div BoxH);
 
   if (P.X<>SelBox.X) or

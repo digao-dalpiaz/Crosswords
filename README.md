@@ -21,6 +21,12 @@ Each time you complete your move, all other players must accept the words you en
 If you are unable to form a word in a move, you will automatically receive more letters in your pot.
 **A move can only be completed when all words entered are complete and valid.**
 
+### Supported dictionaries
+
+For now, the game supports letters in:
+- English
+- Portuguese Brazil
+
 ### Required components:
 
 - Dam: https://github.com/digao-dalpiaz/Dam

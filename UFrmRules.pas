@@ -49,7 +49,7 @@ begin
   try
     pubServerProps.SizeW := Ini.ReadInteger('Rules', 'SizeW', 30);
     pubServerProps.SizeH := Ini.ReadInteger('Rules', 'SizeH', 20);
-    pubServerProps.DictionaryID := Ini.ReadString('Rules', 'DictionaryID', 'BR');
+    pubServerProps.DictionaryID := Ini.ReadString('Rules', 'DictionaryID', 'EN');
     pubServerProps.InitialLetters := Ini.ReadInteger('Rules', 'InitialLetters', 10);
     pubServerProps.RebuyLetters := Ini.ReadInteger('Rules', 'RebuyLetters', 5);
   finally

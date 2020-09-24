@@ -13,7 +13,8 @@ type
     ID, LanguageName: string;
   end;
 
-const LST_DICTIONARY: array[0..0] of TDictionary = (
+const LST_DICTIONARY: array[0..1] of TDictionary = (
+  (ID: 'EN'; LanguageName: 'English'),
   (ID: 'BR'; LanguageName: 'Portuguese Brazil')
 );
 

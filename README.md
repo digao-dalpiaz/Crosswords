@@ -23,10 +23,10 @@
 ### To Do
 
 - Get better sounds
-- Configurations screen (turn on/off sounds)
-- Review start screen center (is not considering title bar)
+- ~~Configurations screen (turn on/off sounds)~~
+- ~~Review start screen center (is not considering title bar)~~
 - Make the score work
-- Review random letters logic
+- ~~Review random letters logic~~
 - Include English dictionary
 - App translation to Portuguese Brazil and support any language translation?
 - Review game rules

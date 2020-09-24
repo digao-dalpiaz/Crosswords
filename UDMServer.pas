@@ -3,9 +3,11 @@ unit UDMServer;
 interface
 
 uses
-  System.Classes, DzSocket, UMatrix;
+  System.Classes, DzSocket, UMatrix, UClient;
 
 type
+  TForConnectionsProc = reference to procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean);
+
   TDMServer = class(TDataModule)
     S: TDzTCPServer;
     procedure DataModuleCreate(Sender: TObject);
@@ -32,10 +34,12 @@ type
     procedure PlayerTurnDoneReceived(Socket: TDzSocket);
     procedure AgreementReceived(Socket: TDzSocket; const A: string);
     procedure ClearAllAgreements;
-    function IsAllPlayersAgree(Socket: TDzSocket): Boolean;
+    function IsAllPlayersAgree(WithSocket: TDzSocket): Boolean;
     procedure CompletePlayerTurn(Socket: TDzSocket);
     function IsThereLettersUsed: Boolean;
     procedure RebuyLetters(Socket: TDzSocket);
+    procedure ForConnections(P: TForConnectionsProc);
+    procedure SetGameOver;
   public
     procedure Initialize;
     procedure StartGame;
@@ -52,7 +56,7 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, UClient, System.SysUtils, System.Variants;
+uses UVars, System.SysUtils, System.Variants;
 
 procedure TDMServer.DataModuleCreate(Sender: TObject);
 begin
@@ -72,19 +76,43 @@ begin
   S.Open;
 end;
 
-function TDMServer.PlayerNameAlreadyExists(const PlayerName: string): Boolean;
+procedure TDMServer.ForConnections(P: TForConnectionsProc);
 var
   Sok: TDzSocket;
+  Cancel: Boolean;
 begin
-  Result := False;
+  Cancel := False;
 
   S.Lock;
   try
     for Sok in S do
-      if SameText(TClient(Sok.Data).PlayerName, PlayerName) then Exit(True);
+    begin
+      P(Sok, Sok.Data, Cancel);
+      if Cancel then Break;
+    end;
   finally
     S.Unlock;
   end;
+end;
+
+function TDMServer.PlayerNameAlreadyExists(const PlayerName: string): Boolean;
+var
+  Found: Boolean;
+begin
+  Found := False;
+
+  ForConnections(
+    procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
+    begin
+      if SameText(C.PlayerName, PlayerName) then
+      begin
+        Found := True;
+        Cancel := True;
+      end;
+    end
+  );
+
+  Result := Found;
 end;
 
 procedure TDMServer.SClientLoginCheck(Sender: TObject; Socket: TDzSocket;
@@ -177,26 +205,20 @@ end;
 
 procedure TDMServer.SendPlayersList(Exclude: TDzSocket);
 var
-  Sok, CurSok: TDzSocket;
-  C: TClient;
+  CurSok: TDzSocket;
   Lst: TStringList;
 begin
   CurSok := GetCurrentSocket;
 
   Lst := TStringList.Create;
   try
-    S.Lock;
-    try
-      for Sok in S do
+    ForConnections(
+      procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
       begin
-        if Sok = Exclude then Continue;
-
-        C := Sok.Data;
-        Lst.Add(ArrayToData([C.PlayerName, C.Letters.Length, C.Score, Sok=CurSok, C.Agree]));
-      end;
-    finally
-      S.Unlock;
-    end;
+        if Sok<>Exclude then
+          Lst.Add(ArrayToData([C.PlayerName, C.Letters.Length, C.Score, Sok=CurSok, C.Agree]));
+      end
+    );
 
     S.SendAllEx(Exclude, 'L', Lst.Text);
   finally
@@ -205,27 +227,19 @@ begin
 end;
 
 procedure TDMServer.StartGame;
-var
-  Sok: TDzSocket;
-  C: TClient;
 begin
   GameRunning := True;
 
   LoadDictionaryLetters;
 
   //--Get players letters and send to each one
-  S.Lock;
-  try
-    for Sok in S do
+  ForConnections(
+    procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
     begin
-      C := Sok.Data;
       C.RandomizeInitialLetters;
-
       SendLetters(Sok);
-    end;
-  finally
-    S.Unlock;
-  end;
+    end
+  );
   //--
 
   SetLength(Matrix, pubServerProps.SizeH, pubServerProps.SizeW);
@@ -258,23 +272,30 @@ end;
 
 function TDMServer.GetCurrentSocket: TDzSocket;
 var
-  Sok: TDzSocket;
+  CurSok: TDzSocket;
   I: Integer;
 begin
+  if CurrentPlayerIndex = -1 then Exit(nil);  
+
+  CurSok := nil;
   I := -1;
 
-  S.Lock;
-  try
-    for Sok in S do
+  ForConnections(
+    procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
     begin
       Inc(I);
-      if I=CurrentPlayerIndex then Exit(Sok);
-    end;
-  finally
-    S.Unlock;
-  end;
+      if I=CurrentPlayerIndex then
+      begin
+        CurSok := Sok;
+        Cancel := True;
+      end;
+    end
+  );
 
-  Result := nil;
+  if CurSok=nil then
+    raise Exception.Create('Internal: Current socket not found');
+
+  Result := CurSok;
 end;
 
 procedure TDMServer.SendMatrix;
@@ -332,7 +353,9 @@ begin
 end;
 
 procedure TDMServer.AgreementReceived(Socket: TDzSocket; const A: string);
-var CurSok: TDzSocket;
+var
+  C: TClient;
+  CurSok: TDzSocket;
 
   procedure DisableAgreement;
   begin
@@ -346,11 +369,12 @@ begin
   if not InAgreement then
     raise Exception.Create('Internal: A player tried to set agreement but not in agreeement period!');
 
+  C := Socket.Data;
   CurSok := GetCurrentSocket;
 
   if DataToArray(A)[0]{Agree} then
   begin
-    TClient(Socket.Data).Agree := True;
+    C.Agree := True;
 
     if IsAllPlayersAgree(CurSok) then //Check if all players have set agreement
     begin
@@ -367,33 +391,35 @@ begin
   SendPlayersList; //update players list
 end;
 
-function TDMServer.IsAllPlayersAgree(Socket: TDzSocket): Boolean;
+function TDMServer.IsAllPlayersAgree(WithSocket: TDzSocket): Boolean;
 var
-  Sok: TDzSocket;
+  SomeDisagree: Boolean;
 begin
-  S.Lock;
-  try
-    for Sok in S do
-      if Sok<>Socket then
-        if not TClient(Sok.Data).Agree then Exit(False);
-  finally
-    S.Unlock;
-  end;
+  SomeDisagree := False;
 
-  Result := True;
+  ForConnections(
+    procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
+    begin
+      if Sok<>WithSocket then
+        if not C.Agree then
+        begin
+          SomeDisagree := True;
+          Cancel := True;
+        end;
+    end
+  );
+
+  Result := not SomeDisagree;
 end;
 
 procedure TDMServer.ClearAllAgreements;
-var
-  Sok: TDzSocket;
 begin
-  S.Lock;
-  try
-    for Sok in S do
-      TClient(Sok.Data).Agree := False;
-  finally
-    S.Unlock;
-  end;
+  ForConnections(
+    procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
+    begin
+      C.Agree := False;
+    end
+  );
 end;
 
 function TDMServer.IsThereLettersUsed: Boolean;
@@ -419,7 +445,6 @@ begin
   StoLetters := C.Letters;
 
   for Y := 0 to High(Matrix) do
-  begin
     for X := 0 to High(Matrix[Y]) do
     begin
       B := Matrix[Y, X];
@@ -434,20 +459,24 @@ begin
         Matrix[Y, X].ClearTemp;
       end;
     end;
-  end;
 
   Inc(C.Score, Length(C.Letters) - Length(StoLetters));
   C.Letters := StoLetters;
 
   SendMatrix;
   S.Send(Socket, 'F'); //finish turn log
+
   if C.Letters.IsEmpty then
-  begin
-    CurrentPlayerIndex := -1;
-    SendPlayersList;
-    S.SendAll('E'); //send end game signal
-  end else
+    SetGameOver
+  else
     SelectNextPlayer;
+end;
+
+procedure TDMServer.SetGameOver;
+begin
+  CurrentPlayerIndex := -1;
+  SendPlayersList;
+  S.SendAll('E'); //send end game signal
 end;
 
 procedure TDMServer.RebuyLetters(Socket: TDzSocket);
@@ -482,8 +511,6 @@ begin
 end;
 
 procedure TDMServer.RestartGame;
-var
-  Sok: TDzSocket;
 begin
   GameRunning := False;
 
@@ -491,16 +518,13 @@ begin
   SendMatrix;
 
   //--Reset players game data and send letters to each one
-  S.Lock;
-  try
-    for Sok in S do
+  ForConnections(
+    procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
     begin
-      TClient(Sok.Data).ResetGameData;
+      C.ResetGameData;
       SendLetters(Sok);
-    end;
-  finally
-    S.Unlock;
-  end;
+    end
+  );
   //--
 
   SendPlayersList;

@@ -27,7 +27,7 @@
 - ~~Review start screen center (is not considering title bar)~~
 - ~~Make the score work~~
 - ~~Review random letters logic~~
-- Include English dictionary
+- ~~Include English dictionary~~
 - App translation to Portuguese Brazil and support any language translation?
 - Review game rules
 - Behavior when user drop connection when the game is running

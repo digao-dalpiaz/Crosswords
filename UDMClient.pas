@@ -26,7 +26,7 @@ type
     procedure PlayersListReceived(const A: string);
     procedure LettersReceived(const A: string);
     procedure GameStartedReceived;
-    procedure RulesReceived(const A: string);
+    procedure RulesReceived(const A: string; ToOne: Boolean);
   public
     procedure SendLetter(X, Y: Integer; const Letter: Char);
     procedure SendAgreement(Agree: Boolean);
@@ -111,7 +111,7 @@ begin
   case Cmd of
     'C': Log(Format('Player %s just joined.', [A]));
     'D': Log(Format('Player %s left.', [A]));
-    'U': RulesReceived(A);
+    'U', 'u': RulesReceived(A, Cmd='u');
     'M': MessageReceived(A);
     'L': PlayersListReceived(A);
     'R': GameStartedReceived;
@@ -136,7 +136,7 @@ begin
   end;
 end;
 
-procedure TDMClient.RulesReceived(const A: string);
+procedure TDMClient.RulesReceived(const A: string; ToOne: Boolean);
 var D: TMsgArray;
 begin
   D := DataToArray(A);
@@ -146,6 +146,9 @@ begin
   FrmMain.LbRules.Caption :=
     Format('Dictionary: %s / Size: %s x %s / Init. Letters: %s / Rebuy: %s', [
     D[0], D[1], D[2], D[3], D[4]]);
+
+  if not ToOne then
+    Log('The game rules have been changed by the server.')
 end;
 
 procedure TDMClient.GameStartedReceived;

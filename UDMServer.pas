@@ -140,7 +140,7 @@ begin
   S.SendAllEx(Socket, 'C', C.PlayerName);
 
   SendPlayersList;
-  SendRules(Socket);
+  SendRules(Socket); //send game rules to the player
 end;
 
 procedure TDMServer.SClientDisconnect(Sender: TObject; Socket: TDzSocket);
@@ -468,7 +468,7 @@ begin
     pubServerProps.RebuyLetters]);
 
   if Socket<>nil then
-    S.Send(Socket, 'U', A)
+    S.Send(Socket, 'u', A)
   else
     S.SendAll('U', A);
 end;

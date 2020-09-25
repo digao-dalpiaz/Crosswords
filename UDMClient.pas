@@ -113,13 +113,13 @@ begin
     'U', 'u': RulesReceived(A, Cmd='u');
     'M': MessageReceived(A);
     'L': PlayersListReceived(A);
-    'R': FrmGame.GameStartedReceived;
     'T': LettersReceived(A);
+    'R': FrmGame.GameStartedReceived;
     'X': FrmGame.MatrixReceived(A);
     '>': FrmGame.InitMyTurn;
     'G': FrmGame.AgreementRequestReceived;
-    'J': FrmGame.DisagreeReceived;
     'K': FrmGame.AgreementFinishReceived;
+    'J': FrmGame.DisagreeReceived;
     'W': begin
            Log('Please, wait while your opponents validate your words.');
            DoSound('WAIT');

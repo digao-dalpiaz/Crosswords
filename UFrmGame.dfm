@@ -88,7 +88,7 @@ object FrmGame: TFrmGame
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
-        Font.Name = 'Tahoma'
+        Font.Name = 'Segoe UI Emoji'
         Font.Style = []
         ParentFont = False
         ReadOnly = True

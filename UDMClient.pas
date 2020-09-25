@@ -25,7 +25,6 @@ type
     procedure MessageReceived(const A: string);
     procedure PlayersListReceived(const A: string);
     procedure LettersReceived(const A: string);
-    procedure GameStartedReceived;
     procedure RulesReceived(const A: string; ToOne: Boolean);
   public
     procedure SendLetter(X, Y: Integer; const Letter: Char);
@@ -114,7 +113,7 @@ begin
     'U', 'u': RulesReceived(A, Cmd='u');
     'M': MessageReceived(A);
     'L': PlayersListReceived(A);
-    'R': GameStartedReceived;
+    'R': FrmGame.GameStartedReceived;
     'T': LettersReceived(A);
     'X': FrmGame.MatrixReceived(A);
     '>': FrmGame.InitMyTurn;
@@ -134,6 +133,7 @@ begin
            DoSound('DONE');
          end;
     'E': FrmGame.GameOverReceived;
+    'P': FrmGame.ReceivedPreparingNewGame;
   end;
 end;
 
@@ -150,14 +150,6 @@ begin
 
   if not ToOne then
     Log('The game rules have been changed by the server.')
-end;
-
-procedure TDMClient.GameStartedReceived;
-begin
-  FrmGame.InGame := True;
-  Log('Get ready. Starting the game right now!');
-
-  DoSound('START');
 end;
 
 procedure TDMClient.MessageReceived(const A: string);

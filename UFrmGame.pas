@@ -8,7 +8,7 @@ uses Vcl.Forms, System.ImageList, Vcl.ImgList, Vcl.Controls, Vcl.StdCtrls,
   System.Types, UMatrix;
 
 type
-  TButtonsPage = (bpPreparing, bpPlaying, bpMyTurn, bpAgreement, bpGameOver);
+  TGameStatus = (gsUnknown, gsPreparing, gsPlaying, gsMyTurn, gsAgreement, gsGameOver);
 
   TFrmGame = class(TForm)
     SB: TScrollBox;
@@ -20,7 +20,6 @@ type
     LLetters: TListBox;
     BoxOperations: TPanel;
     BtnStartGame: TBitBtn;
-    BtnDisconnect: TBitBtn;
     LbPlayers: TLabel;
     LbLetters: TLabel;
     LbChat: TLabel;
@@ -32,7 +31,6 @@ type
     BtnRestart: TBitBtn;
     procedure EdChatMsgKeyPress(Sender: TObject; var Key: Char);
     procedure BtnStartGameClick(Sender: TObject);
-    procedure BtnDisconnectClick(Sender: TObject);
     procedure LPlayersDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
     procedure FormShow(Sender: TObject);
@@ -46,19 +44,21 @@ type
     procedure BtnRulesClick(Sender: TObject);
     procedure BtnRestartClick(Sender: TObject);
   public
-    InGame, MyTurn: Boolean;
+    Status: TGameStatus;
     PB: TMatrixImage;
 
     procedure Initialize;
-    procedure ChatLog(const Player, Text: string);
     procedure MatrixReceived(const A: string);
+    procedure ChatLog(const Player, Text: string);
+    procedure GameStartedReceived;
     procedure InitMyTurn;
     procedure AgreementRequestReceived;
     procedure AgreementFinishReceived;
     procedure DisagreeReceived;
     procedure GameOverReceived;
+    procedure ReceivedPreparingNewGame;
   private
-    procedure SetButtonsPage(Pg: TButtonsPage);
+    procedure SetStatus(NewStatus: TGameStatus);
   end;
 
 var
@@ -68,9 +68,9 @@ implementation
 
 {$R *.dfm}
 
-uses System.SysUtils, UDMClient, UVars, UDMServer, UDams, DzSocket, UFrmMain,
-  Vcl.Graphics, Winapi.Windows, Winapi.Messages, System.StrUtils, UFrmLog,
-  UFrmRules;
+uses System.SysUtils, System.StrUtils,
+  Vcl.Graphics, Winapi.Windows, Winapi.Messages,
+  UVars, UDams, DzSocket, UDMClient, UDMServer, UFrmLog, UFrmMain, UFrmRules;
 
 procedure TFrmGame.FormCreate(Sender: TObject);
 begin
@@ -80,10 +80,7 @@ end;
 
 procedure TFrmGame.Initialize;
 begin
-  InGame := False;
-  MyTurn := False;
-
-  SetButtonsPage(bpPreparing);
+  SetStatus(gsPreparing);
 
   PB.SetMatrixSize(0, 0);
   LPlayers.Clear;
@@ -103,37 +100,24 @@ begin
   FrmMain.LbRules.Caption := string.Empty;
 end;
 
-procedure TFrmGame.SetButtonsPage(Pg: TButtonsPage);
+procedure TFrmGame.SetStatus(NewStatus: TGameStatus);
 begin
-  BtnStartGame.Visible := (Pg = bpPreparing) and pubModeServer;
-  BtnRules.Visible := (Pg = bpPreparing) and pubModeServer;
+  Status := NewStatus;
 
-  BtnDone.Visible := (Pg = bpMyTurn);
+  BtnStartGame.Visible := (Status = gsPreparing) and pubModeServer;
+  BtnRules.Visible := (Status = gsPreparing) and pubModeServer;
 
-  BtnAgree.Visible := (Pg = bpAgreement);
-  BtnDisagree.Visible := (Pg = bpAgreement);
+  BtnDone.Visible := (Status = gsMyTurn);
 
-  BtnRestart.Visible := (Pg = bpGameOver) and pubModeServer;
+  BtnAgree.Visible := (Status = gsAgreement);
+  BtnDisagree.Visible := (Status = gsAgreement);
+
+  BtnRestart.Visible := (Status = gsGameOver) and pubModeServer;
 end;
 
-procedure TFrmGame.BtnDisconnectClick(Sender: TObject);
+procedure TFrmGame.MatrixReceived(const A: string);
 begin
-  DMClient.C.Disconnect;
-end;
-
-procedure TFrmGame.BtnRulesClick(Sender: TObject);
-begin
-  ShowGameRules;
-end;
-
-procedure TFrmGame.BtnStartGameClick(Sender: TObject);
-begin
-  if LPlayers.Count<2 then
-    MsgRaise('We need at least two players to start the game!');
-
-  SetButtonsPage(bpPlaying);
-
-  DMServer.StartGame;
+  PB.UpdateData(A);
 end;
 
 procedure TFrmGame.ChatLog(const Player, Text: string);
@@ -166,13 +150,6 @@ begin
   end;
 end;
 
-procedure TFrmGame.LLettersDrawItem(Control: TWinControl; Index: Integer;
-  Rect: TRect; State: TOwnerDrawState);
-begin
-  LLetters.Canvas.FillRect(Rect);
-  LLetters.Canvas.TextOut(Rect.Left+8, Rect.Top, LLetters.Items[Index]);
-end;
-
 procedure TFrmGame.LPlayersDrawItem(Control: TWinControl; Index: Integer;
   Rect: TRect; State: TOwnerDrawState);
 
@@ -201,41 +178,37 @@ begin
     IL.Draw(LPlayers.Canvas, 3, Rect.Top+1, 1); //agree
 end;
 
-procedure TFrmGame.MatrixReceived(const A: string);
+procedure TFrmGame.LLettersDrawItem(Control: TWinControl; Index: Integer;
+  Rect: TRect; State: TOwnerDrawState);
 begin
-  PB.UpdateData(A);
+  LLetters.Canvas.FillRect(Rect);
+  LLetters.Canvas.TextOut(Rect.Left+8, Rect.Top, LLetters.Items[Index]);
 end;
 
-procedure TFrmGame.InitMyTurn;
+procedure TFrmGame.BtnStartGameClick(Sender: TObject);
 begin
-  MyTurn := True;
-  SetButtonsPage(bpMyTurn);
+  if LPlayers.Count<2 then
+    MsgRaise('We need at least two players to start the game!');
 
-  Log('Go, it''s your turn!');
-  DoSound('BELL');
+  SetStatus(gsUnknown); //transition status
+  DMServer.StartGame;
+end;
+
+procedure TFrmGame.BtnRestartClick(Sender: TObject);
+begin
+  SetStatus(gsUnknown); //transition status
+  DMServer.RestartGame;
+end;
+
+procedure TFrmGame.BtnRulesClick(Sender: TObject);
+begin
+  ShowGameRules;
 end;
 
 procedure TFrmGame.BtnDoneClick(Sender: TObject);
 begin
+  SetStatus(gsPlaying);
   DMClient.C.Send('!');
-  SetButtonsPage(bpPlaying);
-  MyTurn := False;
-end;
-
-procedure TFrmGame.AgreementRequestReceived;
-begin
-  SetButtonsPage(bpAgreement);
-
-  Log('Please, make sure you agree with your opponent''s words.');
-  DoSound('AGREEMENT');
-end;
-
-procedure TFrmGame.AgreementFinishReceived;
-begin
-  SetButtonsPage(bpPlaying);
-
-  Log('The agreement period has ended.');
-  DoSound('AGREEMENT_END');
 end;
 
 procedure TFrmGame.BtnAgreeClick(Sender: TObject);
@@ -252,28 +225,58 @@ begin
   Log('You have sent an disagreement for the words.');
 end;
 
+procedure TFrmGame.GameStartedReceived;
+begin
+  SetStatus(gsPlaying);
+
+  Log('Get ready. Starting the game right now!');
+  DoSound('START');
+end;
+
+procedure TFrmGame.InitMyTurn;
+begin
+  SetStatus(gsMyTurn);
+
+  Log('Go, it''s your turn!');
+  DoSound('BELL');
+end;
+
+procedure TFrmGame.AgreementRequestReceived;
+begin
+  SetStatus(gsAgreement);
+
+  Log('Please, make sure you agree with your opponent''s words.');
+  DoSound('AGREEMENT');
+end;
+
+procedure TFrmGame.AgreementFinishReceived;
+begin
+  SetStatus(gsPlaying);
+
+  Log('The agreement period has ended.');
+  DoSound('AGREEMENT_END');
+end;
+
 procedure TFrmGame.DisagreeReceived;
 begin
-  MyTurn := True;
-  SetButtonsPage(bpMyTurn);
+  SetStatus(gsMyTurn);
 
   Log('At least one player does not agree with your words. Please, review it or use chat.');
-
   DoSound('REJECT');
 end;
 
 procedure TFrmGame.GameOverReceived;
 begin
-  InGame := False;
-  Log('Game over.');
+  SetStatus(gsGameOver);
 
-  SetButtonsPage(bpGameOver);
+  Log('Game over.');
 end;
 
-procedure TFrmGame.BtnRestartClick(Sender: TObject);
+procedure TFrmGame.ReceivedPreparingNewGame;
 begin
-  SetButtonsPage(bpPreparing);
-  DMServer.RestartGame;
+  SetStatus(gsPreparing);
+
+  Log('The server is preparing a new game.');
 end;
 
 end.

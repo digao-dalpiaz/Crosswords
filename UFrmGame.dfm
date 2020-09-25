@@ -260,16 +260,6 @@ object FrmGame: TFrmGame
         TabOrder = 3
         OnClick = BtnStartGameClick
       end
-      object BtnDisconnect: TBitBtn
-        Left = 96
-        Top = 24
-        Width = 113
-        Height = 25
-        Caption = 'Disconnect'
-        TabOrder = 4
-        Visible = False
-        OnClick = BtnDisconnectClick
-      end
       object BtnDisagree: TBitBtn
         Left = 128
         Top = 8
@@ -339,7 +329,7 @@ object FrmGame: TFrmGame
           C080FF0298A603E9FE03E9FE03E4F903E1F503E9FE03E9FE03BDDE001F24C080
           FFC080FFC080FFC080FFC080FFC080FFC080FF013135015B63015B63015B6301
           5B63015B63015B63014C58C080FFC080FFC080FFC080FFC080FF}
-        TabOrder = 5
+        TabOrder = 4
         OnClick = BtnRulesClick
       end
       object BtnRestart: TBitBtn
@@ -375,7 +365,7 @@ object FrmGame: TFrmGame
           C080FFC080FFC080FF00733E009F5600C96D00BC6700B76300904EC080FF008D
           4D00BB66004425C080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC0
           80FFC080FFC080FFC080FFC080FFC080FF009C55C080FFC080FF}
-        TabOrder = 6
+        TabOrder = 5
         OnClick = BtnRestartClick
       end
     end

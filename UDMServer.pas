@@ -530,6 +530,8 @@ begin
   //--
 
   SendPlayersList;
+
+  S.SendAll('P'); //send preparing new game to all
 end;
 
 end.

@@ -152,9 +152,9 @@ var Previous: TBlock;
 begin
   inherited;
 
-  if not FrmGame.InGame then Exit;
+  if not (FrmGame.Status in [gsPlaying, gsMyTurn, gsAgreement]) then Exit;
 
-  if not FrmGame.MyTurn then
+  if FrmGame.Status <> gsMyTurn then
     MsgRaise('Relax, it''s not your turn yet!');
 
   if Shift = [ssLeft] then

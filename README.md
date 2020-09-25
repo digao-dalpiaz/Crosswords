@@ -70,3 +70,4 @@ The server works on Port TCP 6631.
 - Logic to check if inserted letters is according with game rules
 - Better way to show that it's your turn?
 - Zoom function in game grid?
+- Time-out rule to a player turn?

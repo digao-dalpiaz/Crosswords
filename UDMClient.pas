@@ -122,7 +122,7 @@ begin
     'J': FrmGame.DisagreeReceived;
     'W': begin
            Log('Please, wait while your opponents validate your words.');
-           DoSound('WAIT');
+           //DoSound('WAIT');
          end;
     'B': begin
            Log(Format('You bought %s more letter(s) since you didn''t fill anything in this round.', [A]));

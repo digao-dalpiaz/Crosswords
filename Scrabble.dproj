@@ -141,11 +141,6 @@
             <ResourceType>WAVE</ResourceType>
             <ResourceId>SND_START</ResourceId>
         </RcItem>
-        <RcItem Include="Sounds\wait.wav">
-            <ContainerId>ResourceItem</ContainerId>
-            <ResourceType>WAVE</ResourceType>
-            <ResourceId>SND_WAIT</ResourceId>
-        </RcItem>
         <RcItem Include="Sounds\buy.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
@@ -231,7 +226,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Sounds\wait.wav" Configuration="Release" Class="ProjectFile">
+                <DeployFile LocalName="Sounds\agreement_end.wav" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -240,12 +235,6 @@
                 <DeployFile LocalName="Win32\Debug\Scrabble.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Scrabble.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="Sounds\agreement_end.wav" Configuration="Release" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

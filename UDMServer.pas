@@ -56,7 +56,7 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, System.SysUtils, System.Variants;
+uses UVars, System.SysUtils, System.Variants, UFrmRules;
 
 procedure TDMServer.DataModuleCreate(Sender: TObject);
 begin
@@ -72,6 +72,8 @@ begin
   InAgreement := False;
   CurrentPlayerIndex := -1;
   SetLength(Matrix, 0);
+
+  TRules.Load; //load game rules
 
   S.Open;
 end;

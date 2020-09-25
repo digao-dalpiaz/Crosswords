@@ -179,7 +179,7 @@ begin
           MsgRaise('There is no letter to remove in this block.');
 
         if not Previous.Temp then
-          MsgRaise('You cannot remove this letter because it is from another move.');
+          MsgRaise('You cannot remove this letter because it''s not from this move.');
       end);
     FrmGame.LLetters.ItemIndex := FrmGame.LLetters.Items.Add(Previous.Letter);
   end;
@@ -212,7 +212,6 @@ var
   Block: TBlock;
   Line, Col: Integer;
   X, Y: Integer;
-  R: TRect;
 begin
   B := TBitmap.Create;
   try
@@ -230,14 +229,12 @@ begin
 
       for Col := 0 to High(Data[Line]) do
       begin
-        R := TRect.Create(X, Y, X+BoxW+1, Y+BoxH+1);
-
         if (SelBox.X=Col) and (SelBox.Y=Line) then
           B.Canvas.Brush.Color := clYellow
         else
           B.Canvas.Brush.Color := clWhite;
 
-        B.Canvas.Rectangle(R);
+        B.Canvas.Rectangle(X, Y, X+BoxW+1, Y+BoxH+1);
 
         Block := Data[Line, Col];
         if Block.Temp then

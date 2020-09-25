@@ -101,7 +101,7 @@ begin
       Log(Lang.Get('LOG_PREPARING_GAME_CLIENT'));
   end else
   begin
-    Log(Format(Lang.Get('LOG_LOGIN_REJECTED'), [Data]));
+    Log(Format(Lang.Get('LOG_LOGIN_REJECTED'), [Lang.Get('CONN_REJECT_'+Data)]));
   end;
 end;
 

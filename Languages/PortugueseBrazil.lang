@@ -13,6 +13,11 @@ DLG_CANCEL=Cancelar
 
 MSG_CLOSE_APP=<b><fc:clRed>Existe uma conexão estabelecida.</fc></b><br><br>Tem certeza de que deseja sair?
 
+CONN_REJECT_VERSION=Esta versão é incompatível com o servidor!
+CONN_REJECT_PASSWORD=A senha do jogo está incorreta.
+CONN_REJECT_RUNNING=Você não pode ser juntar a este jogo pois ele já está em curso!
+CONN_REJECT_PLAYER=Este nome de jogador já existe!
+
 SETTINGS_CAPTION=Configurações
 SETTINGS_LANGUAGE=Linguagem:
 SETTINGS_SOUNDS=Habilitar Sons

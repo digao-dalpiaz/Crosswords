@@ -13,6 +13,11 @@ DLG_CANCEL=Cancel
 
 MSG_CLOSE_APP=<b><fc:clRed>There is a connection established.</fc></b><br><br>Are you sure you want to leave?
 
+CONN_REJECT_VERSION=This version is incompatible with the server!
+CONN_REJECT_PASSWORD=The password to this game is incorrect.
+CONN_REJECT_RUNNING=You cannot join the game because it is already running!
+CONN_REJECT_PLAYER=This player name already exists!
+
 SETTINGS_CAPTION=Settings
 SETTINGS_LANGUAGE=Language:
 SETTINGS_SOUNDS=Enable Sounds

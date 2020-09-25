@@ -129,7 +129,7 @@ begin
   if D[0] <> STR_VERSION then
   begin
     Accept := False;
-    ResponseData := 'This version is incompatible with the server!';
+    ResponseData := 'VERSION';
     Exit;
   end;
 
@@ -137,7 +137,7 @@ begin
   if D[2] <> pubPassword then
   begin
     Accept := False;
-    ResponseData := 'The password to this game is incorrect.';
+    ResponseData := 'PASSWORD';
     Exit;
   end;
 
@@ -145,7 +145,7 @@ begin
   if GameRunning then
   begin
     Accept := False;
-    ResponseData := 'You cannot join the game because it is already running!';
+    ResponseData := 'RUNNING';
     Exit;
   end;
 
@@ -153,7 +153,7 @@ begin
   if PlayerNameAlreadyExists(D[1]) then
   begin
     Accept := False;
-    ResponseData := 'This player name already exists!';
+    ResponseData := 'PLAYER';
     Exit;
   end;
 

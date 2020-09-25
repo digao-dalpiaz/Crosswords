@@ -168,7 +168,7 @@ var
   C: TClient;
 begin
   C := Socket.Data;
-  S.SendAllEx(Socket, 'C', C.PlayerName);
+  S.SendAllEx(Socket, 'C', C.PlayerName); //send client connected to others
 
   SendPlayersList;
   SendRules(Socket); //send game rules to the player
@@ -181,7 +181,7 @@ begin
   if not Socket.Auth then Exit;
 
   C := Socket.Data;
-  S.SendAllEx(Socket, 'D', C.PlayerName);
+  S.SendAllEx(Socket, 'D', C.PlayerName); //send client disconnected to others
 
   SendPlayersList(Socket);
 end;
@@ -331,7 +331,7 @@ begin
 
   Matrix[Y, X].&Set(Letter, True);
 
-  SendMatrix; //mandar para todos a matrix atualizada
+  SendMatrix; //send updated matrix to all
 end;
 
 procedure TDMServer.PlayerTurnDoneReceived(Socket: TDzSocket);
@@ -528,7 +528,6 @@ begin
     end
   );
   //--
-
   SendPlayersList;
 
   S.SendAll('P'); //send preparing new game to all

@@ -2,13 +2,16 @@ unit UFrmSettings;
 
 interface
 
-uses Vcl.Forms, Vcl.StdCtrls, System.Classes, Vcl.Controls;
+uses Vcl.Forms, Vcl.StdCtrls, System.Classes, Vcl.Controls, Vcl.ComCtrls;
 
 type
   TFrmSettings = class(TForm)
     CkSounds: TCheckBox;
     BtnOK: TButton;
     BtnCancel: TButton;
+    LbGridZoom: TLabel;
+    EdGridZoom: TEdit;
+    BtnZoom: TUpDown;
     procedure FormCreate(Sender: TObject);
     procedure BtnOKClick(Sender: TObject);
   end;
@@ -28,7 +31,7 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, System.IniFiles, System.SysUtils;
+uses UVars, System.IniFiles, System.SysUtils, UFrmGame;
 
 class procedure TSettings.Load;
 var
@@ -37,6 +40,7 @@ begin
   Ini := TIniFile.Create(GetIniFilePath);
   try
     pubEnableSounds := Ini.ReadBool('Global', 'Sounds', True);
+    pubGridZoom := Ini.ReadInteger('Global', 'GridZoom', 100);
   finally
     Ini.Free;
   end;
@@ -49,6 +53,7 @@ begin
   Ini := TIniFile.Create(GetIniFilePath);
   try
     Ini.WriteBool('Global', 'Sounds', F.CkSounds.Checked);
+    Ini.WriteInteger('Global', 'GridZoom', F.BtnZoom.Position);
   finally
     Ini.Free;
   end;
@@ -68,12 +73,15 @@ end;
 procedure TFrmSettings.FormCreate(Sender: TObject);
 begin
   CkSounds.Checked := pubEnableSounds;
+  BtnZoom.Position := pubGridZoom;
 end;
 
 procedure TFrmSettings.BtnOKClick(Sender: TObject);
 begin
   TSettings.Save(Self);
   TSettings.Load; //reload settings
+
+  FrmGame.PB.UpdateZoom;
 
   ModalResult := mrOk;
 end;

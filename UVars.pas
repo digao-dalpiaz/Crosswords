@@ -33,6 +33,7 @@ var
 
   //SETTINGS
   pubEnableSounds: Boolean;
+  pubGridZoom: Integer;
 
 function GetDictionaryIndexByID(const ID: string): Integer;
 procedure LoadDictionaryLetters;

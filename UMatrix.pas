@@ -14,7 +14,6 @@ type
     property Temp: Boolean read FTemp;
 
     procedure &Set(const Letter: Char; Temp: Boolean);
-
     procedure ClearTemp;
   end;
   TMatrixData = array of array of TBlock;
@@ -22,21 +21,18 @@ type
   TMatrixImage = class(TImage)
   private
     Data: TMatrixData;
-
     SelBox: TPoint;
-
+    BoxW, BoxH: Integer;
     procedure Rebuild;
-
-    const
-      BoxW = 30;
-      BoxH = 25;
-
+    procedure CalcBoxSize;
   protected
     procedure MouseMove(Shift: TShiftState; X: Integer; Y: Integer); override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X: Integer; Y: Integer); override;
   public
-    procedure UpdateData(const A: string);
     procedure SetMatrixSize(X, Y: Integer);
+    procedure UpdateData(const A: string);
+
+    procedure UpdateZoom;
   end;
 
 function MatrixDataToString(const Data: TMatrixData): string;
@@ -116,21 +112,39 @@ end;
 
 //
 
+procedure TMatrixImage.CalcBoxSize;
+var
+  LX, LY: Integer;
+begin
+  BoxW := Round(30 * pubGridZoom/100);
+  BoxH := Round(25 * pubGridZoom/100);
+
+  LY := Length(Data);
+  if LY>0 then LX := Length(Data[0]) else LX := 0;
+
+  Width := (BoxW * LX)+1;
+  Height := (BoxH * LY)+1;
+end;
+
 procedure TMatrixImage.SetMatrixSize(X, Y: Integer);
 begin
   SetLength(Data, 0); //clear
   SetLength(Data, Y, X);
 
-  Width := (BoxW * X)+1;
-  Height := (BoxH * Y)+1;
-
   SelBox := TPoint.Create(-1, -1);
+  CalcBoxSize;
+  Rebuild;
+end;
 
+procedure TMatrixImage.UpdateZoom;
+begin
+  CalcBoxSize;
   Rebuild;
 end;
 
 procedure TMatrixImage.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var Previous: TBlock;
+var
+  Previous: TBlock;
 
   procedure SetLetter(const C: Char; PCheck: TProc);
   var
@@ -186,7 +200,8 @@ begin
 end;
 
 procedure TMatrixImage.MouseMove(Shift: TShiftState; X, Y: Integer);
-var P: TPoint;
+var
+  P: TPoint;
 begin
   inherited;
 
@@ -212,12 +227,13 @@ var
   Block: TBlock;
   Line, Col: Integer;
   X, Y: Integer;
+  TE: TSize;
 begin
   B := TBitmap.Create;
   try
     B.SetSize(Width, Height);
     B.Canvas.Font.Name := 'Consolas';
-    B.Canvas.Font.Size := 12;
+    B.Canvas.Font.Size := Round(14 * pubGridZoom/100);
     B.Canvas.Font.Style := [fsBold];
     B.Canvas.Pen.Color := clGray;
 
@@ -242,7 +258,8 @@ begin
         else
           B.Canvas.Font.Color := clBlack;
 
-        B.Canvas.TextOut(X+10, Y+3, Block.Letter);
+        TE := B.Canvas.TextExtent(Block.Letter);
+        B.Canvas.TextOut(X+((BoxW-TE.Width) div 2), Y+((BoxH-TE.Height) div 2), Block.Letter);
 
         Inc(X, BoxW);
       end;

@@ -185,19 +185,19 @@ begin
   LLetters.Canvas.TextOut(Rect.Left+8, Rect.Top, LLetters.Items[Index]);
 end;
 
+procedure TFrmGame.BtnRestartClick(Sender: TObject);
+begin
+  SetStatus(gsUnknown); //transition status to gsPreparing
+  DMServer.RestartGame;
+end;
+
 procedure TFrmGame.BtnStartGameClick(Sender: TObject);
 begin
   if LPlayers.Count<2 then
     MsgRaise('We need at least two players to start the game!');
 
-  SetStatus(gsUnknown); //transition status
+  SetStatus(gsUnknown); //transition status to gsPlaying
   DMServer.StartGame;
-end;
-
-procedure TFrmGame.BtnRestartClick(Sender: TObject);
-begin
-  SetStatus(gsUnknown); //transition status
-  DMServer.RestartGame;
 end;
 
 procedure TFrmGame.BtnRulesClick(Sender: TObject);

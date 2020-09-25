@@ -125,6 +125,9 @@ var
 begin
   D := DataToArray(RequestData);
 
+  {Version check must be always first because different versions may have
+  reject tags changed, so it can result an exception in client.}
+
   //Check app version
   if D[0] <> STR_VERSION then
   begin

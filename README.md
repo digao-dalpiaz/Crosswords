@@ -21,7 +21,12 @@ Each time you complete your move, all other players must accept the words you en
 If you are unable to form a word in a move, you will automatically receive more letters in your pot.
 **A move can only be completed when all words entered are complete and valid.**
 
-### Supported dictionaries
+### Supported languages
+
+- English
+- Portuguese Brazil
+
+### Supported letters dictionaries
 
 For now, the game supports letters in:
 - English
@@ -30,8 +35,6 @@ For now, the game supports letters in:
 For each language, there is a dictionary resource file, which basically indicates all the letters of the alphabet supported and how many times each occurs.
 
 > You can send me a dictionary in the desired language, and so we will increase support for new dictionaries.
-
-*I'm planning to implement translation support for game screens too.*
 
 ### Required components:
 
@@ -61,7 +64,7 @@ The server works on Port TCP 6631.
 - ~~Make the score work~~
 - ~~Review random letters logic~~
 - ~~Include English dictionary~~
-- App translation to Portuguese Brazil and support any language translation?
+- ~~App translation to Portuguese Brazil and support any language translation~~
 - Review game rules
 - Behavior when user drop connection when the game is running
 - ~~Password to connect~~

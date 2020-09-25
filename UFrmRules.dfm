@@ -24,7 +24,7 @@ object FrmRules: TFrmRules
     Caption = 'Table size:'
   end
   object LbTableSizeX: TLabel
-    Left = 136
+    Left = 176
     Top = 19
     Width = 6
     Height = 13
@@ -52,7 +52,7 @@ object FrmRules: TFrmRules
     Caption = 'Rebuy letters:'
   end
   object EdSizeW: TEdit
-    Left = 88
+    Left = 128
     Top = 16
     Width = 41
     Height = 21
@@ -61,7 +61,7 @@ object FrmRules: TFrmRules
     TabOrder = 0
   end
   object EdSizeH: TEdit
-    Left = 152
+    Left = 192
     Top = 16
     Width = 41
     Height = 21

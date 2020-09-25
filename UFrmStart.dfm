@@ -43,7 +43,7 @@ object FrmStart: TFrmStart
     Height = 13
     Caption = 'Your name:'
   end
-  object Label1: TLabel
+  object LbPassword: TLabel
     Left = 16
     Top = 264
     Width = 107

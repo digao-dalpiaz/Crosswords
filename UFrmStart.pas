@@ -13,7 +13,7 @@ type
     BtnJoin: TBitBtn;
     BtnExit: TBitBtn;
     EdPassword: TEdit;
-    Label1: TLabel;
+    LbPassword: TLabel;
     BoxOper: TRadioGroup;
     BoxClient: TPanel;
     LbServerAddress: TLabel;
@@ -23,6 +23,7 @@ type
     procedure BtnJoinClick(Sender: TObject);
     procedure BoxOperClick(Sender: TObject);
   public
+    procedure InitTransation;
     procedure EnableControls(En: Boolean);
   end;
 
@@ -34,16 +35,33 @@ implementation
 {$R *.dfm}
 
 uses UDMClient, UDMServer, UVars, UDams, System.SysUtils,
-  UFrmLog;
+  UFrmLog, ULanguage;
 
 procedure TFrmStart.FormCreate(Sender: TObject);
 begin
+  InitTransation;
+
   EdPlayerName.MaxLength := 30;
 
   BoxOper.ItemIndex := 0;
   BoxOperClick(nil);
 
   EdServerAddress.Text := 'localhost';
+end;
+
+procedure TFrmStart.InitTransation;
+begin
+  LbTitle.Caption := Lang.Get('START_CAPTION');
+  LbPlayerName.Caption := Lang.Get('START_NAME');
+  BoxOper.Caption := Lang.Get('START_OPERATION');
+  LbServerAddress.Caption := Lang.Get('START_SERVER_ADDR');
+  LbPassword.Caption := Lang.Get('START_CONN_PASSWORD');
+
+  BoxOper.Items[0] := Lang.Get('MODE_CLIENT');
+  BoxOper.Items[1] := Lang.Get('MODE_SERVER');
+
+  BtnJoin.Caption := Lang.Get('START_BTN_JOIN');
+  BtnExit.Caption := Lang.Get('START_BTN_EXIT');
 end;
 
 procedure TFrmStart.BoxOperClick(Sender: TObject);
@@ -57,7 +75,7 @@ begin
   EdPlayerName.Text := Trim(EdPlayerName.Text);
   if EdPlayerName.Text = string.Empty then
   begin
-    MsgError('Please, type your name.');
+    MsgError(Lang.Get('START_MSG_BLANK_NAME'));
     EdPlayerName.SetFocus;
     Exit;
   end;
@@ -67,7 +85,7 @@ begin
     EdServerAddress.Text := Trim(EdServerAddress.Text);
     if EdServerAddress.Text = string.Empty then
     begin
-      MsgError('Please, type the server address.');
+      MsgError(Lang.Get('START_MSG_BLANK_SERVER_ADDR'));
       EdServerAddress.SetFocus;
       Exit;
     end;
@@ -91,7 +109,7 @@ begin
   pubPlayerName := EdPlayerName.Text;
   pubPassword := EdPassword.Text;
 
-  Log('Connecting...');
+  Log(Lang.Get('LOG_CONNECTING'));
   DMClient.C.Connect;
 end;
 

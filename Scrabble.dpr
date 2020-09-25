@@ -7,6 +7,7 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   UVars in 'UVars.pas',
+  ULanguage in 'ULanguage.pas',
   UClient in 'UClient.pas',
   UMatrix in 'UMatrix.pas',
   UDMClient in 'UDMClient.pas' {DMClient: TDataModule},

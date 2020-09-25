@@ -1,0 +1,85 @@
+TITLE_VERSION=Version %s
+TITLE_MODE=Mode:
+TITLE_PLAYER=Player:
+TITLE_RULES=Rules:
+
+MODE_SERVER=Server
+MODE_CLIENT=Client
+
+TITLE_RULES_DEFINITION=Dictionary: %s / Size: %s x %s / Init. Letters: %s / Rebuy: %s
+
+DLG_OK=OK
+DLG_CANCEL=Cancel
+
+MSG_CLOSE_APP=<b><fc:clRed>There is a connection established.</fc></b><br><br>Are you sure you want to leave?
+
+SETTINGS_CAPTION=Settings
+SETTINGS_LANGUAGE=Language:
+SETTINGS_SOUNDS=Enable Sounds
+SETTINGS_ZOOM=Grid zoom:
+
+START_CAPTION=Welcome to Scrabble
+START_NAME=Your name:
+START_OPERATION=Operation mode
+START_SERVER_ADDR=Server address:
+START_CONN_PASSWORD=Connection password:
+
+START_MSG_BLANK_NAME=Please, type your name.
+START_MSG_BLANK_SERVER_ADDR=Please, type the server address.
+
+LOG_CONNECTING=Connecting...
+LOG_CONNECTED=Connected.
+LOG_DISCONNECTED=Disconnected.
+LOG_CONNECTION_LOST=Connection lost.
+LOG_SOCKET_ERROR=ERROR: %s
+LOG_LOGIN_ACCEPTED=Login accepted.
+LOG_LOGIN_REJECTED=Login rejected: %s
+LOG_PREPARING_GAME_SERVER=Please, wait for all players to connect and then click "Start Game".
+LOG_PREPARING_GAME_CLIENT=Please, wait while server is starting the game. In the meantime you can use chat.
+LOG_PLAYER_JOIN=Player %s just joined.
+LOG_PLAYER_LEFT=Player %s left.
+LOG_WAIT_VALIDATION=Please, wait while your opponents validate your words.
+LOG_REBUY=You bought %s more letter(s) since you didn't fill anything in this round.
+LOG_WORDS_ACCEPTED=Your words were accepted and your turn to play is over.
+LOG_RULES_CHANGED=The game rules have been changed by the server.
+
+START_BTN_JOIN=Join
+START_BTN_EXIT=Exit
+
+GAME_BOX_PLAYERS=Players
+GAME_BOX_LETTERS=Letters
+GAME_BOX_CHAT=Chat
+
+GAME_BTN_RESTART=New Game 
+GAME_BTN_START=Start Game
+GAME_BTN_RULES=Game Rules
+GAME_BTN_DONE=Done
+GAME_BTN_AGREE=I agree
+GAME_BTN_DISAGREE=I disagree
+
+GAME_MSG_START_WITH_NOBODY=We need at least two players to start the game!
+GAME_MSG_CHAT_WITH_NOBODY=There are no other players to chat with.
+
+LOG_GAME_STARTED=Get ready. Starting the game right now!
+LOG_YOUR_TURN=Go, it's your turn!
+LOG_AGREE_SENT=You have sent an agreement for the words.
+LOG_DISAGREE_SENT=You have sent an disagreement for the words.
+LOG_AGREEMENT_PERIOD_START=Please, make sure you agree with your opponent's words.
+LOG_AGREEMENT_PERIOD_FINISH=The agreement period has ended.
+LOG_DISAGREE_RECEIVED=At least one player does not agree with your words. Please, review it or use chat.
+LOG_GAME_OVER=Game over.
+LOG_RESTART_GAME=The server is preparing a new game.
+
+RULES_CAPTION=Game Rules
+RULES_GRID_SIZE=Table size:
+RULES_DICTIONARY=Letters dictionary:
+RULES_INITIAL_LETTERS=Initial letters pocket:
+RULES_REBUY_LETTERS=Rebuy letters:
+
+RULES_MSG_BLANK_FIELD=Please, specify the mandatory setting.
+
+GAME_MSG_NOT_YOUR_TURN=Relax, it's not your turn yet!
+GAME_MSG_SELECT_LETTER=Please, select a letter in the side panel.
+GAME_MSG_ALREADY_LETTER_BLOCK=There is already a letter in this block.
+GAME_MSG_NO_LETTER_BLOCK=There is no letter to remove in this block.
+GAME_MSG_CANT_REMOVE_LETTER_BLOCK=You cannot remove this letter because it's not from this move.

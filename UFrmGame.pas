@@ -47,6 +47,7 @@ type
     Status: TGameStatus;
     PB: TMatrixImage;
 
+    procedure InitTranslation;
     procedure Initialize;
     procedure MatrixReceived(const A: string);
     procedure ChatLog(const Player, Text: string);
@@ -70,12 +71,30 @@ implementation
 
 uses System.SysUtils, System.StrUtils,
   Vcl.Graphics, Winapi.Windows, Winapi.Messages,
-  UVars, UDams, DzSocket, UDMClient, UDMServer, UFrmLog, UFrmMain, UFrmRules;
+  UVars, UDams, ULanguage,
+  DzSocket, UDMClient, UDMServer,
+  UFrmLog, UFrmMain, UFrmRules;
 
 procedure TFrmGame.FormCreate(Sender: TObject);
 begin
+  InitTranslation;
+
   PB := TMatrixImage.Create(Self);
   PB.Parent := SB;
+end;
+
+procedure TFrmGame.InitTranslation;
+begin
+  LbPlayers.Caption := Lang.Get('GAME_BOX_PLAYERS');
+  LbLetters.Caption := Lang.Get('GAME_BOX_LETTERS');
+  LbChat.Caption := Lang.Get('GAME_BOX_CHAT');
+
+  BtnRestart.Caption := Lang.Get('GAME_BTN_RESTART');
+  BtnStartGame.Caption := Lang.Get('GAME_BTN_START');
+  BtnRules.Caption := Lang.Get('GAME_BTN_RULES');
+  BtnDone.Caption := Lang.Get('GAME_BTN_DONE');
+  BtnAgree.Caption := Lang.Get('GAME_BTN_AGREE');
+  BtnDisagree.Caption := Lang.Get('GAME_BTN_DISAGREE');
 end;
 
 procedure TFrmGame.Initialize;
@@ -89,7 +108,7 @@ end;
 
 procedure TFrmGame.FormShow(Sender: TObject);
 begin
-  FrmMain.LbMode.Caption := IfThen(pubModeServer, 'Server', 'Client');
+  FrmMain.LbMode.Caption := Lang.Get(IfThen(pubModeServer, 'MODE_SERVER', 'MODE_CLIENT'));
   FrmMain.LbPlayer.Caption := pubPlayerName;
 end;
 
@@ -142,7 +161,7 @@ begin
     if EdChatMsg.Text = string.Empty then Exit;
 
     if not (LPlayers.Count>1) then
-      MsgRaise('There are no other players to chat with.');
+      MsgRaise(Lang.Get('GAME_MSG_CHAT_WITH_NOBODY'));
 
     ChatLog(pubPlayerName, EdChatMsg.Text);
     DMClient.C.Send('M', EdChatMsg.Text);
@@ -194,7 +213,7 @@ end;
 procedure TFrmGame.BtnStartGameClick(Sender: TObject);
 begin
   if LPlayers.Count<2 then
-    MsgRaise('We need at least two players to start the game!');
+    MsgRaise(Lang.Get('GAME_MSG_START_WITH_NOBODY'));
 
   SetStatus(gsUnknown); //transition status to gsPlaying
   DMServer.StartGame;
@@ -215,21 +234,21 @@ procedure TFrmGame.BtnAgreeClick(Sender: TObject);
 begin
   DMClient.SendAgreement(True);
 
-  Log('You have sent an agreement for the words.');
+  Log(Lang.Get('LOG_AGREE_SENT'));
 end;
 
 procedure TFrmGame.BtnDisagreeClick(Sender: TObject);
 begin
   DMClient.SendAgreement(False);
 
-  Log('You have sent an disagreement for the words.');
+  Log(Lang.Get('LOG_DISAGREE_SENT'));
 end;
 
 procedure TFrmGame.GameStartedReceived;
 begin
   SetStatus(gsPlaying);
 
-  Log('Get ready. Starting the game right now!');
+  Log(Lang.Get('LOG_GAME_STARTED'));
   DoSound('START');
 end;
 
@@ -237,7 +256,7 @@ procedure TFrmGame.InitMyTurn;
 begin
   SetStatus(gsMyTurn);
 
-  Log('Go, it''s your turn!');
+  Log(Lang.Get('LOG_YOUR_TURN'));
   DoSound('BELL');
 end;
 
@@ -245,7 +264,7 @@ procedure TFrmGame.AgreementRequestReceived;
 begin
   SetStatus(gsAgreement);
 
-  Log('Please, make sure you agree with your opponent''s words.');
+  Log(Lang.Get('LOG_AGREEMENT_PERIOD_START'));
   DoSound('AGREEMENT');
 end;
 
@@ -253,7 +272,7 @@ procedure TFrmGame.AgreementFinishReceived;
 begin
   SetStatus(gsPlaying);
 
-  Log('The agreement period has ended.');
+  Log(Lang.Get('LOG_AGREEMENT_PERIOD_FINISH'));
   DoSound('AGREEMENT_END');
 end;
 
@@ -261,7 +280,7 @@ procedure TFrmGame.DisagreeReceived;
 begin
   SetStatus(gsMyTurn);
 
-  Log('At least one player does not agree with your words. Please, review it or use chat.');
+  Log(Lang.Get('LOG_DISAGREE_RECEIVED'));
   DoSound('REJECT');
 end;
 
@@ -269,14 +288,14 @@ procedure TFrmGame.GameOverReceived;
 begin
   SetStatus(gsGameOver);
 
-  Log('Game over.');
+  Log(Lang.Get('LOG_GAME_OVER'));
 end;
 
 procedure TFrmGame.ReceivedPreparingNewGame;
 begin
   SetStatus(gsPreparing);
 
-  Log('The server is preparing a new game.');
+  Log(Lang.Get('LOG_RESTART_GAME'));
 end;
 
 end.

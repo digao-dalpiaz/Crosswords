@@ -1,0 +1,85 @@
+TITLE_VERSION=Versão %s
+TITLE_MODE=Modo:
+TITLE_PLAYER=Jogador:
+TITLE_RULES=Regras:
+
+MODE_SERVER=Servidor
+MODE_CLIENT=Cliente
+
+TITLE_RULES_DEFINITION=Dicionário: %s / Tamanho: %s x %s / Letras início: %s / Compra: %s
+
+DLG_OK=OK
+DLG_CANCEL=Cancelar
+
+MSG_CLOSE_APP=<b><fc:clRed>Existe uma conexão estabelecida.</fc></b><br><br>Tem certeza de que deseja sair?
+
+SETTINGS_CAPTION=Configurações
+SETTINGS_LANGUAGE=Linguagem:
+SETTINGS_SOUNDS=Habilitar Sons
+SETTINGS_ZOOM=Zoom da tabela:
+
+START_CAPTION=Bem-vindo ao Scrabble
+START_NAME=Seu nome:
+START_OPERATION=Modo de operação
+START_SERVER_ADDR=Endereço do servidor:
+START_CONN_PASSWORD=Senha de conexão:
+
+START_MSG_BLANK_NAME=Por favor, digite seu nome.
+START_MSG_BLANK_SERVER_ADDR=Por favor, digite o endereço do servidor.
+
+LOG_CONNECTING=Conectando...
+LOG_CONNECTED=Conectado.
+LOG_DISCONNECTED=Desconectado.
+LOG_CONNECTION_LOST=Conexão perdida.
+LOG_SOCKET_ERROR=ERRO: %s
+LOG_LOGIN_ACCEPTED=Login aceito.
+LOG_LOGIN_REJECTED=Login rejeitado: %s
+LOG_PREPARING_GAME_SERVER=Por favor, aguarde todos os jogadores se conectarem e então clique em "Iniciar Jogo".
+LOG_PREPARING_GAME_CLIENT=Por favor, aguarde o servidor iniciar o jogo. Enquanto isso você pode utilizar o chat.
+LOG_PLAYER_JOIN=Jogador %s entrou.
+LOG_PLAYER_LEFT=Jogador %s saiu.
+LOG_WAIT_VALIDATION=Por favor, aguarde enquanto seus oponentes validam suas palavras.
+LOG_REBUY=Você comprou mais %s letra(s) já que não preencheu nada nesta rodada.
+LOG_WORDS_ACCEPTED=Suas palavras foram aceitas e a sua vez terminou.
+LOG_RULES_CHANGED=As regras do jogo foram modificadas pelo servidor.
+
+START_BTN_JOIN=Iniciar
+START_BTN_EXIT=Sair
+
+GAME_BOX_PLAYERS=Jogadores
+GAME_BOX_LETTERS=Letras
+GAME_BOX_CHAT=Chat
+
+GAME_BTN_RESTART=Novo Jogo
+GAME_BTN_START=Iniciar Jogo
+GAME_BTN_RULES=Regras do Jogo
+GAME_BTN_DONE=Pronto
+GAME_BTN_AGREE=Eu concordo
+GAME_BTN_DISAGREE=Eu discordo
+
+GAME_MSG_START_WITH_NOBODY=Precisamos pelo menos de dois jogadores para começar o jogo!
+GAME_MSG_CHAT_WITH_NOBODY=Não há outros jogadores para conversar!
+
+LOG_GAME_STARTED=Se prepare. Começando o jogo agora!
+LOG_YOUR_TURN=Vai, é a sua vez!
+LOG_AGREE_SENT=Você enviou uma concordância com as palavras.
+LOG_DISAGREE_SENT=Você enviou uma discordância com as palavras.
+LOG_AGREEMENT_PERIOD_START=Por favor, verifique se você concorda com as palavras de seu oponente.
+LOG_AGREEMENT_PERIOD_FINISH=O período de concordância terminou.
+LOG_DISAGREE_RECEIVED=Pelo menos um jogador não concorda com suas palavras. Por favor, revise-as ou use o chat para argumentar.
+LOG_GAME_OVER=Fim do jogo.
+LOG_RESTART_GAME=O servidor está preparando um novo jogo.
+
+RULES_CAPTION=Regras do Jogo
+RULES_GRID_SIZE=Tamanho da tabela:
+RULES_DICTIONARY=Dicionário de letras:
+RULES_INITIAL_LETTERS=Letras iniciais:
+RULES_REBUY_LETTERS=Letras de compra:
+
+RULES_MSG_BLANK_FIELD=Por favor, especifique a configuração obrigatória.
+
+GAME_MSG_NOT_YOUR_TURN=Relaxe, ainda não é a sua vez!
+GAME_MSG_SELECT_LETTER=Por favor, selecione uma letra no painel lateral.
+GAME_MSG_ALREADY_LETTER_BLOCK=Já existe uma letra nesta caixa.
+GAME_MSG_NO_LETTER_BLOCK=Não há letra a remover nesta caixa.
+GAME_MSG_CANT_REMOVE_LETTER_BLOCK=Você não pode remover esta letra pois ela não é desta jogada.

@@ -40,7 +40,8 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, UFrmGame, UFrmLog, UFrmStart, UFrmMain, System.SysUtils, UDMServer;
+uses UVars, UFrmGame, UFrmLog, UFrmStart, UFrmMain, System.SysUtils, UDMServer,
+  ULanguage;
 
 procedure TDMClient.DataModuleCreate(Sender: TObject);
 begin
@@ -49,13 +50,13 @@ end;
 
 procedure TDMClient.CConnect(Sender: TObject; Socket: TDzSocket);
 begin
-  Log('Connected.');
+  Log(Lang.Get('LOG_CONNECTED'));
 end;
 
 procedure TDMClient.CDisconnect(Sender: TObject; Socket: TDzSocket;
   const WasConnected: Boolean);
 begin
-  Log('Disconnected.');
+  Log(Lang.Get('LOG_DISCONNECTED'));
 
   FrmGame.Hide;
 
@@ -67,13 +68,13 @@ end;
 
 procedure TDMClient.CConnectionLost(Sender: TObject; Socket: TDzSocket);
 begin
-  Log('Connection lost.');
+  Log(Lang.Get('LOG_CONNECTION_LOST'));
 end;
 
 procedure TDMClient.CError(Sender: TObject; Socket: TDzSocket;
   const Event: TErrorEvent; const ErrorCode: Integer; const ErrorMsg: string);
 begin
-  Log('ERROR: '+ErrorMsg);
+  Log(Format(Lang.Get('LOG_SOCKET_ERROR'), [ErrorMsg]));
 end;
 
 procedure TDMClient.CLoginRequest(Sender: TObject; Socket: TDzSocket;
@@ -87,7 +88,7 @@ procedure TDMClient.CLoginResponse(Sender: TObject; Socket: TDzSocket;
 begin
   if Accepted then
   begin
-    Log('Login accepted.');
+    Log(Lang.Get('LOG_LOGIN_ACCEPTED'));
 
     FrmStart.Hide;
 
@@ -95,12 +96,12 @@ begin
     FrmGame.Show;
 
     if pubModeServer then
-      Log('Please, wait for all players to connect and then click "Start Game".')
+      Log(Lang.Get('LOG_PREPARING_GAME_SERVER'))
     else
-      Log('Please, wait while server is starting the game. In the meantime you can use chat.');
+      Log(Lang.Get('LOG_PREPARING_GAME_CLIENT'));
   end else
   begin
-    Log('Login rejected: '+Data);
+    Log(Format(Lang.Get('LOG_LOGIN_REJECTED'), [Data]));
   end;
 end;
 
@@ -108,8 +109,8 @@ procedure TDMClient.CRead(Sender: TObject; Socket: TDzSocket; const Cmd: Char;
   const A: string);
 begin
   case Cmd of
-    'C': Log(Format('Player %s just joined.', [A]));
-    'D': Log(Format('Player %s left.', [A]));
+    'C': Log(Format(Lang.Get('LOG_PLAYER_JOIN'), [A]));
+    'D': Log(Format(Lang.Get('LOG_PLAYER_LEFT'), [A]));
     'U', 'u': RulesReceived(A, Cmd='u');
     'M': MessageReceived(A);
     'L': PlayersListReceived(A);
@@ -121,15 +122,15 @@ begin
     'K': FrmGame.AgreementFinishReceived;
     'J': FrmGame.DisagreeReceived;
     'W': begin
-           Log('Please, wait while your opponents validate your words.');
+           Log(Lang.Get('LOG_WAIT_VALIDATION'));
            //DoSound('WAIT');
          end;
     'B': begin
-           Log(Format('You bought %s more letter(s) since you didn''t fill anything in this round.', [A]));
+           Log(Format(Lang.Get('LOG_REBUY'), [A]));
            DoSound('BUY');
          end;
     'F': begin
-           Log('Your words were accepted and your turn to play is over.');
+           Log(Lang.Get('LOG_WORDS_ACCEPTED'));
            DoSound('DONE');
          end;
     'E': FrmGame.GameOverReceived;
@@ -145,11 +146,11 @@ begin
   FrmGame.PB.SetMatrixSize(D[1], D[2]);
 
   FrmMain.LbRules.Caption :=
-    Format('Dictionary: %s / Size: %s x %s / Init. Letters: %s / Rebuy: %s', [
+    Format(Lang.Get('TITLE_RULES_DEFINITION'), [
     D[0], D[1], D[2], D[3], D[4]]);
 
   if not ToOne then
-    Log('The game rules have been changed by the server.');
+    Log(Lang.Get('LOG_RULES_CHANGED'));
   //When an user connects, it receive the game rules, so the log should be omitted.
 end;
 

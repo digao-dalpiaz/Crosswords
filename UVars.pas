@@ -32,10 +32,11 @@ var
   end;
 
   //SETTINGS
+  pubLanguageID: string;
   pubEnableSounds: Boolean;
   pubGridZoom: Integer;
 
-function GetDictionaryIndexByID(const ID: string): Integer;
+function GetCurrentDictionaryIndex: Integer;
 procedure LoadDictionaryLetters;
 function GetRandomLetter: Char;
 
@@ -47,14 +48,14 @@ implementation
 
 uses System.Classes, System.SysUtils, Winapi.MMSystem, System.Types, Vcl.Forms;
 
-function GetDictionaryIndexByID(const ID: string): Integer;
+function GetCurrentDictionaryIndex: Integer;
 var
   I: Integer;
 begin
   for I := 0 to High(LST_DICTIONARY) do
-    if LST_DICTIONARY[I].ID = ID then Exit(I);
+    if LST_DICTIONARY[I].ID = pubServerProps.DictionaryID then Exit(I);
 
-  raise Exception.Create('Internal: Dictionary not found');
+  raise Exception.Create('Internal: Dictionary not found by ID');
 end;
 
 procedure LoadDictionaryLetters;

@@ -39,7 +39,7 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, System.SysUtils, UDams, UDMServer, System.IniFiles;
+uses UVars, System.SysUtils, UDams, UDMServer, System.IniFiles, ULanguage;
 
 class procedure TRules.Load;
 var
@@ -86,11 +86,22 @@ end;
 
 procedure TFrmRules.FormCreate(Sender: TObject);
 begin
+  //--Translation
+  Caption := Lang.Get('RULES_CAPTION');
+  LbTableSize.Caption := Lang.Get('RULES_GRID_SIZE');
+  LbDictionary.Caption := Lang.Get('RULES_DICTIONARY');
+  LbInitialLetters.Caption := Lang.Get('RULES_INITIAL_LETTERS');
+  LbRebuyLetters.Caption := Lang.Get('RULES_REBUY_LETTERS');
+
+  BtnOK.Caption := Lang.Get('DLG_OK');
+  BtnCancel.Caption := Lang.Get('DLG_CANCEL');
+  //--
+
   LoadDictionaryList;
 
   EdSizeW.Text := IntToStr(pubServerProps.SizeW);
   EdSizeH.Text := IntToStr(pubServerProps.SizeH);
-  EdDictionary.ItemIndex := GetDictionaryIndexByID(pubServerProps.DictionaryID);
+  EdDictionary.ItemIndex := GetCurrentDictionaryIndex;
   EdInitialLetters.Text := IntToStr(pubServerProps.InitialLetters);
   EdRebuyLetters.Text := IntToStr(pubServerProps.RebuyLetters);
 end;
@@ -106,33 +117,33 @@ procedure TFrmRules.BtnOKClick(Sender: TObject);
 begin
   if StrToIntDef(EdSizeW.Text, 0) = 0 then
   begin
-    MsgError('Please, type the table width size.');
+    MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
     EdSizeW.SetFocus;
     Exit;
   end;
   if StrToIntDef(EdSizeH.Text, 0) = 0 then
   begin
-    MsgError('Please, type the table height size.');
+    MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
     EdSizeH.SetFocus;
     Exit;
   end;
 
   if EdDictionary.ItemIndex = -1 then
   begin
-    MsgError('Please, specify dictionary language.');
+    MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
     EdDictionary.SetFocus;
     Exit;
   end;
 
   if StrToIntDef(EdInitialLetters.Text, 0) = 0 then
   begin
-    MsgError('Please, type the initial letters pocket.');
+    MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
     EdInitialLetters.SetFocus;
     Exit;
   end;
   if StrToIntDef(EdRebuyLetters.Text, 0) = 0 then
   begin
-    MsgError('Please, type the rebuy letters.');
+    MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
     EdRebuyLetters.SetFocus;
     Exit;
   end;

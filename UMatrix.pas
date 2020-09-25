@@ -40,7 +40,8 @@ procedure StringToMatrixData(const A: string; var Data: TMatrixData);
 
 implementation
 
-uses System.SysUtils, UFrmGame, UDams, UVars, System.StrUtils, UDMClient;
+uses System.SysUtils, UFrmGame, UDams, UVars, System.StrUtils, UDMClient,
+  ULanguage;
 
 procedure TBlock.&Set(const Letter: Char; Temp: Boolean);
 begin
@@ -169,18 +170,18 @@ begin
   if not (FrmGame.Status in [gsPlaying, gsMyTurn, gsAgreement]) then Exit;
 
   if FrmGame.Status <> gsMyTurn then
-    MsgRaise('Relax, it''s not your turn yet!');
+    MsgRaise(Lang.Get('GAME_MSG_NOT_YOUR_TURN'));
 
   if Shift = [ssLeft] then
   begin
     if FrmGame.LLetters.ItemIndex = -1 then
-      MsgRaise('Please, select a letter in the side panel.');
+      MsgRaise(Lang.Get('GAME_MSG_SELECT_LETTER'));
 
     SetLetter(FrmGame.LLetters.Items[FrmGame.LLetters.ItemIndex][1],
       procedure
       begin
         if Previous.Letter<>BLANK_LETTER then
-          MsgRaise('There is already a letter in this block.');
+          MsgRaise(Lang.Get('GAME_MSG_ALREADY_LETTER_BLOCK'));
       end);
     FrmGame.LLetters.DeleteSelected;
   end else
@@ -190,10 +191,10 @@ begin
       procedure
       begin
         if Previous.Letter=BLANK_LETTER then
-          MsgRaise('There is no letter to remove in this block.');
+          MsgRaise(Lang.Get('GAME_MSG_NO_LETTER_BLOCK'));
 
         if not Previous.Temp then
-          MsgRaise('You cannot remove this letter because it''s not from this move.');
+          MsgRaise(Lang.Get('GAME_MSG_CANT_REMOVE_LETTER_BLOCK'));
       end);
     FrmGame.LLetters.ItemIndex := FrmGame.LLetters.Items.Add(Previous.Letter);
   end;

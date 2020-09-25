@@ -33,6 +33,8 @@ type
   private
     procedure InitStartPage;
     procedure InitGamePage;
+  public
+    procedure InitTranslation;
   end;
 
 var
@@ -43,15 +45,16 @@ implementation
 {$R *.dfm}
 
 uses UVars, UFrmStart, UFrmGame, UFrmLog, UFrmSettings, UDams,
-  Winapi.ShellAPI, UDMClient;
+  Winapi.ShellAPI, UDMClient, ULanguage, System.SysUtils;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
 begin
   ReportMemoryLeaksOnShutdown := True;
 
-  LbVersion.Caption := 'Version '+STR_VERSION;
-
   TSettings.Load;
+
+  Lang.LoadLanguage;
+  InitTranslation;
 
   Randomize;
 
@@ -60,6 +63,16 @@ begin
   InitGamePage;
 
   FrmStart.Show;
+end;
+
+procedure TFrmMain.InitTranslation;
+begin
+  LbVersion.Caption := Format(Lang.Get('TITLE_VERSION'), [STR_VERSION]);
+  LbLbMode.Caption := Lang.Get('TITLE_MODE')+' ';
+  LbLbPlayer.Caption := Lang.Get('TITLE_PLAYER')+' ';
+  LbLbRules.Caption := Lang.Get('TITLE_RULES')+' ';
+
+  _QuestionCloseApp.Message := Lang.Get('MSG_CLOSE_APP');
 end;
 
 procedure TFrmMain.InitStartPage;

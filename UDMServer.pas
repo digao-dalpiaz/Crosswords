@@ -500,7 +500,7 @@ var
   A: string;
 begin
   A := ArrayToData([
-    LST_DICTIONARY[GetDictionaryIndexByID(pubServerProps.DictionaryID)].LanguageName,
+    LST_DICTIONARY[GetCurrentDictionaryIndex].LanguageName,
     pubServerProps.SizeW,
     pubServerProps.SizeH,
     pubServerProps.InitialLetters,

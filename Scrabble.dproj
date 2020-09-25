@@ -95,11 +95,11 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="UVars.pas"/>
+        <DCCReference Include="ULanguage.pas"/>
         <DCCReference Include="UClient.pas"/>
         <DCCReference Include="UMatrix.pas"/>
         <DCCReference Include="UDMClient.pas">
             <Form>DMClient</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="UDMServer.pas">
@@ -120,11 +120,9 @@
         </DCCReference>
         <DCCReference Include="UFrmSettings.pas">
             <Form>FrmSettings</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UFrmRules.pas">
             <Form>FrmRules</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <RcItem Include="Sounds\pling.wav">
             <ContainerId>ResourceItem</ContainerId>
@@ -176,6 +174,16 @@
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>DIC_EN</ResourceId>
         </RcItem>
+        <RcItem Include="Languages\English.lang">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>LANG_EN</ResourceId>
+        </RcItem>
+        <RcItem Include="Languages\PortugueseBrazil.lang">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>LANG_BR</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -226,6 +234,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="Languages\English.lang" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Sounds\agreement_end.wav" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -245,6 +259,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Sounds\done.wav" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Languages\PortugueseBrazil.lang" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>

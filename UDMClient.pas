@@ -149,7 +149,8 @@ begin
     D[0], D[1], D[2], D[3], D[4]]);
 
   if not ToOne then
-    Log('The game rules have been changed by the server.')
+    Log('The game rules have been changed by the server.');
+  //When an user connects, it receive the game rules, so the log should be omitted.
 end;
 
 procedure TDMClient.MessageReceived(const A: string);

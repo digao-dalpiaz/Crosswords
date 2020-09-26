@@ -155,11 +155,13 @@ begin
     SizeH := D[2];
     InitialLetters := D[3];
     RebuyLetters := D[4];
-
-    FrmGame.PB.SetMatrixSize(SizeW, SizeH);
   end;
 
   FrmMain.UpdateClientRules;
+
+  FrmGame.PB.SetMatrixSize(
+    FrmMain.ClientRules.SizeW,
+    FrmMain.ClientRules.SizeH);
 
   if not ToOne then
     Log(Lang.Get('LOG_RULES_CHANGED'));

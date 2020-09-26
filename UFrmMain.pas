@@ -36,13 +36,14 @@ type
     procedure InitGamePage;
   public
     ClientRules: record
+      Received: Boolean;
+
       Dictionary: string;
       SizeW, SizeH, InitialLetters, RebuyLetters: Integer;
     end;
 
     procedure InitTranslation;
-    procedure ShowConnectionBox;
-    procedure UpdateClientRules;
+    procedure UpdateConnectionBox;
   end;
 
 var
@@ -83,7 +84,7 @@ begin
 
   _QuestionCloseApp.Message := Lang.Get('MSG_CLOSE_APP');
 
-  UpdateClientRules;
+  UpdateConnectionBox;
 end;
 
 procedure TFrmMain.InitStartPage;
@@ -109,22 +110,19 @@ begin
   ShellExecute(0, '', 'http://digaodalpiaz.com/', '', '', 0);
 end;
 
-procedure TFrmMain.ShowConnectionBox;
+procedure TFrmMain.UpdateConnectionBox;
 begin
   LbMode.Caption := Lang.Get(IfThen(pubModeServer, 'MODE_SERVER', 'MODE_CLIENT'));
   LbPlayer.Caption := pubPlayerName;
-  LbRules.Caption := string.Empty; //will be received in further message
 
-  BoxConInfo.Visible := True;
-end;
-
-procedure TFrmMain.UpdateClientRules;
-begin
   with ClientRules do
   begin
-    LbRules.Caption :=
-      Format(Lang.Get('TITLE_RULES_DEFINITION'), [
-      Dictionary, SizeW, SizeH, InitialLetters, RebuyLetters]);
+    if Received then
+      LbRules.Caption :=
+        Format(Lang.Get('TITLE_RULES_DEFINITION'), [
+        Dictionary, SizeW, SizeH, InitialLetters, RebuyLetters])
+    else
+      LbRules.Caption := string.Empty;
   end;
 end;
 

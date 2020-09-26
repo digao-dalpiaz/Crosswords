@@ -94,7 +94,9 @@ begin
 
     FrmStart.Hide;
 
-    FrmMain.ShowConnectionBox;
+    FrmMain.ClientRules.Received := False;
+    FrmMain.UpdateConnectionBox;
+    FrmMain.BoxConInfo.Visible := True;
 
     FrmGame.Initialize;
     FrmGame.Show;
@@ -155,9 +157,11 @@ begin
     SizeH := D[2];
     InitialLetters := D[3];
     RebuyLetters := D[4];
+
+    Received := True;
   end;
 
-  FrmMain.UpdateClientRules;
+  FrmMain.UpdateConnectionBox;
 
   FrmGame.PB.SetMatrixSize(
     FrmMain.ClientRules.SizeW,

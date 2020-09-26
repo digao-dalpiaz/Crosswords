@@ -275,9 +275,6 @@ object FrmMain: TFrmMain
     Top = 48
     object _QuestionCloseApp: TDamMsg
       Icon = diQuest
-      Message = 
-        '<b><fc:clRed>There is a connection established.</fc></b>'#13#10#13#10'Are ' +
-        'you sure you want to leave?'
       Buttons = dbYesNo
       SwapFocus = True
       Dam = Dam

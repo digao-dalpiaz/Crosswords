@@ -6,7 +6,7 @@ TITLE_RULES=Regras:
 MODE_SERVER=Servidor
 MODE_CLIENT=Cliente
 
-TITLE_RULES_DEFINITION=Dicionário: %s / Tamanho: %s x %s / Letras início: %s / Compra: %s
+TITLE_RULES_DEFINITION=Dicionário: %s / Tamanho: %d x %d / Letras início: %d / Compra: %d
 
 DLG_OK=OK
 DLG_CANCEL=Cancelar
@@ -44,7 +44,7 @@ LOG_PREPARING_GAME_CLIENT=Por favor, aguarde o servidor iniciar o jogo. Enquanto
 LOG_PLAYER_JOIN=Jogador %s entrou.
 LOG_PLAYER_LEFT=Jogador %s saiu.
 LOG_WAIT_VALIDATION=Por favor, aguarde enquanto seus oponentes validam suas palavras.
-LOG_REBUY=Você comprou mais %s letra(s) já que não preencheu nada nesta rodada.
+LOG_REBUY=Você comprou mais %d letra(s) já que não preencheu nada nesta rodada.
 LOG_WORDS_ACCEPTED=Suas palavras foram aceitas e a sua vez terminou.
 LOG_RULES_CHANGED=As regras do jogo foram modificadas pelo servidor.
 

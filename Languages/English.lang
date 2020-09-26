@@ -6,7 +6,7 @@ TITLE_RULES=Rules:
 MODE_SERVER=Server
 MODE_CLIENT=Client
 
-TITLE_RULES_DEFINITION=Dictionary: %s / Size: %s x %s / Init. Letters: %s / Rebuy: %s
+TITLE_RULES_DEFINITION=Dictionary: %s / Size: %d x %d / Init. Letters: %d / Rebuy: %d
 
 DLG_OK=OK
 DLG_CANCEL=Cancel
@@ -44,7 +44,7 @@ LOG_PREPARING_GAME_CLIENT=Please, wait while server is starting the game. In the
 LOG_PLAYER_JOIN=Player %s just joined.
 LOG_PLAYER_LEFT=Player %s left.
 LOG_WAIT_VALIDATION=Please, wait while your opponents validate your words.
-LOG_REBUY=You bought %s more letter(s) since you didn't fill anything in this round.
+LOG_REBUY=You bought %d more letter(s) since you didn't fill anything in this round.
 LOG_WORDS_ACCEPTED=Your words were accepted and your turn to play is over.
 LOG_RULES_CHANGED=The game rules have been changed by the server.
 

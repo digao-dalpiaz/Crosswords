@@ -33,8 +33,6 @@ type
     procedure BtnStartGameClick(Sender: TObject);
     procedure LPlayersDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
-    procedure FormShow(Sender: TObject);
-    procedure FormHide(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure LLettersDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
@@ -69,7 +67,7 @@ implementation
 
 {$R *.dfm}
 
-uses System.SysUtils, System.StrUtils,
+uses System.SysUtils,
   Vcl.Graphics, Winapi.Windows, Winapi.Messages,
   UVars, UDams, ULanguage,
   DzSocket, UDMClient, UDMServer,
@@ -104,19 +102,6 @@ begin
   PB.SetMatrixSize(0, 0);
   LPlayers.Clear;
   LLetters.Clear;
-end;
-
-procedure TFrmGame.FormShow(Sender: TObject);
-begin
-  FrmMain.LbMode.Caption := Lang.Get(IfThen(pubModeServer, 'MODE_SERVER', 'MODE_CLIENT'));
-  FrmMain.LbPlayer.Caption := pubPlayerName;
-end;
-
-procedure TFrmGame.FormHide(Sender: TObject);
-begin
-  FrmMain.LbMode.Caption := string.Empty;
-  FrmMain.LbPlayer.Caption := string.Empty;
-  FrmMain.LbRules.Caption := string.Empty;
 end;
 
 procedure TFrmGame.SetStatus(NewStatus: TGameStatus);

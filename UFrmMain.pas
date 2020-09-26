@@ -2,29 +2,30 @@ unit UFrmMain;
 
 interface
 
-uses Vcl.Forms, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls, System.Classes,
-  DamUnit, Vcl.Buttons;
+uses Vcl.Forms, DamUnit, Vcl.Buttons, Vcl.Controls, Vcl.StdCtrls,
+  System.Classes, Vcl.ExtCtrls;
 
 type
   TFrmMain = class(TForm)
     Dam: TDam;
     BoxTitle: TPanel;
     LbVersion: TLabel;
-    LbMode: TLabel;
-    LbLbMode: TLabel;
-    LbLbPlayer: TLabel;
-    LbPlayer: TLabel;
     _QuestionCloseApp: TDamMsg;
     BoxTitleSide: TPanel;
     BtnSettings: TSpeedButton;
-    LbLbRules: TLabel;
-    LbRules: TLabel;
     LbLink: TLabel;
     LbSpace1: TLabel;
     LbSpace2: TLabel;
     LbSpace3: TLabel;
+    BoxConInfo: TPanel;
+    LbLbMode: TLabel;
+    LbMode: TLabel;
     LbSpace4: TLabel;
+    LbLbPlayer: TLabel;
+    LbPlayer: TLabel;
     LbSpace5: TLabel;
+    LbLbRules: TLabel;
+    LbRules: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure BtnSettingsClick(Sender: TObject);
@@ -34,7 +35,14 @@ type
     procedure InitStartPage;
     procedure InitGamePage;
   public
+    ClientRules: record
+      Dictionary: string;
+      SizeW, SizeH, InitialLetters, RebuyLetters: Integer;
+    end;
+
     procedure InitTranslation;
+    procedure ShowConnectionBox;
+    procedure UpdateClientRules;
   end;
 
 var
@@ -44,8 +52,9 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, UFrmStart, UFrmGame, UFrmLog, UFrmSettings, UDams,
-  Winapi.ShellAPI, UDMClient, ULanguage, System.SysUtils;
+uses UVars, UDams, ULanguage,
+  UFrmStart, UFrmGame, UFrmLog, UFrmSettings, UDMClient,
+  System.StrUtils, System.SysUtils, Winapi.ShellAPI;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
 begin
@@ -73,6 +82,8 @@ begin
   LbLbRules.Caption := Lang.Get('TITLE_RULES')+' ';
 
   _QuestionCloseApp.Message := Lang.Get('MSG_CLOSE_APP');
+
+  UpdateClientRules;
 end;
 
 procedure TFrmMain.InitStartPage;
@@ -96,6 +107,25 @@ end;
 procedure TFrmMain.LbLinkClick(Sender: TObject);
 begin
   ShellExecute(0, '', 'http://digaodalpiaz.com/', '', '', 0);
+end;
+
+procedure TFrmMain.ShowConnectionBox;
+begin
+  LbMode.Caption := Lang.Get(IfThen(pubModeServer, 'MODE_SERVER', 'MODE_CLIENT'));
+  LbPlayer.Caption := pubPlayerName;
+  LbRules.Caption := string.Empty; //will be received in further message
+
+  BoxConInfo.Visible := True;
+end;
+
+procedure TFrmMain.UpdateClientRules;
+begin
+  with ClientRules do
+  begin
+    LbRules.Caption :=
+      Format(Lang.Get('TITLE_RULES_DEFINITION'), [
+      Dictionary, SizeW, SizeH, InitialLetters, RebuyLetters]);
+  end;
 end;
 
 procedure TFrmMain.BtnSettingsClick(Sender: TObject);

@@ -13,8 +13,6 @@ object FrmGame: TFrmGame
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
-  OnHide = FormHide
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object SB: TScrollBox

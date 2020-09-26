@@ -58,9 +58,11 @@ procedure TDMClient.CDisconnect(Sender: TObject; Socket: TDzSocket;
 begin
   Log(Lang.Get('LOG_DISCONNECTED'));
 
+  if pubModeServer then DMServer.S.Close; //turn off server
+
   FrmGame.Hide;
 
-  if pubModeServer then DMServer.S.Close; //turn off server
+  FrmMain.BoxConInfo.Visible := False;
 
   FrmStart.Show;
   FrmStart.EnableControls(True);
@@ -91,6 +93,8 @@ begin
     Log(Lang.Get('LOG_LOGIN_ACCEPTED'));
 
     FrmStart.Hide;
+
+    FrmMain.ShowConnectionBox;
 
     FrmGame.Initialize;
     FrmGame.Show;
@@ -126,7 +130,7 @@ begin
            //DoSound('WAIT');
          end;
     'B': begin
-           Log(Format(Lang.Get('LOG_REBUY'), [A]));
+           Log(Format(Lang.Get('LOG_REBUY'), [A.ToInteger]));
            DoSound('BUY');
          end;
     'F': begin
@@ -139,15 +143,23 @@ begin
 end;
 
 procedure TDMClient.RulesReceived(const A: string; ToOne: Boolean);
-var D: TMsgArray;
+var
+  D: TMsgArray;
 begin
   D := DataToArray(A);
 
-  FrmGame.PB.SetMatrixSize(D[1], D[2]);
+  with FrmMain.ClientRules do
+  begin
+    Dictionary := D[0];
+    SizeW := D[1];
+    SizeH := D[2];
+    InitialLetters := D[3];
+    RebuyLetters := D[4];
 
-  FrmMain.LbRules.Caption :=
-    Format(Lang.Get('TITLE_RULES_DEFINITION'), [
-    D[0], D[1], D[2], D[3], D[4]]);
+    FrmGame.PB.SetMatrixSize(SizeW, SizeH);
+  end;
+
+  FrmMain.UpdateClientRules;
 
   if not ToOne then
     Log(Lang.Get('LOG_RULES_CHANGED'));
@@ -155,7 +167,8 @@ begin
 end;
 
 procedure TDMClient.MessageReceived(const A: string);
-var D: TMsgArray;
+var
+  D: TMsgArray;
 begin
   D := DataToArray(A);
   FrmGame.ChatLog(D[0], D[1]);

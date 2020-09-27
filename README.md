@@ -4,6 +4,22 @@
 
 **Attention! This game is under development, still in alpha version.**
 
+### Why this game?
+
+The objective of developing this game is actually the study of the controls performed in the client / server communication.
+
+In addition to the connection between all the players, the treatment for failures was developed, which I consider the most important.
+
+Let's assume that there are several players connected playing smoothly, and then one of them loses the connection, due to technical problems.
+
+The game depends on all players being present to proceed with the moves. In this way, a treatment was implemented in which the game is stopped, allowing the server to decide what it wants to do:
+
+1. Eliminate the player who lost the connection.
+2. Wait for the player to re-establish the connection.
+3. Stop the game permanently.
+
+Some well-known and reputable games use the voting technique, where all the remaining players decide together what will be done. Here I implemented so that this decision is made only by the server, to make the process easier.
+
 ### How to play
 
 You can play with as many opponents as you like.

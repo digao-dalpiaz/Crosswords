@@ -27,11 +27,17 @@ type
 
 implementation
 
-uses UVars, System.SysUtils;
+uses UVars, System.SysUtils, UDMServer;
 
 constructor TClient.Create;
+var
+  TmpHash: string;
 begin
-  Hash := FormatFloat('000000', Random(999999)+1);
+  repeat
+    TmpHash := FormatFloat('000000', Random(999999)+1);
+  until DMServer.FindPlayerByHash(TmpHash)=nil; //ensure unique
+
+  Hash := TmpHash;
 end;
 
 procedure TClient.RandomizeInitialLetters;

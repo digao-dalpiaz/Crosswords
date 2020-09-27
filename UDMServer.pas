@@ -44,7 +44,6 @@ type
     procedure ForConnections(P: TForConnectionsProc);
     procedure SetGameOver;
     procedure RemoveAllDisconectedPlayers;
-    function FindPlayerByHash(const Hash: string): TClient;
   public
     procedure Initialize;
     procedure StartGame;
@@ -52,6 +51,7 @@ type
     procedure RestartGame;
     procedure KillPlayer(C: TClient);
     procedure ContinueGame;
+    function FindPlayerByHash(const Hash: string): TClient;
   end;
 
 var

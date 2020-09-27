@@ -1,6 +1,7 @@
 object DMServer: TDMServer
   OldCreateOrder = False
   OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
   Height = 206
   Width = 359
   object S: TDzTCPServer

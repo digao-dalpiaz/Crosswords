@@ -3,13 +3,11 @@ unit UFrmStart;
 interface
 
 uses Vcl.Forms, Vcl.ExtCtrls, Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons,
-  System.Classes;
+  System.Classes, Vcl.Mask;
 
 type
   TFrmStart = class(TForm)
     LbTitle: TLabel;
-    LbPlayerName: TLabel;
-    EdPlayerName: TEdit;
     BtnJoin: TBitBtn;
     BtnExit: TBitBtn;
     EdPassword: TEdit;
@@ -18,10 +16,18 @@ type
     BoxClient: TPanel;
     LbServerAddress: TLabel;
     EdServerAddress: TEdit;
+    CkReconnect: TCheckBox;
+    BoxName: TPanel;
+    BoxHash: TPanel;
+    EdPlayerName: TEdit;
+    LbPlayerName: TLabel;
+    EdHash: TMaskEdit;
+    LbHash: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure BtnExitClick(Sender: TObject);
     procedure BtnJoinClick(Sender: TObject);
     procedure BoxOperClick(Sender: TObject);
+    procedure CkReconnectClick(Sender: TObject);
   public
     procedure InitTransation;
     procedure EnableControls(En: Boolean);
@@ -34,7 +40,7 @@ implementation
 
 {$R *.dfm}
 
-uses UDMClient, UDMServer, UVars, UDams, System.SysUtils,
+uses UDMClient, UDMServer, UVars, UDams, System.SysUtils, System.StrUtils,
   UFrmLog, ULanguage;
 
 procedure TFrmStart.FormCreate(Sender: TObject);
@@ -53,7 +59,9 @@ procedure TFrmStart.InitTransation;
 begin
   LbTitle.Caption := Lang.Get('START_CAPTION');
   LbPlayerName.Caption := Lang.Get('START_NAME');
+  LbHash.Caption := Lang.Get('START_HASH');
   BoxOper.Caption := Lang.Get('START_OPERATION');
+  CkReconnect.Caption := Lang.Get('START_RECONNECT');
   LbServerAddress.Caption := Lang.Get('START_SERVER_ADDR');
   LbPassword.Caption := Lang.Get('START_CONN_PASSWORD');
 
@@ -67,17 +75,51 @@ end;
 procedure TFrmStart.BoxOperClick(Sender: TObject);
 begin
   pubModeServer := (BoxOper.ItemIndex=1);
+
+  CkReconnect.Visible := not pubModeServer;
   BoxClient.Visible := not pubModeServer;
+
+  CkReconnectClick(nil);
+end;
+
+procedure TFrmStart.CkReconnectClick(Sender: TObject);
+var
+  Reconnect: Boolean;
+begin
+  Reconnect := CkReconnect.Checked and not pubModeServer;
+
+  BoxName.Visible := not Reconnect;
+  BoxHash.Visible := Reconnect;
 end;
 
 procedure TFrmStart.BtnJoinClick(Sender: TObject);
 begin
-  EdPlayerName.Text := Trim(EdPlayerName.Text);
-  if EdPlayerName.Text = string.Empty then
+  if BoxName.Visible then
   begin
-    MsgError(Lang.Get('START_MSG_BLANK_NAME'));
-    EdPlayerName.SetFocus;
-    Exit;
+    EdPlayerName.Text := Trim(EdPlayerName.Text);
+    if EdPlayerName.Text = string.Empty then
+    begin
+      MsgError(Lang.Get('START_MSG_BLANK_NAME'));
+      EdPlayerName.SetFocus;
+      Exit;
+    end;
+  end;
+
+  if BoxHash.Visible then
+  begin
+    if EdHash.Text = string.Empty then //mask edit
+    begin
+      MsgError(Lang.Get('START_MSG_BLANK_HASH'));
+      EdHash.SetFocus;
+      Exit;
+    end;
+
+    if Length(EdHash.Text)<>EdHash.MaxLength then
+    begin
+      MsgError(Lang.Get('START_MSG_INVALID_HASH'));
+      EdHash.SetFocus;
+      Exit;
+    end;
   end;
 
   if BoxClient.Visible then
@@ -106,7 +148,8 @@ begin
 
   EnableControls(False);
 
-  pubPlayerName := EdPlayerName.Text;
+  pubPlayerName := IfThen(BoxName.Visible, EdPlayerName.Text);
+  pubPlayerHash := IfThen(BoxHash.Visible, EdHash.Text);
   pubPassword := EdPassword.Text;
 
   Log(Lang.Get('LOG_CONNECTING'));

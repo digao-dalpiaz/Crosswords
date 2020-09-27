@@ -4,21 +4,35 @@ interface
 
 //Client object in Server connections
 
+uses System.Generics.Collections, DzSocket;
+
 type
   TClient = class
   public
+    Hash: string;
     PlayerName: string;
     Letters: string;
     Score: Integer;
     Agree: Boolean;
 
+    Socket: TDzSocket; //nil means disconnected
+
+    constructor Create;
+
     procedure RandomizeInitialLetters;
     procedure ResetGameData;
   end;
 
+  TPlayersList = class(TObjectList<TClient>);
+
 implementation
 
 uses UVars, System.SysUtils;
+
+constructor TClient.Create;
+begin
+  Hash := FormatFloat('000000', Random(999999)+1);
+end;
 
 procedure TClient.RandomizeInitialLetters;
 var

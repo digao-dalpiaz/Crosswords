@@ -54,6 +54,7 @@ type
     procedure AgreementRequestReceived;
     procedure AgreementFinishReceived;
     procedure DisagreeReceived;
+    procedure ReceivedPausedByDrop;
     procedure GameOverReceived;
     procedure ReceivedPreparingNewGame;
   private
@@ -180,6 +181,9 @@ begin
 
   if D[4] then
     IL.Draw(LPlayers.Canvas, 3, Rect.Top+1, 1); //agree
+
+  if D[5] then
+    IL.Draw(LPlayers.Canvas, 150, Rect.Top+1, 2); //disconnected
 end;
 
 procedure TFrmGame.LLettersDrawItem(Control: TWinControl; Index: Integer;
@@ -267,6 +271,13 @@ begin
 
   Log(Lang.Get('LOG_DISAGREE_RECEIVED'));
   DoSound('REJECT');
+end;
+
+procedure TFrmGame.ReceivedPausedByDrop;
+begin
+   SetStatus(gsPlaying);
+
+   Log(Lang.Get('LOG_PAUSE_BY_DROP'));
 end;
 
 procedure TFrmGame.GameOverReceived;

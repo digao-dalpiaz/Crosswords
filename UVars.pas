@@ -19,7 +19,7 @@ const LST_DICTIONARY: array[0..1] of TDictionary = (
 );
 
 var
-  pubPlayerName, pubPassword: string;
+  pubPlayerName, pubPlayerHash, pubPassword: string;
   pubModeServer: Boolean;
 
   //SERVER PROPERTIES

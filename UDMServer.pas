@@ -8,6 +8,8 @@ uses
 type
   TForConnectionsProc = reference to procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean);
 
+  TServerStatus = (ssPreparing, ssTurn, ssAgreement, ssFreezed, ssOver);
+
   TDMServer = class(TDataModule)
     S: TDzTCPServer;
     procedure DataModuleCreate(Sender: TObject);
@@ -17,10 +19,11 @@ type
     procedure SClientDisconnect(Sender: TObject; Socket: TDzSocket);
     procedure SClientRead(Sender: TObject; Socket: TDzSocket; const Cmd: Char;
       const A: string);
+    procedure DataModuleDestroy(Sender: TObject);
   private
-    GameRunning, InAgreement: Boolean;
+    PlayersList: TPlayersList;
     CurrentPlayerIndex: Integer;
-
+    Status: TServerStatus;
     Matrix: TMatrixData;
 
     function PlayerNameAlreadyExists(const PlayerName: string): Boolean;
@@ -30,7 +33,7 @@ type
     procedure SendMatrix;
     procedure LetterReceived(Socket: TDzSocket; const A: string);
     procedure MessageReceived(Socket: TDzSocket; const A: string);
-    function GetCurrentSocket: TDzSocket;
+    function GetCurrentPlayer: TClient;
     procedure PlayerTurnDoneReceived(Socket: TDzSocket);
     procedure AgreementReceived(Socket: TDzSocket; const A: string);
     procedure ClearAllAgreements;
@@ -40,11 +43,15 @@ type
     procedure RebuyLetters(Socket: TDzSocket);
     procedure ForConnections(P: TForConnectionsProc);
     procedure SetGameOver;
+    procedure RemoveAllDisconectedPlayers;
+    function FindPlayerByHash(const Hash: string): TClient;
   public
     procedure Initialize;
     procedure StartGame;
     procedure SendRules(Socket: TDzSocket);
     procedure RestartGame;
+    procedure KillPlayer(C: TClient);
+    procedure ContinueGame;
   end;
 
 var
@@ -56,22 +63,27 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, System.SysUtils, System.Variants, UFrmRules;
+uses UVars, System.SysUtils, System.Variants, UFrmRules, UFrmDrop;
 
 procedure TDMServer.DataModuleCreate(Sender: TObject);
 begin
   S.Port := INT_TCP_PORT;
-
-  S.AutoFreeObjs := True;
   S.EnumeratorOnlyAuth := True;
+
+  PlayersList := TPlayersList.Create;
+end;
+
+procedure TDMServer.DataModuleDestroy(Sender: TObject);
+begin
+  PlayersList.Free;
 end;
 
 procedure TDMServer.Initialize;
 begin
-  GameRunning := False;
-  InAgreement := False;
+  PlayersList.Clear;
   CurrentPlayerIndex := -1;
   SetLength(Matrix, 0);
+  Status := ssPreparing;
 
   TRules.Load; //load game rules
 
@@ -80,21 +92,54 @@ end;
 
 procedure TDMServer.ForConnections(P: TForConnectionsProc);
 var
-  Sok: TDzSocket;
+  C: TClient;
   Cancel: Boolean;
 begin
   Cancel := False;
 
   S.Lock;
   try
-    for Sok in S do
+    for C in PlayersList do
     begin
-      P(Sok, Sok.Data, Cancel);
+      P(C.Socket, C, Cancel);
       if Cancel then Break;
     end;
   finally
     S.Unlock;
   end;
+end;
+
+procedure TDMServer.RemoveAllDisconectedPlayers;
+var
+  I: Integer;
+begin
+  S.Lock;
+  try
+    for I := PlayersList.Count-1 downto 0 do
+      if PlayersList[I].Socket=nil then PlayersList.Delete(I);
+  finally
+    S.Unlock;
+  end;
+end;
+
+function TDMServer.FindPlayerByHash(const Hash: string): TClient;
+var
+  ResClient: TClient;
+begin
+  ResClient := nil;
+
+  ForConnections(
+    procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
+    begin
+      if C.Hash = Hash then
+      begin
+        ResClient := C;
+        Cancel := True;
+      end;
+    end
+  );
+
+  Result := ResClient;
 end;
 
 function TDMServer.PlayerNameAlreadyExists(const PlayerName: string): Boolean;
@@ -123,6 +168,8 @@ var
   D: TMsgArray;
   C: TClient;
 begin
+  Accept := False;
+
   D := DataToArray(RequestData);
 
   {Version check must be always first because different versions may have
@@ -131,39 +178,66 @@ begin
   //Check app version
   if D[0] <> STR_VERSION then
   begin
-    Accept := False;
-    ResponseData := 'VERSION';
+    ResponseData := 'VERSION_WRONG';
     Exit;
   end;
 
   //Check game password
-  if D[2] <> pubPassword then
+  if D[3] <> pubPassword then
   begin
-    Accept := False;
-    ResponseData := 'PASSWORD';
+    ResponseData := 'PASSWORD_WRONG';
     Exit;
   end;
 
-  //Check if game is already running
-  if GameRunning then
+  if D[2]<>string.Empty then //Hash
   begin
-    Accept := False;
-    ResponseData := 'RUNNING';
-    Exit;
+    C := FindPlayerByHash(D[2]);
+
+    if C=nil then
+    begin
+      ResponseData := 'HASH_WRONG';
+      Exit;
+    end;
+
+    if C.Socket<>nil then
+    begin
+      ResponseData := 'ALREADY_CONNECTED';
+      Exit;
+    end;
+
+    if not Assigned(FrmDrop) then
+      raise Exception.Create('Internal: Missing players form not assigned');
+
+    FrmDrop.DelPlayer(C);
+  end else
+  begin
+    //Check if game is already running
+    if Status<>ssPreparing then
+    begin
+      ResponseData := 'ALREADY_RUNNING';
+      Exit;
+    end;
+
+    //Check if player name already exists
+    if PlayerNameAlreadyExists(D[1]) then
+    begin
+      ResponseData := 'ALREADY_PLAYER_NAME';
+      Exit;
+    end;
+
+    //LOGIN IS VALID!
+    C := TClient.Create;
+    C.PlayerName := D[1];
+    PlayersList.Add(C);
   end;
 
-  //Check if player name already exists
-  if PlayerNameAlreadyExists(D[1]) then
-  begin
-    Accept := False;
-    ResponseData := 'PLAYER';
-    Exit;
-  end;
-
-  //LOGIN IS VALID!
-  C := TClient.Create;
-  C.PlayerName := D[1];
+  C.Socket := Socket;
   Socket.Data := C;
+
+  //send back player name, bacause if hash connection, there is no name from client
+  ResponseData := C.PlayerName;
+
+  Accept := True;
 end;
 
 procedure TDMServer.SClientLoginSuccess(Sender: TObject; Socket: TDzSocket);
@@ -185,6 +259,19 @@ begin
 
   C := Socket.Data;
   S.SendAllEx(Socket, 'D', C.PlayerName); //send client disconnected to others
+
+  C.Socket := nil;
+  if Status<>ssPreparing then
+  begin
+    if Status<>ssOver then
+    begin
+      Status := ssFreezed;
+      S.SendAll('?'); //send paused by connection drop signal
+      DoPlayerDroped(C); //player disconnected during the game
+      ClearAllAgreements; //if in agreement, clear because will back in turn status
+    end;
+  end else
+    PlayersList.Remove(C);
 
   SendPlayersList(Socket);
 end;
@@ -208,20 +295,19 @@ begin
   S.SendAllEx(Socket, 'M', ArrayToData([C.PlayerName, A]));
 end;
 
-procedure TDMServer.SendPlayersList(Exclude: TDzSocket);
+procedure TDMServer.SendPlayersList(Exclude: TDzSocket = nil);
 var
-  CurSok: TDzSocket;
+  CurPlayer: TClient;
   Lst: TStringList;
 begin
-  CurSok := GetCurrentSocket;
+  CurPlayer := GetCurrentPlayer;
 
   Lst := TStringList.Create;
   try
     ForConnections(
       procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
       begin
-        if Sok<>Exclude then
-          Lst.Add(ArrayToData([C.PlayerName, C.Letters.Length, C.Score, Sok=CurSok, C.Agree]));
+        Lst.Add(ArrayToData([C.PlayerName, C.Letters.Length, C.Score, C=CurPlayer, C.Agree, C.Socket=nil]));
       end
     );
 
@@ -233,7 +319,7 @@ end;
 
 procedure TDMServer.StartGame;
 begin
-  GameRunning := True;
+  Status := ssTurn;
 
   LoadDictionaryLetters;
 
@@ -267,40 +353,19 @@ end;
 procedure TDMServer.SelectNextPlayer;
 begin
   Inc(CurrentPlayerIndex);
-  if CurrentPlayerIndex>S.GetAuthConnections-1 then
+  if CurrentPlayerIndex>PlayersList.Count-1 then
     CurrentPlayerIndex := 0;
 
   SendPlayersList; //update players list
 
-  S.Send(GetCurrentSocket, '>'); //send to current player its turn signal
+  S.Send(GetCurrentPlayer.Socket, '>'); //send to current player its turn signal
 end;
 
-function TDMServer.GetCurrentSocket: TDzSocket;
-var
-  CurSok: TDzSocket;
-  I: Integer;
+function TDMServer.GetCurrentPlayer: TClient;
 begin
-  if CurrentPlayerIndex = -1 then Exit(nil);  
+  if CurrentPlayerIndex = -1 then Exit(nil);
 
-  CurSok := nil;
-  I := -1;
-
-  ForConnections(
-    procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
-    begin
-      Inc(I);
-      if I=CurrentPlayerIndex then
-      begin
-        CurSok := Sok;
-        Cancel := True;
-      end;
-    end
-  );
-
-  if CurSok=nil then
-    raise Exception.Create('Internal: Current socket not found');
-
-  Result := CurSok;
+  Result := PlayersList[CurrentPlayerIndex];
 end;
 
 procedure TDMServer.SendMatrix;
@@ -315,11 +380,11 @@ var
   B: TBlock;
   Letter: Char;
 begin
-  if InAgreement then
-    raise Exception.Create('Internal: A player tried to define a letter in agreement period!');
+  if Status<>ssTurn then
+    raise Exception.Create('Internal: A player tried to define a letter when status is not turn');
 
-  if Socket<>GetCurrentSocket then
-    raise Exception.Create('Internal: A player tried to define a letter when is not its turn!');
+  if Socket<>GetCurrentPlayer.Socket then
+    raise Exception.Create('Internal: A player tried to define a letter when is not its turn');
 
   D := DataToArray(A);
 
@@ -328,7 +393,7 @@ begin
 
   B := Matrix[Y, X];
   if not ( (B.Letter=BLANK_LETTER) or (B.Temp) ) then
-    raise Exception.Create('Internal: A player tried to define a letter in an unallowed condition!');
+    raise Exception.Create('Internal: A player tried to define a letter in an unallowed condition');
 
   Letter := VarToStr(D[2])[1];
 
@@ -339,15 +404,15 @@ end;
 
 procedure TDMServer.PlayerTurnDoneReceived(Socket: TDzSocket);
 begin
-  if InAgreement then
-    raise Exception.Create('Internal: A player tried to set its turn done in agreeement period!');
+  if Status<>ssTurn then
+    raise Exception.Create('Internal: A player tried to set its turn done when status is not turn');
 
-  if Socket<>GetCurrentSocket then
-    raise Exception.Create('Internal: A player tried to set its turn done when is not its turn!');
+  if Socket<>GetCurrentPlayer.Socket then
+    raise Exception.Create('Internal: A player tried to set its turn done when is not its turn');
 
   if IsThereLettersUsed then
   begin
-    InAgreement := True;
+    Status := ssAgreement;
     S.Send(Socket, 'W'); //send wait log
     S.SendAllEx(Socket, 'G'); //send agreement request signal
   end else
@@ -364,18 +429,18 @@ var
 
   procedure DisableAgreement;
   begin
-     InAgreement := False;
+     Status := ssTurn;
      S.SendAllEx(CurSok, 'K');
 
      ClearAllAgreements;
   end;
 
 begin
-  if not InAgreement then
-    raise Exception.Create('Internal: A player tried to set agreement but not in agreeement period!');
+  if Status<>ssAgreement then
+    raise Exception.Create('Internal: A player tried to set agreement when status is not agreeement');
 
   C := Socket.Data;
-  CurSok := GetCurrentSocket;
+  CurSok := GetCurrentPlayer.Socket;
 
   if DataToArray(A)[0]{Agree} then
   begin
@@ -458,7 +523,7 @@ begin
         //remove used letter from player letters list
         RemLetters := StoLetters.Replace(B.Letter, string.Empty, [{avoid replace all}]);
         if RemLetters = StoLetters then
-          raise Exception.Create('Internal: A player tried to use an inexistent letter!');
+          raise Exception.Create('Internal: A player tried to use an inexistent letter');
 
         StoLetters := RemLetters;
         Matrix[Y, X].ClearTemp;
@@ -479,6 +544,7 @@ end;
 
 procedure TDMServer.SetGameOver;
 begin
+  Status := ssOver;
   CurrentPlayerIndex := -1;
   SendPlayersList;
   S.SendAll('E'); //send end game signal
@@ -517,7 +583,14 @@ end;
 
 procedure TDMServer.RestartGame;
 begin
-  GameRunning := False;
+  CurrentPlayerIndex := -1; //when restarting directly from drop form
+
+  //if players left when game is over, object remains in list to show score,
+  //so when restarting game, this objects must be removed.
+  RemoveAllDisconectedPlayers;
+  //
+
+  Status := ssPreparing;
 
   SetLength(Matrix, 0);
   SendMatrix;
@@ -534,6 +607,29 @@ begin
   SendPlayersList;
 
   S.SendAll('P'); //send preparing new game to all
+end;
+
+procedure TDMServer.KillPlayer(C: TClient);
+var
+  I: Integer;
+begin
+  I := PlayersList.IndexOf(C);
+  if I=-1 then
+    raise Exception.Create('Internal: Player object not found');
+
+  PlayersList.Delete(I);
+
+  if CurrentPlayerIndex>I then Dec(CurrentPlayerIndex);
+  if CurrentPlayerIndex>PlayersList.Count-1 then CurrentPlayerIndex := 0;
+  SendPlayersList;
+end;
+
+procedure TDMServer.ContinueGame;
+begin
+  Status := ssTurn;
+
+  Dec(CurrentPlayerIndex); //just because will inc on select next player
+  SelectNextPlayer;
 end;
 
 end.

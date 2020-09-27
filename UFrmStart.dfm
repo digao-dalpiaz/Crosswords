@@ -36,13 +36,6 @@ object FrmStart: TFrmStart
     StyleElements = [seBorder]
     ExplicitWidth = 626
   end
-  object LbPlayerName: TLabel
-    Left = 16
-    Top = 56
-    Width = 55
-    Height = 13
-    Caption = 'Your name:'
-  end
   object LbPassword: TLabel
     Left = 16
     Top = 264
@@ -50,19 +43,13 @@ object FrmStart: TFrmStart
     Height = 13
     Caption = 'Connection password:'
   end
-  object EdPlayerName: TEdit
-    Left = 16
-    Top = 72
-    Width = 257
-    Height = 21
-    TabOrder = 0
-  end
   object BtnJoin: TBitBtn
     Left = 192
     Top = 328
     Width = 121
     Height = 33
     Caption = 'Join'
+    Default = True
     Glyph.Data = {
       36030000424D3603000000000000360000002800000010000000100000000100
       1800000000000003000000000000000000000000000000000000C080FFC080FF
@@ -90,7 +77,7 @@ object FrmStart: TFrmStart
       C080FFC080FFC080FFC080FFC080FFC080FF5E3C0EA06617A06617A06617A066
       17A06617845513C080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC0
       80FFC080FF3D27098253139B63168E5A1459390DC080FFC080FF}
-    TabOrder = 4
+    TabOrder = 6
     OnClick = BtnJoinClick
   end
   object BtnExit: TBitBtn
@@ -126,7 +113,7 @@ object FrmStart: TFrmStart
       3A3EFF373AF00D0D37C080FFC080FFC080FFC080FFC080FFC080FF0E0A28402E
       BE4532CC3728A4C080FFC080FFC080FF2A2DB90D0D37C080FFC080FFC080FFC0
       80FFC080FFC080FFC080FFC080FF0E0A28332596C080FFC080FF}
-    TabOrder = 5
+    TabOrder = 7
     OnClick = BtnExitClick
   end
   object EdPassword: TEdit
@@ -134,18 +121,18 @@ object FrmStart: TFrmStart
     Top = 280
     Width = 225
     Height = 21
-    TabOrder = 3
+    TabOrder = 5
   end
   object BoxOper: TRadioGroup
     Left = 16
     Top = 112
-    Width = 161
+    Width = 217
     Height = 73
     Caption = 'Operation mode'
     Items.Strings = (
       'Client'
       'Server')
-    TabOrder = 1
+    TabOrder = 2
     OnClick = BoxOperClick
   end
   object BoxClient: TPanel
@@ -154,7 +141,7 @@ object FrmStart: TFrmStart
     Width = 337
     Height = 57
     BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 4
     object LbServerAddress: TLabel
       Left = 8
       Top = 8
@@ -168,6 +155,62 @@ object FrmStart: TFrmStart
       Width = 321
       Height = 21
       TabOrder = 0
+    end
+  end
+  object CkReconnect: TCheckBox
+    Left = 128
+    Top = 131
+    Width = 97
+    Height = 17
+    Caption = 'Reconnect'
+    TabOrder = 3
+    OnClick = CkReconnectClick
+  end
+  object BoxName: TPanel
+    Left = 8
+    Top = 48
+    Width = 273
+    Height = 57
+    BevelOuter = bvNone
+    TabOrder = 0
+    object LbPlayerName: TLabel
+      Left = 8
+      Top = 8
+      Width = 55
+      Height = 13
+      Caption = 'Your name:'
+    end
+    object EdPlayerName: TEdit
+      Left = 8
+      Top = 24
+      Width = 257
+      Height = 21
+      TabOrder = 0
+    end
+  end
+  object BoxHash: TPanel
+    Left = 8
+    Top = 48
+    Width = 273
+    Height = 49
+    BevelOuter = bvNone
+    TabOrder = 1
+    object LbHash: TLabel
+      Left = 8
+      Top = 8
+      Width = 28
+      Height = 13
+      Caption = 'Hash:'
+    end
+    object EdHash: TMaskEdit
+      Left = 8
+      Top = 24
+      Width = 73
+      Height = 21
+      EditMask = '999999;0;_'
+      MaxLength = 6
+      TabOrder = 0
+      Text = ''
     end
   end
 end

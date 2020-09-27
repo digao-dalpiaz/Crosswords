@@ -13,10 +13,12 @@ DLG_CANCEL=Cancel
 
 MSG_CLOSE_APP=<b><fc:clRed>There is a connection established.</fc></b><br><br>Are you sure you want to leave?
 
-CONN_REJECT_VERSION=This version is incompatible with the server!
-CONN_REJECT_PASSWORD=The password to this game is incorrect.
-CONN_REJECT_RUNNING=You cannot join the game because it is already running!
-CONN_REJECT_PLAYER=This player name already exists!
+CONN_REJECT_VERSION_WRONG=This version is incompatible with the server!
+CONN_REJECT_PASSWORD_WRONG=The password to this game is incorrect.
+CONN_REJECT_HASH_WRONG=Your player was not found by this hash code.
+CONN_REJECT_ALREADY_CONNECTED=There is an existing connection for this player already.
+CONN_REJECT_ALREADY_RUNNING=You cannot join the game because it is already running!
+CONN_REJECT_ALREADY_PLAYER_NAME=This player name already exists!
 
 SETTINGS_CAPTION=Settings
 SETTINGS_LANGUAGE=Language:
@@ -25,11 +27,15 @@ SETTINGS_ZOOM=Grid zoom:
 
 START_CAPTION=Welcome to Scrabble
 START_NAME=Your name:
+START_HASH=Hash:
 START_OPERATION=Operation mode
+START_RECONNECT=Reconnect
 START_SERVER_ADDR=Server address:
 START_CONN_PASSWORD=Connection password:
 
 START_MSG_BLANK_NAME=Please, type your name.
+START_MSG_BLANK_HASH=Please, type the hash code for reconnection.
+START_MSG_INVALID_HASH=The specified hash is invalid.
 START_MSG_BLANK_SERVER_ADDR=Please, type the server address.
 
 LOG_CONNECTING=Connecting...
@@ -47,6 +53,8 @@ LOG_WAIT_VALIDATION=Please, wait while your opponents validate your words.
 LOG_REBUY=You bought %d more letter(s) since you didn't fill anything in this round.
 LOG_WORDS_ACCEPTED=Your words were accepted and your turn to play is over.
 LOG_RULES_CHANGED=The game rules have been changed by the server.
+
+LOG_PAUSE_BY_DROP=The game is paused because connections have been lost. The server must decide to solve the problem.
 
 START_BTN_JOIN=Join
 START_BTN_EXIT=Exit
@@ -88,3 +96,12 @@ GAME_MSG_SELECT_LETTER=Please, select a letter in the side panel.
 GAME_MSG_ALREADY_LETTER_BLOCK=There is already a letter in this block.
 GAME_MSG_NO_LETTER_BLOCK=There is no letter to remove in this block.
 GAME_MSG_CANT_REMOVE_LETTER_BLOCK=You cannot remove this letter because it's not from this move.
+
+DROP_CAPTION=Missing Players
+DROP_LIST_TITLE=Missing Players
+DROP_BTN_KILL=Kill Player
+DROP_BTN_CONTINUE=Continue Game
+DROP_BTN_STOP=Stop Game
+
+DROP_MSG_STILL_DROPED=There are still disconnected players. You need to solve them all before continue.
+DROP_MSG_CONTINUE_WITH_NOBODY=There was no one left to continue the game.

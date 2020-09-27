@@ -13,10 +13,12 @@ DLG_CANCEL=Cancelar
 
 MSG_CLOSE_APP=<b><fc:clRed>Existe uma conexão estabelecida.</fc></b><br><br>Tem certeza de que deseja sair?
 
-CONN_REJECT_VERSION=Esta versão é incompatível com o servidor!
-CONN_REJECT_PASSWORD=A senha do jogo está incorreta.
-CONN_REJECT_RUNNING=Você não pode ser juntar a este jogo pois ele já está em curso!
-CONN_REJECT_PLAYER=Este nome de jogador já existe!
+CONN_REJECT_VERSION_WRONG=Esta versão é incompatível com o servidor!
+CONN_REJECT_PASSWORD_WRONG=A senha do jogo está incorreta.
+CONN_REJECT_HASH_WRONG=Seu jogador não foi encontrado com o código informado.
+CONN_REJECT_ALREADY_CONNECTED=Já existe uma conexão estabelecida para este jogador.
+CONN_REJECT_ALREADY_RUNNING=Você não pode ser juntar a este jogo pois ele já está em curso!
+CONN_REJECT_ALREADY_PLAYER_NAME=Este nome de jogador já existe!
 
 SETTINGS_CAPTION=Configurações
 SETTINGS_LANGUAGE=Linguagem:
@@ -25,11 +27,15 @@ SETTINGS_ZOOM=Zoom da tabela:
 
 START_CAPTION=Bem-vindo ao Scrabble
 START_NAME=Seu nome:
+START_HASH=Código:
 START_OPERATION=Modo de operação
+START_RECONNECT=Reconectar
 START_SERVER_ADDR=Endereço do servidor:
 START_CONN_PASSWORD=Senha de conexão:
 
 START_MSG_BLANK_NAME=Por favor, digite seu nome.
+START_MSG_BLANK_HASH=Por favor, digite o código para reconexão.
+START_MSG_INVALID_HASH=O código especificado é inválido.
 START_MSG_BLANK_SERVER_ADDR=Por favor, digite o endereço do servidor.
 
 LOG_CONNECTING=Conectando...
@@ -47,6 +53,8 @@ LOG_WAIT_VALIDATION=Por favor, aguarde enquanto seus oponentes validam suas pala
 LOG_REBUY=Você comprou mais %d letra(s) já que não preencheu nada nesta rodada.
 LOG_WORDS_ACCEPTED=Suas palavras foram aceitas e a sua vez terminou.
 LOG_RULES_CHANGED=As regras do jogo foram modificadas pelo servidor.
+
+LOG_PAUSE_BY_DROP=O jogo está paralisado pois conexões foram perdidas. O servidor deverá decidir pela solução do problema.
 
 START_BTN_JOIN=Iniciar
 START_BTN_EXIT=Sair
@@ -88,3 +96,12 @@ GAME_MSG_SELECT_LETTER=Por favor, selecione uma letra no painel lateral.
 GAME_MSG_ALREADY_LETTER_BLOCK=Já existe uma letra nesta caixa.
 GAME_MSG_NO_LETTER_BLOCK=Não há letra a remover nesta caixa.
 GAME_MSG_CANT_REMOVE_LETTER_BLOCK=Você não pode remover esta letra pois ela não é desta jogada.
+
+DROP_CAPTION=Jogadores Ausentes
+DROP_LIST_TITLE=Jogadores Ausentes
+DROP_BTN_KILL=Eliminar Jogador
+DROP_BTN_CONTINUE=Continuar Jogo
+DROP_BTN_STOP=Encerrar Jogo
+
+DROP_MSG_STILL_DROPED=Ainda existem jogadores desconectados. Você precisa resolver todos antes de continuar.
+DROP_MSG_CONTINUE_WITH_NOBODY=Não restou mais ninguém para continuar o jogo.

@@ -148,6 +148,7 @@ begin
     'E': FrmGame.GameOverReceived;
     'P': FrmGame.ReceivedPreparingNewGame;
     '?': FrmGame.ReceivedPausedByDrop;
+    '/': Log(Lang.Get('LOG_DROP_CONTINUE'));
   end;
 end;
 

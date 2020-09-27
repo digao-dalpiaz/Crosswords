@@ -143,10 +143,6 @@ object FrmMain: TFrmMain
       BevelOuter = bvNone
       TabOrder = 0
       Visible = False
-      ExplicitLeft = 392
-      ExplicitTop = 8
-      ExplicitWidth = 185
-      ExplicitHeight = 41
       object LbLbMode: TLabel
         Left = 0
         Top = 0
@@ -288,6 +284,12 @@ object FrmMain: TFrmMain
     Left = 40
     Top = 48
     object _QuestionCloseApp: TDamMsg
+      Icon = diQuest
+      Buttons = dbYesNo
+      SwapFocus = True
+      Dam = Dam
+    end
+    object _QuestionKillPlayer: TDamMsg
       Icon = diQuest
       Buttons = dbYesNo
       SwapFocus = True

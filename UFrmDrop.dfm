@@ -1,6 +1,7 @@
 object FrmDrop: TFrmDrop
   Left = 0
   Top = 0
+  BorderIcons = []
   BorderStyle = bsDialog
   Caption = 'Missing Players'
   ClientHeight = 333
@@ -14,6 +15,7 @@ object FrmDrop: TFrmDrop
   OldCreateOrder = False
   Position = poMainFormCenter
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13

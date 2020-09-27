@@ -26,6 +26,7 @@ type
     LbSpace5: TLabel;
     LbLbRules: TLabel;
     LbRules: TLabel;
+    _QuestionKillPlayer: TDamMsg;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure BtnSettingsClick(Sender: TObject);
@@ -83,6 +84,7 @@ begin
   LbLbRules.Caption := Lang.Get('TITLE_RULES')+' ';
 
   _QuestionCloseApp.Message := Lang.Get('MSG_CLOSE_APP');
+  _QuestionKillPlayer.Message := Lang.Get('MSG_KILL_PLAYER');
 
   UpdateConnectionBox;
 end;

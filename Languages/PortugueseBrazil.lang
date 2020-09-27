@@ -12,6 +12,7 @@ DLG_OK=OK
 DLG_CANCEL=Cancelar
 
 MSG_CLOSE_APP=<b><fc:clRed>Existe uma conexão estabelecida.</fc></b><br><br>Tem certeza de que deseja sair?
+MSG_KILL_PLAYER=Tem certeza de que deseja eliminar o jogador selecionado?
 
 CONN_REJECT_VERSION_WRONG=Esta versão é incompatível com o servidor!
 CONN_REJECT_PASSWORD_WRONG=A senha do jogo está incorreta.
@@ -55,6 +56,7 @@ LOG_WORDS_ACCEPTED=Suas palavras foram aceitas e a sua vez terminou.
 LOG_RULES_CHANGED=As regras do jogo foram modificadas pelo servidor.
 
 LOG_PAUSE_BY_DROP=O jogo está paralisado pois conexões foram perdidas. O servidor deverá decidir pela solução do problema.
+LOG_DROP_CONTINUE=A situação dos jogadores perdidos foi resolvida e o jogo irá continuar agora.
 
 START_BTN_JOIN=Iniciar
 START_BTN_EXIT=Sair

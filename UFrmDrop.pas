@@ -18,6 +18,7 @@ type
     procedure BtnStopClick(Sender: TObject);
     procedure BtnKillClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     procedure AddPlayer(C: TClient);
   public
@@ -59,6 +60,11 @@ begin
   //--
 end;
 
+procedure TFrmDrop.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  CanClose := (ModalResult = mrOk);
+end;
+
 procedure TFrmDrop.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caFree;
@@ -85,8 +91,11 @@ procedure TFrmDrop.BtnKillClick(Sender: TObject);
 begin
   if L.ItemIndex = -1 then Exit;
 
-  DMServer.KillPlayer(TClient(L.Items.Objects[L.ItemIndex]));
-  L.DeleteSelected;
+  if QuestionKillPlayer then
+  begin
+    DMServer.KillPlayer(TClient(L.Items.Objects[L.ItemIndex]));
+    L.DeleteSelected;
+  end;
 end;
 
 procedure TFrmDrop.BtnContinueClick(Sender: TObject);
@@ -100,12 +109,16 @@ begin
   //
 
   DMServer.ContinueGame;
+
+  ModalResult := mrOk;
   Close;
 end;
 
 procedure TFrmDrop.BtnStopClick(Sender: TObject);
 begin
   DMServer.RestartGame;
+
+  ModalResult := mrOk;
   Close;
 end;
 

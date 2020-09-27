@@ -627,6 +627,8 @@ end;
 
 procedure TDMServer.ContinueGame;
 begin
+  S.SendAll('/'); //send signal to inform that game will continue
+
   Status := ssTurn;
 
   Dec(CurrentPlayerIndex); //just because will inc on select next player

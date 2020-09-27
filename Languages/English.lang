@@ -12,6 +12,7 @@ DLG_OK=OK
 DLG_CANCEL=Cancel
 
 MSG_CLOSE_APP=<b><fc:clRed>There is a connection established.</fc></b><br><br>Are you sure you want to leave?
+MSG_KILL_PLAYER=Are you sure you want to delete the selected player?
 
 CONN_REJECT_VERSION_WRONG=This version is incompatible with the server!
 CONN_REJECT_PASSWORD_WRONG=The password to this game is incorrect.
@@ -55,6 +56,7 @@ LOG_WORDS_ACCEPTED=Your words were accepted and your turn to play is over.
 LOG_RULES_CHANGED=The game rules have been changed by the server.
 
 LOG_PAUSE_BY_DROP=The game is paused because connections have been lost. The server must decide to solve the problem.
+LOG_DROP_CONTINUE=The situation of the lost players has been resolved and the game will continue now.
 
 START_BTN_JOIN=Join
 START_BTN_EXIT=Exit

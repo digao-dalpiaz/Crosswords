@@ -173,8 +173,8 @@ begin
   D := DataToArray(LPlayers.Items[Index]);
 
   LPlayers.Canvas.TextOut(25, Rect.Top+2, D[0]); //player name
-  TextRight(186, Rect.Top+2, D[1]); //letters
-  TextRight(220, Rect.Top+2, D[2]); //score
+  TextRight(200, Rect.Top+2, D[1]); //letters
+  TextRight(236, Rect.Top+2, D[2]); //score
 
   if D[3] then
     IL.Draw(LPlayers.Canvas, 3, Rect.Top+1, 0); //this player turn
@@ -183,7 +183,7 @@ begin
     IL.Draw(LPlayers.Canvas, 3, Rect.Top+1, 1); //agree
 
   if D[5] then
-    IL.Draw(LPlayers.Canvas, 150, Rect.Top+1, 2); //disconnected
+    IL.Draw(LPlayers.Canvas, 160, Rect.Top+1, 2); //disconnected
 end;
 
 procedure TFrmGame.LLettersDrawItem(Control: TWinControl; Index: Integer;

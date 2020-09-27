@@ -23,7 +23,7 @@ object FrmLog: TFrmLog
     Align = alClient
     BorderStyle = bsNone
     Color = 1973790
-    Font.Charset = ANSI_CHARSET
+    Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -9
     Font.Name = 'Tahoma'

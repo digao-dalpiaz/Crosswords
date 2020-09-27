@@ -308,6 +308,9 @@ var
 begin
   inherited;
 
+  if (SelBox.Y>Data.Count-1) or
+     (SelBox.X>Data.GetColCount-1) then Exit;
+
   if not (FrmGame.Status in [gsPlaying, gsMyTurn, gsAgreement]) then Exit;
 
   if FrmGame.Status <> gsMyTurn then
@@ -388,19 +391,19 @@ begin
       for Block in Row do
       begin
         if (SelBox.X=Block.X) and (SelBox.Y=Block.Y) then
-          B.Canvas.Brush.Color := clYellow
+          B.Canvas.Brush.Color := $00A68737
         else
         if Block.Invalid then
-          B.Canvas.Brush.Color := clWebPeru
+          B.Canvas.Brush.Color := $000C3DAD
         else
-          B.Canvas.Brush.Color := clWhite;
+          B.Canvas.Brush.Color := $003E3E3E;
 
         B.Canvas.Rectangle(X, Y, X+BoxW+1, Y+BoxH+1);
 
         if Block.Temp then
-          B.Canvas.Font.Color := clRed
+          B.Canvas.Font.Color := clYellow
         else
-          B.Canvas.Font.Color := clBlack;
+          B.Canvas.Font.Color := clWhite;
 
         TE := B.Canvas.TextExtent(Block.Letter);
         B.Canvas.TextOut(X+((BoxW-TE.Width) div 2), Y+((BoxH-TE.Height) div 2), Block.Letter);

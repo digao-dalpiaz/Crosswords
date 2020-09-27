@@ -584,13 +584,13 @@ end;
 
 procedure TDMServer.RestartGame;
 begin
-  CurrentPlayerIndex := -1; //when restarting directly from drop form
-
-  //if players left when game is over, object remains in list to show score,
+  //If players left when game is over, object remains in list to show score,
   //so when restarting game, this objects must be removed.
+  //The same situation when server stops the game directly from drop form.
   RemoveAllDisconectedPlayers;
   //
 
+  CurrentPlayerIndex := -1; //when restarting directly from drop form
   Status := ssPreparing;
 
   SetLength(Matrix, 0);

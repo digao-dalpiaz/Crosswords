@@ -14,7 +14,7 @@
 
 The objective of developing this game is actually the study of the controls performed in the client / server communication.
 
-In addition to the connection between all the players, the treatment for failures was developed, which I consider the most important.
+In addition to the connection between all the players, the treatment for failures was developed, which I consider the most important part.
 
 Let's assume that there are several players connected playing smoothly, and then one of them loses the connection, due to technical problems.
 

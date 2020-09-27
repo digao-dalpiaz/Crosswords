@@ -2,6 +2,12 @@
 
 ## Delphi Client/Server Scrabble Game using Socket communication
 
+### Demo Screens
+
+![Welcome screen](Images/demo_welcome.png)
+
+![Playing screen](Images/demo_playing.png)
+
 **Attention! This game is under development, still in alpha version.**
 
 ### Why this game?
@@ -61,12 +67,6 @@ For each language, there is a dictionary resource file, which basically indicate
 > I'm developing in Delphi 10.3.3 Community Edition. I still don't know to specify in which previous versions it is possible to compile.
 
 **You are welcome to submit bugs and suggestions, as well as become a tester. Please, do not hesitate to open as many issues as you like. If you want to test the game, please contact me via email on my GitHub profile.**
-
-### Demo Screens
-
-![Welcome screen](Images/demo_welcome.png)
-
-![Playing screen](Images/demo_playing.png)
 
 ### Technical information
 

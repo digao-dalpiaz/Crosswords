@@ -215,6 +215,9 @@ end;
 
 procedure TFrmGame.BtnDoneClick(Sender: TObject);
 begin
+  if PB.Data.ContainsAnyInvalid then
+    MsgRaise(Lang.Get('GAME_MSG_INVALID_SEQUENCE'));
+
   SetStatus(gsPlaying);
   DMClient.C.Send('!');
 end;

@@ -25,6 +25,7 @@ type
     CurrentPlayerIndex: Integer;
     Status: TServerStatus;
     Matrix: TMatrixData;
+    CenterBlock: TBlock;
 
     function PlayerNameAlreadyExists(const PlayerName: string): Boolean;
     procedure SendPlayersList(Exclude: TDzSocket = nil);
@@ -70,20 +71,23 @@ begin
   S.Port := INT_TCP_PORT;
   S.EnumeratorOnlyAuth := True;
 
+  Matrix := TMatrixData.Create;
   PlayersList := TPlayersList.Create;
 end;
 
 procedure TDMServer.DataModuleDestroy(Sender: TObject);
 begin
+  Matrix.Free;
   PlayersList.Free;
 end;
 
 procedure TDMServer.Initialize;
 begin
+  Matrix.Clear;
   PlayersList.Clear;
   CurrentPlayerIndex := -1;
-  SetLength(Matrix, 0);
   Status := ssPreparing;
+  CenterBlock := nil;
 
   TRules.Load; //load game rules
 
@@ -335,8 +339,9 @@ begin
   );
   //--
 
-  SetLength(Matrix, pubServerProps.SizeH, pubServerProps.SizeW);
-  Matrix[pubServerProps.SizeH div 2, pubServerProps.SizeW div 2].&Set(GetRandomLetter, False);
+  Matrix.Init(pubServerProps.SizeH, pubServerProps.SizeW);
+  CenterBlock := Matrix[pubServerProps.SizeH div 2][pubServerProps.SizeW div 2];
+  CenterBlock.&Set(GetRandomLetter, False);
   SendMatrix;
 
   S.SendAll('R'); //send start game signal to all
@@ -372,7 +377,7 @@ end;
 
 procedure TDMServer.SendMatrix;
 begin
-  S.SendAll('X', MatrixDataToString(Matrix));
+  S.SendAll('X', Matrix.SaveToString);
 end;
 
 procedure TDMServer.LetterReceived(Socket: TDzSocket; const A: string);
@@ -393,13 +398,14 @@ begin
   X := D[0];
   Y := D[1];
 
-  B := Matrix[Y, X];
+  B := Matrix[Y][X];
   if not ( (B.Letter=BLANK_LETTER) or (B.Temp) ) then
     raise Exception.Create('Internal: A player tried to define a letter in an unallowed condition');
 
   Letter := VarToStr(D[2])[1];
 
-  Matrix[Y, X].&Set(Letter, True);
+  B.&Set(Letter, True);
+  Matrix.ValidateSequence(CenterBlock);
 
   SendMatrix; //send updated matrix to all
 end;
@@ -414,6 +420,9 @@ begin
 
   if IsThereLettersUsed then
   begin
+    if Matrix.ContainsAnyInvalid then
+      raise Exception.Create('Internal: A player tried to set its turn done having letters out of sequence');
+
     Status := ssAgreement;
     S.Send(Socket, 'W'); //send wait log
     S.SendAllEx(Socket, 'G'); //send agreement request signal
@@ -496,18 +505,19 @@ end;
 
 function TDMServer.IsThereLettersUsed: Boolean;
 var
-  X, Y: Integer;
+  Row: TMatrixDataRow;
+  B: TBlock;
 begin
-  for Y := 0 to High(Matrix) do
-    for X := 0 to High(Matrix[Y]) do
-      if Matrix[Y, X].Temp then Exit(True);
+  for Row in Matrix do
+    for B in Row do
+      if B.Temp then Exit(True);
 
   Result := False;
 end;
 
 procedure TDMServer.CompletePlayerTurn(Socket: TDzSocket);
 var
-  X, Y: Integer;
+  Row: TMatrixDataRow;
   B: TBlock;
   C: TClient;
   RemLetters, StoLetters: string;
@@ -516,10 +526,8 @@ begin
 
   StoLetters := C.Letters;
 
-  for Y := 0 to High(Matrix) do
-    for X := 0 to High(Matrix[Y]) do
-    begin
-      B := Matrix[Y, X];
+  for Row in Matrix do
+    for B in Row do
       if B.Temp then
       begin
         //remove used letter from player letters list
@@ -528,9 +536,8 @@ begin
           raise Exception.Create('Internal: A player tried to use an inexistent letter');
 
         StoLetters := RemLetters;
-        Matrix[Y, X].ClearTemp;
+        B.ClearTemp;
       end;
-    end;
 
   Inc(C.Score, Length(C.Letters) - Length(StoLetters));
   C.Letters := StoLetters;
@@ -594,7 +601,7 @@ begin
   CurrentPlayerIndex := -1; //when restarting directly from drop form
   Status := ssPreparing;
 
-  SetLength(Matrix, 0);
+  Matrix.Clear;
   SendMatrix;
 
   //--Reset players game data and send letters to each one

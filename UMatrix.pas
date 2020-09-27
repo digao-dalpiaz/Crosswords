@@ -2,25 +2,44 @@ unit UMatrix;
 
 interface
 
-uses Vcl.ExtCtrls, Vcl.Graphics, System.Classes, Vcl.Controls, System.Types;
+uses Vcl.ExtCtrls, Vcl.Graphics, System.Classes, Vcl.Controls, System.Types,
+  System.Generics.Collections;
 
 type
-  TBlock = record
+  TBlock = class
   private
+    X, Y: Integer;
+
     FLetter: Char;
     FTemp: Boolean;
+
+    Invalid: Boolean;
   public
+    constructor Create(X, Y: Integer);
+
     property Letter: Char read FLetter;
     property Temp: Boolean read FTemp;
 
     procedure &Set(const Letter: Char; Temp: Boolean);
     procedure ClearTemp;
   end;
-  TMatrixData = array of array of TBlock;
+  TMatrixDataRow = class(TObjectList<TBlock>);
+  TMatrixData = class(TObjectList<TMatrixDataRow>)
+  private
+    function GetColCount: Integer;
+    procedure SetBlankAllBlocks;
+  public
+    procedure Init(Rows, Cols: Integer);
+
+    procedure ValidateSequence(CenterBlock: TBlock);
+    function ContainsAnyInvalid: Boolean;
+
+    procedure LoadFromString(const A: string);
+    function SaveToString: string;
+  end;
 
   TMatrixImage = class(TImage)
   private
-    Data: TMatrixData;
     SelBox: TPoint;
     BoxW, BoxH: Integer;
     procedure Rebuild;
@@ -29,19 +48,27 @@ type
     procedure MouseMove(Shift: TShiftState; X: Integer; Y: Integer); override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X: Integer; Y: Integer); override;
   public
-    procedure SetMatrixSize(X, Y: Integer);
-    procedure UpdateData(const A: string);
+    Data: TMatrixData;
 
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+
+    procedure SetMatrixSize(Rows, Cols: Integer);
+    procedure UpdateData(const A: string);
     procedure UpdateZoom;
   end;
-
-function MatrixDataToString(const Data: TMatrixData): string;
-procedure StringToMatrixData(const A: string; var Data: TMatrixData);
 
 implementation
 
 uses System.SysUtils, UFrmGame, UDams, UVars, System.StrUtils, UDMClient,
   ULanguage;
+
+constructor TBlock.Create(X, Y: Integer);
+begin
+  inherited Create;
+  Self.X := X;
+  Self.Y := Y;
+end;
 
 procedure TBlock.&Set(const Letter: Char; Temp: Boolean);
 begin
@@ -56,20 +83,116 @@ end;
 
 //
 
-function MatrixDataToString(const Data: TMatrixData): string;
+procedure TMatrixData.Init(Rows, Cols: Integer);
+var
+  X, Y: Integer;
+  R: TMatrixDataRow;
+  B: TBlock;
+begin
+  Clear;
+
+  for Y := 0 to Rows-1 do
+  begin
+    R := TMatrixDataRow.Create;
+    Add(R);
+
+    for X := 0 to Cols-1 do
+    begin
+      B := TBlock.Create(X, Y);
+      R.Add(B);
+    end;
+  end;
+end;
+
+procedure TMatrixData.SetBlankAllBlocks;
+var
+  Row: TMatrixDataRow;
+  B: TBlock;
+begin
+  for Row in Self do
+    for B in Row do
+    begin
+      B.&Set(BLANK_LETTER, False);
+      B.Invalid := False;
+    end;
+end;
+
+function TMatrixData.GetColCount: Integer;
+begin
+  if Count>0 then
+    Result := First.Count
+  else
+    Result := 0;
+end;
+
+procedure TMatrixData.ValidateSequence(CenterBlock: TBlock);
+var
+  LSeq: TList<TBlock>;
+
+  procedure Run(B: TBlock);
+
+    procedure Check(Row, Col: Integer);
+    var nextB: TBlock;
+    begin
+      if (Row<0) or (Row>Count-1) or
+         (Col<0) or (Col>GetColCount-1) then Exit;
+
+      nextB := Self[Row][Col];
+      if nextB.Letter<>BLANK_LETTER then
+        Run(nextB);
+    end;
+
+  begin
+    if LSeq.Contains(B) then Exit;    
+    LSeq.Add(B);
+
+    Check(B.Y-1, B.X); //up
+    Check(B.Y+1, B.X); //down
+    Check(B.Y, B.X-1); //left
+    Check(B.Y, B.X+1); //right
+  end;
+
+var
+  Row: TMatrixDataRow;
+  B: TBlock;
+begin
+  LSeq := TList<TBlock>.Create;
+  try
+    Run(CenterBlock);
+
+    for Row in Self do
+      for B in Row do
+        B.Invalid := (B.Letter<>BLANK_LETTER) and not LSeq.Contains(B);
+  finally
+    LSeq.Free;
+  end;
+end;
+
+function TMatrixData.ContainsAnyInvalid: Boolean;
+var
+  Row: TMatrixDataRow;
+  B: TBlock;
+begin
+  for Row in Self do
+    for B in Row do
+      if B.Invalid then Exit(True);
+
+   Result := False;
+end;
+
+function TMatrixData.SaveToString: string;
 var
   S: TStringList;
-  X, Y: Integer;
+  Row: TMatrixDataRow;
   B: TBlock;
 begin
   S := TStringList.Create;
   try
-    for Y := 0 to High(Data) do
-      for X := 0 to High(Data[Y]) do
+    for Row in Self do
+      for B in Row do
       begin
-        B := Data[Y, X];
         if B.Letter<>BLANK_LETTER then
-          S.Add(Format('%dx%d=%s%s', [X, Y, B.Letter, IfThen(B.Temp, '*')]));
+          S.Add(Format('%dx%d=%s', [B.X, B.Y, B.Letter+IfThen(B.Temp, '*')+IfThen(B.Invalid, '#')]));
       end;
 
     Result := S.Text;
@@ -78,16 +201,14 @@ begin
   end;
 end;
 
-procedure StringToMatrixData(const A: string; var Data: TMatrixData);
+procedure TMatrixData.LoadFromString(const A: string);
 var
-  X, Y: Integer;
   S: TStringList;
   Item, Position, Value, PosX, PosY: string;
   Ar: TArray<string>;
+  B: TBlock;
 begin
-  for Y := 0 to High(Data) do
-    for X := 0 to High(Data[Y]) do
-      Data[Y, X].&Set(BLANK_LETTER, False);
+  SetBlankAllBlocks;
 
   S := TStringList.Create;
   try
@@ -103,7 +224,9 @@ begin
       PosX := Ar[0];
       PosY := Ar[1];
 
-      Data[PosY.ToInteger, PosX.ToInteger].&Set(Value[1], Value.EndsWith('*'));
+      B := Self[PosY.ToInteger][PosX.ToInteger];
+      B.&Set(Value[1], Value.Contains('*'));
+      B.Invalid := Value.Contains('#');
     end;
 
   finally
@@ -113,25 +236,30 @@ end;
 
 //
 
+constructor TMatrixImage.Create(AOwner: TComponent);
+begin
+  inherited;
+  Data := TMatrixData.Create;
+end;
+
+destructor TMatrixImage.Destroy;
+begin
+  Data.Free;
+  inherited;
+end;
+
 procedure TMatrixImage.CalcBoxSize;
-var
-  LX, LY: Integer;
 begin
   BoxW := Round(30 * pubGridZoom/100);
   BoxH := Round(25 * pubGridZoom/100);
 
-  LY := Length(Data);
-  if LY>0 then LX := Length(Data[0]) else LX := 0;
-
-  Width := (BoxW * LX)+1;
-  Height := (BoxH * LY)+1;
+  Height := (BoxH * Data.Count)+1;
+  Width := (BoxW * Data.GetColCount)+1;
 end;
 
-procedure TMatrixImage.SetMatrixSize(X, Y: Integer);
+procedure TMatrixImage.SetMatrixSize(Rows, Cols: Integer);
 begin
-  SetLength(Data, 0); //clear
-  SetLength(Data, Y, X);
-
+  Data.Init(Rows, Cols);
   SelBox := TPoint.Create(-1, -1);
   CalcBoxSize;
   Rebuild;
@@ -145,23 +273,20 @@ end;
 
 procedure TMatrixImage.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
-  Previous: TBlock;
+  B: TBlock;
+  PreviousLetter: Char;
 
   procedure SetLetter(const C: Char; PCheck: TProc);
-  var
-    Line, Col: Integer;
   begin
-    Line := SelBox.Y;
-    Col := SelBox.X;
-
-    Previous := Data[Line, Col];
+    B := Data[SelBox.Y][SelBox.X];
     PCheck;
 
-    Data[Line, Col].&Set(C, True);
+    PreviousLetter := B.Letter;
 
+    B.&Set(C, True);
     Rebuild;
 
-    DMClient.SendLetter(Col, Line, C);
+    DMClient.SendLetter(SelBox.X, SelBox.Y, C);
   end;
 
 begin
@@ -180,7 +305,7 @@ begin
     SetLetter(FrmGame.LLetters.Items[FrmGame.LLetters.ItemIndex][1],
       procedure
       begin
-        if Previous.Letter<>BLANK_LETTER then
+        if B.Letter<>BLANK_LETTER then
           MsgRaise(Lang.Get('GAME_MSG_ALREADY_LETTER_BLOCK'));
       end);
     FrmGame.LLetters.DeleteSelected;
@@ -190,13 +315,13 @@ begin
     SetLetter(BLANK_LETTER,
       procedure
       begin
-        if Previous.Letter=BLANK_LETTER then
+        if B.Letter=BLANK_LETTER then
           MsgRaise(Lang.Get('GAME_MSG_NO_LETTER_BLOCK'));
 
-        if not Previous.Temp then
+        if not B.Temp then
           MsgRaise(Lang.Get('GAME_MSG_CANT_REMOVE_LETTER_BLOCK'));
       end);
-    FrmGame.LLetters.ItemIndex := FrmGame.LLetters.Items.Add(Previous.Letter);
+    FrmGame.LLetters.ItemIndex := FrmGame.LLetters.Items.Add(PreviousLetter);
   end;
 end;
 
@@ -218,15 +343,15 @@ end;
 
 procedure TMatrixImage.UpdateData(const A: string);
 begin
-  StringToMatrixData(A, Data);
+  Data.LoadFromString(A);
   Rebuild;
 end;
 
 procedure TMatrixImage.Rebuild;
 var
   B: TBitmap;
+  Row: TMatrixDataRow;
   Block: TBlock;
-  Line, Col: Integer;
   X, Y: Integer;
   TE: TSize;
 begin
@@ -240,20 +365,22 @@ begin
 
     Y := 0;
 
-    for Line := 0 to High(Data) do
+    for Row in Data do
     begin
       X := 0;
 
-      for Col := 0 to High(Data[Line]) do
+      for Block in Row do
       begin
-        if (SelBox.X=Col) and (SelBox.Y=Line) then
+        if (SelBox.X=Block.X) and (SelBox.Y=Block.Y) then
           B.Canvas.Brush.Color := clYellow
+        else
+        if Block.Invalid then
+          B.Canvas.Brush.Color := clWebPeru
         else
           B.Canvas.Brush.Color := clWhite;
 
         B.Canvas.Rectangle(X, Y, X+BoxW+1, Y+BoxH+1);
 
-        Block := Data[Line, Col];
         if Block.Temp then
           B.Canvas.Font.Color := clRed
         else

@@ -98,6 +98,7 @@ GAME_MSG_SELECT_LETTER=Por favor, selecione uma letra no painel lateral.
 GAME_MSG_ALREADY_LETTER_BLOCK=Já existe uma letra nesta caixa.
 GAME_MSG_NO_LETTER_BLOCK=Não há letra a remover nesta caixa.
 GAME_MSG_CANT_REMOVE_LETTER_BLOCK=Você não pode remover esta letra pois ela não é desta jogada.
+GAME_MSG_INVALID_SEQUENCE=Existem letras que estão quebrando a sequência das palavras. Verifique as letras em destaque.
 
 DROP_CAPTION=Jogadores Ausentes
 DROP_LIST_TITLE=Jogadores Ausentes

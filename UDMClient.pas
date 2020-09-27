@@ -172,8 +172,8 @@ begin
   FrmMain.UpdateConnectionBox;
 
   FrmGame.PB.SetMatrixSize(
-    FrmMain.ClientRules.SizeW,
-    FrmMain.ClientRules.SizeH);
+    FrmMain.ClientRules.SizeH,
+    FrmMain.ClientRules.SizeW);
 
   if not ToOne then
     Log(Lang.Get('LOG_RULES_CHANGED'));

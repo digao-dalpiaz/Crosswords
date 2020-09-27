@@ -98,6 +98,7 @@ GAME_MSG_SELECT_LETTER=Please, select a letter in the side panel.
 GAME_MSG_ALREADY_LETTER_BLOCK=There is already a letter in this block.
 GAME_MSG_NO_LETTER_BLOCK=There is no letter to remove in this block.
 GAME_MSG_CANT_REMOVE_LETTER_BLOCK=You cannot remove this letter because it's not from this move.
+GAME_MSG_INVALID_SEQUENCE=There are letters breaking the sequence of words. Check the highlighted letters.
 
 DROP_CAPTION=Missing Players
 DROP_LIST_TITLE=Missing Players

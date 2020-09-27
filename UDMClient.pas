@@ -87,6 +87,8 @@ end;
 
 procedure TDMClient.CLoginResponse(Sender: TObject; Socket: TDzSocket;
   Accepted: Boolean; const Data: string);
+var
+  D: TMsgArray;
 begin
   if Accepted then
   begin
@@ -94,7 +96,9 @@ begin
 
     FrmStart.Hide;
 
-    pubPlayerName := Data;
+    D := DataToArray(Data);
+    pubPlayerName := D[0];
+    FrmStart.EdHash.Text := D[1]; //auto-set for use when disconnect
 
     FrmMain.ClientRules.Received := False;
     FrmMain.UpdateConnectionBox;

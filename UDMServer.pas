@@ -235,7 +235,8 @@ begin
   Socket.Data := C;
 
   //send back player name, bacause if hash connection, there is no name from client
-  ResponseData := C.PlayerName;
+  //and send hash so we can auto-set in start form for use when disconnected
+  ResponseData := ArrayToData([C.PlayerName, C.Hash]);
 
   Accept := True;
 end;

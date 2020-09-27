@@ -66,7 +66,7 @@ The server works on Port TCP 6631.
 - ~~Include English dictionary~~
 - ~~App translation to Portuguese Brazil and support any language translation~~
 - Review game rules
-- Behavior when user drop connection when the game is running
+- ~~Behavior when user drop connection when the game is running~~
 - ~~Password to connect~~
 - ~~Allow server change settings while waiting players~~
 - ~~Implement end of game~~

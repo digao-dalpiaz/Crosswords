@@ -266,6 +266,7 @@ begin
   begin
     if Status<>ssOver then
     begin
+      //**this will be repeated on every player disconnected - maybe a review here
       Status := ssFreezed;
       S.SendAll('?'); //send paused by connection drop signal
       DoPlayerDroped(C); //player disconnected during the game

@@ -22,6 +22,8 @@ The game depends on all players being present to proceed with the moves. In this
 2. Wait for the player to re-establish the connection.
 3. Stop the game permanently.
 
+![Missing players screen](Images/demo_drop.png)
+
 Some well-known and reputable games use the voting technique, where all the remaining players decide together what will be done. Here this decision is made only by the server, to make the process easier.
 
 ### How to play

@@ -278,9 +278,9 @@ end;
 
 procedure TFrmGame.ReceivedPausedByDrop;
 begin
-   SetStatus(gsPlaying);
+  SetStatus(gsPlaying);
 
-   Log(Lang.Get('LOG_PAUSE_BY_DROP'));
+  Log(Lang.Get('LOG_PAUSE_BY_DROP'));
 end;
 
 procedure TFrmGame.GameOverReceived;

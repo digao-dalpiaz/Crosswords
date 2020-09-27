@@ -2,7 +2,7 @@ unit UFrmSettings;
 
 interface
 
-uses Vcl.Forms, Vcl.StdCtrls, System.Classes, Vcl.Controls, Vcl.ComCtrls;
+uses Vcl.Forms, Vcl.Controls, Vcl.StdCtrls, Vcl.ComCtrls, System.Classes;
 
 type
   TFrmSettings = class(TForm)

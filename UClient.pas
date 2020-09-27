@@ -11,6 +11,7 @@ type
   public
     Hash: string;
     PlayerName: string;
+
     Letters: string;
     Score: Integer;
     Agree: Boolean;

@@ -40,7 +40,6 @@ type
     procedure ClearAllAgreements;
     function IsAllPlayersAgree(WithSocket: TDzSocket): Boolean;
     procedure CompletePlayerTurn(Socket: TDzSocket);
-    function IsThereLettersUsed: Boolean;
     procedure RebuyLetters(Socket: TDzSocket);
     procedure ForConnections(P: TForConnectionsProc);
     procedure SetGameOver;
@@ -86,8 +85,8 @@ begin
   Matrix.Clear;
   PlayersList.Clear;
   CurrentPlayerIndex := -1;
-  Status := ssPreparing;
   CenterBlock := nil;
+  Status := ssPreparing;
 
   TRules.Load; //load game rules
 
@@ -270,7 +269,7 @@ begin
   begin
     if Status<>ssOver then
     begin
-      //**this will be repeated on every player disconnected - maybe a review here
+      //this will enter every player that disconnects
       Status := ssFreezed;
       S.SendAll('?'); //send paused by connection drop signal
       DoPlayerDroped(C); //player disconnected during the game
@@ -418,7 +417,7 @@ begin
   if Socket<>GetCurrentPlayer.Socket then
     raise Exception.Create('Internal: A player tried to set its turn done when is not its turn');
 
-  if IsThereLettersUsed then
+  if Matrix.ContainsAnyTemp then //player put letters in the grid
   begin
     if Matrix.ContainsAnyInvalid then
       raise Exception.Create('Internal: A player tried to set its turn done having letters out of sequence');
@@ -503,24 +502,12 @@ begin
   );
 end;
 
-function TDMServer.IsThereLettersUsed: Boolean;
-var
-  Row: TMatrixDataRow;
-  B: TBlock;
-begin
-  for Row in Matrix do
-    for B in Row do
-      if B.Temp then Exit(True);
-
-  Result := False;
-end;
-
 procedure TDMServer.CompletePlayerTurn(Socket: TDzSocket);
 var
-  Row: TMatrixDataRow;
-  B: TBlock;
   C: TClient;
   RemLetters, StoLetters: string;
+  Row: TMatrixDataRow;
+  B: TBlock;
 begin
   C := Socket.Data;
 

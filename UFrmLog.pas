@@ -2,11 +2,11 @@ unit UFrmLog;
 
 interface
 
-uses Vcl.Forms, System.Classes, Vcl.Controls, Vcl.StdCtrls;
+uses Vcl.Forms, System.Classes, Vcl.Controls, Vcl.StdCtrls, Vcl.ComCtrls;
 
 type
   TFrmLog = class(TForm)
-    EdLog: TMemo;
+    EdLog: TRichEdit;
   end;
 
 var
@@ -19,7 +19,8 @@ implementation
 
 {$R *.dfm}
 
-uses System.SysUtils, UFrmMain;
+uses System.SysUtils, Vcl.Graphics, Winapi.Windows, Winapi.Messages,
+  UFrmMain;
 
 procedure InitLogArea;
 begin
@@ -29,8 +30,19 @@ begin
 end;
 
 procedure Log(const Text: string);
+var
+  R: TRichEdit;
 begin
-  FrmLog.EdLog.Lines.Add(FormatDateTime('hh:nn:ss', Now)+' - '+Text);
+  R := FrmLog.EdLog;
+
+  R.SelStart := R.GetTextLen;
+  R.SelAttributes.Color := clGray;
+  R.SelText := FormatDateTime('hh:nn:ss', Now)+' - ';
+  R.SelAttributes.Color := clWhite;
+  R.SelText := Text;
+  R.SelText := #13#10;
+
+  SendMessage(R.Handle, WM_VSCROLL, SB_BOTTOM, 0);
 end;
 
 end.

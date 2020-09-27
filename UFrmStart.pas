@@ -2,8 +2,8 @@ unit UFrmStart;
 
 interface
 
-uses Vcl.Forms, Vcl.ExtCtrls, Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons,
-  System.Classes, Vcl.Mask;
+uses Vcl.Forms, Vcl.Mask, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Controls, Vcl.Buttons,
+  System.Classes;
 
 type
   TFrmStart = class(TForm)

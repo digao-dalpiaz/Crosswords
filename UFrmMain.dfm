@@ -2,7 +2,7 @@ object FrmMain: TFrmMain
   Left = 0
   Top = 0
   Caption = 'Scrabble'
-  ClientHeight = 359
+  ClientHeight = 491
   ClientWidth = 742
   Color = clBlack
   Font.Charset = DEFAULT_CHARSET

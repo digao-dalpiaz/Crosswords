@@ -2,7 +2,7 @@ unit UMatrix;
 
 interface
 
-uses Vcl.ExtCtrls, Vcl.Graphics, System.Classes, Vcl.Controls, System.Types,
+uses Vcl.ExtCtrls, System.Classes, Vcl.Controls, System.Types,
   System.Generics.Collections;
 
 type
@@ -33,6 +33,7 @@ type
 
     procedure ValidateSequence(CenterBlock: TBlock);
     function ContainsAnyInvalid: Boolean;
+    function ContainsAnyTemp: Boolean;
 
     procedure LoadFromString(const A: string);
     function SaveToString: string;
@@ -61,7 +62,7 @@ type
 implementation
 
 uses System.SysUtils, UFrmGame, UDams, UVars, System.StrUtils, UDMClient,
-  ULanguage;
+  ULanguage, Vcl.Graphics;
 
 constructor TBlock.Create(X, Y: Integer);
 begin
@@ -132,14 +133,15 @@ var
   procedure Run(B: TBlock);
 
     procedure Check(Row, Col: Integer);
-    var nextB: TBlock;
+    var
+      nearB: TBlock;
     begin
       if (Row<0) or (Row>Count-1) or
          (Col<0) or (Col>GetColCount-1) then Exit;
 
-      nextB := Self[Row][Col];
-      if nextB.Letter<>BLANK_LETTER then
-        Run(nextB);
+      nearB := Self[Row][Col];
+      if nearB.Letter<>BLANK_LETTER then
+        Run(nearB);
     end;
 
   begin
@@ -160,9 +162,11 @@ begin
   try
     Run(CenterBlock);
 
+    //--Set Invalid flag in all blocks
     for Row in Self do
       for B in Row do
         B.Invalid := (B.Letter<>BLANK_LETTER) and not LSeq.Contains(B);
+    //--
   finally
     LSeq.Free;
   end;
@@ -178,6 +182,18 @@ begin
       if B.Invalid then Exit(True);
 
    Result := False;
+end;
+
+function TMatrixData.ContainsAnyTemp: Boolean;
+var
+  Row: TMatrixDataRow;
+  B: TBlock;
+begin
+  for Row in Self do
+    for B in Row do
+      if B.Temp then Exit(True);
+
+  Result := False;
 end;
 
 function TMatrixData.SaveToString: string;

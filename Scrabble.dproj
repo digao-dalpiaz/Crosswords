@@ -95,9 +95,11 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="UVars.pas"/>
+        <DCCReference Include="UDictionary.pas"/>
         <DCCReference Include="ULanguage.pas"/>
         <DCCReference Include="UClient.pas"/>
         <DCCReference Include="UMatrix.pas"/>
+        <DCCReference Include="URichEditUnicode.pas"/>
         <DCCReference Include="UDMClient.pas">
             <Form>DMClient</Form>
             <DesignClass>TDataModule</DesignClass>
@@ -126,10 +128,7 @@
         </DCCReference>
         <DCCReference Include="UFrmDrop.pas">
             <Form>FrmDrop</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="URichEditUnicode.pas"/>
-        <DCCReference Include="UDictionary.pas"/>
         <RcItem Include="Sounds\pling.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>

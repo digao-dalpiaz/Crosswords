@@ -85,8 +85,6 @@ uses System.SysUtils,
 
 procedure TFrmGame.FormCreate(Sender: TObject);
 begin
-  InitTranslation;
-
   PB := TMatrixImage.Create(Self);
   PB.Parent := SB;
 end;
@@ -107,6 +105,8 @@ end;
 
 procedure TFrmGame.Initialize(Reconnected: Boolean);
 begin
+  InitTranslation;
+
   if Reconnected then
     SetStatus(gsPaused)
   else

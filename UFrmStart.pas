@@ -191,6 +191,8 @@ begin
   pubLanguageID := LST_LANGUAGES[EdLanguage.ItemIndex].ID;
   FrmMain.ConfigLanguage(True); //save config language
   Lang.LoadLanguage; //reload language
+
+  //reload screen translation
   FrmMain.InitTranslation;
   FrmStart.InitTransation;
 end;

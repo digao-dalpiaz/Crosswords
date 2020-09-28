@@ -91,15 +91,16 @@ object FrmMain: TFrmMain
       ExplicitLeft = 152
     end
     object BoxTitleSide: TPanel
-      Left = 682
+      Left = 716
       Top = 0
-      Width = 60
+      Width = 26
       Height = 25
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitLeft = 711
       object BtnSettings: TSpeedButton
-        Left = 31
+        Left = 0
         Top = 0
         Width = 25
         Height = 25
@@ -137,12 +138,13 @@ object FrmMain: TFrmMain
     object BoxConInfo: TPanel
       Left = 162
       Top = 0
-      Width = 520
+      Width = 554
       Height = 25
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
       Visible = False
+      ExplicitWidth = 520
       object LbLbMode: TLabel
         Left = 0
         Top = 0

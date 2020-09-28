@@ -15,17 +15,6 @@ object FrmGame: TFrmGame
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object SB: TScrollBox
-    Left = 0
-    Top = 0
-    Width = 622
-    Height = 444
-    HorzScrollBar.Tracking = True
-    VertScrollBar.Tracking = True
-    Align = alClient
-    BorderStyle = bsNone
-    TabOrder = 0
-  end
   object BoxSide: TPanel
     Left = 622
     Top = 0
@@ -83,7 +72,7 @@ object FrmGame: TFrmGame
         Height = 74
         TabStop = False
         Align = alClient
-        Font.Charset = DEFAULT_CHARSET
+        Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
         Font.Name = 'Segoe UI'
@@ -109,7 +98,6 @@ object FrmGame: TFrmGame
         ParentFont = False
         TabOrder = 1
         OnKeyPress = EdChatMsgKeyPress
-        ExplicitTop = 85
       end
     end
     object LPlayers: TListBox
@@ -373,6 +361,46 @@ object FrmGame: TFrmGame
         TabOrder = 5
         OnClick = BtnRestartClick
       end
+    end
+  end
+  object BoxGrid: TPanel
+    Left = 0
+    Top = 0
+    Width = 622
+    Height = 444
+    Align = alClient
+    BevelOuter = bvNone
+    BorderWidth = 2
+    TabOrder = 0
+    ExplicitLeft = 16
+    ExplicitTop = 48
+    ExplicitWidth = 417
+    ExplicitHeight = 305
+    object LbPosition: TLabel
+      Left = 2
+      Top = 2
+      Width = 618
+      Height = 13
+      Align = alTop
+      AutoSize = False
+      ExplicitLeft = 296
+      ExplicitTop = 216
+      ExplicitWidth = 31
+    end
+    object SB: TScrollBox
+      Left = 2
+      Top = 15
+      Width = 618
+      Height = 427
+      HorzScrollBar.Tracking = True
+      VertScrollBar.Tracking = True
+      Align = alClient
+      BorderStyle = bsNone
+      TabOrder = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 622
+      ExplicitHeight = 444
     end
   end
   object IL: TImageList

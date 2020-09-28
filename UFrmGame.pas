@@ -11,7 +11,6 @@ type
   TGameStatus = (gsUnknown, gsPreparing, gsPlaying, gsMyTurn, gsAgreement, gsGameOver);
 
   TFrmGame = class(TForm)
-    SB: TScrollBox;
     BoxSide: TPanel;
     BoxChat: TPanel;
     EdChatLog: TRichEdit;
@@ -29,6 +28,9 @@ type
     BtnDisagree: TBitBtn;
     BtnRules: TBitBtn;
     BtnRestart: TBitBtn;
+    BoxGrid: TPanel;
+    SB: TScrollBox;
+    LbPosition: TLabel;
     procedure EdChatMsgKeyPress(Sender: TObject; var Key: Char);
     procedure BtnStartGameClick(Sender: TObject);
     procedure LPlayersDrawItem(Control: TWinControl; Index: Integer;
@@ -103,6 +105,8 @@ begin
   PB.SetMatrixSize(0, 0);
   LPlayers.Clear;
   LLetters.Clear;
+
+  LbPosition.Caption := string.Empty;
 end;
 
 procedure TFrmGame.SetStatus(NewStatus: TGameStatus);

@@ -62,6 +62,7 @@ LOG_DROP_CONTINUE=The situation of the lost players has been resolved and the ga
 START_BTN_JOIN=Join
 START_BTN_EXIT=Exit
 
+GAME_GRID_POSITION=Line %d / Column %d
 GAME_BOX_PLAYERS=Players
 GAME_BOX_LETTERS=Letters
 GAME_BOX_CHAT=Chat

@@ -61,8 +61,8 @@ type
 
 implementation
 
-uses System.SysUtils, UFrmGame, UDams, UVars, System.StrUtils, UDMClient,
-  ULanguage, Vcl.Graphics;
+uses System.SysUtils, UFrmGame, UDams, UVars, System.StrUtils,
+  UDMClient, ULanguage, Vcl.Graphics;
 
 constructor TBlock.Create(X, Y: Integer);
 begin
@@ -355,6 +355,8 @@ begin
   if (P.X<>SelBox.X) or
      (P.Y<>SelBox.Y) then
   begin
+    FrmGame.LbPosition.Caption := ' '+Format(Lang.Get('GAME_GRID_POSITION'), [P.Y+1, P.X+1]);
+
     SelBox := P;
     Rebuild;
   end;

@@ -2,7 +2,8 @@ unit UFrmDrop;
 
 interface
 
-uses Vcl.Forms, Vcl.StdCtrls, Vcl.Buttons, Vcl.Controls, System.Classes,
+uses Vcl.Forms, Vcl.StdCtrls, Vcl.Buttons, Vcl.Controls, Vcl.ExtCtrls,
+  System.Classes,
   //
   UClient;
 
@@ -13,6 +14,7 @@ type
     BtnKill: TBitBtn;
     BtnStop: TBitBtn;
     BtnContinue: TBitBtn;
+    Bevel1: TBevel;
     procedure FormCreate(Sender: TObject);
     procedure BtnContinueClick(Sender: TObject);
     procedure BtnStopClick(Sender: TObject);

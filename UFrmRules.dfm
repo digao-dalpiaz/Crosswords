@@ -4,7 +4,7 @@ object FrmRules: TFrmRules
   BorderStyle = bsDialog
   Caption = 'Game Rules'
   ClientHeight = 235
-  ClientWidth = 513
+  ClientWidth = 505
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -54,7 +54,7 @@ object FrmRules: TFrmRules
   object Bevel1: TBevel
     Left = 16
     Top = 192
-    Width = 481
+    Width = 473
     Height = 9
     Shape = bsTopLine
   end
@@ -103,7 +103,7 @@ object FrmRules: TFrmRules
     TabOrder = 4
   end
   object BtnOK: TButton
-    Left = 176
+    Left = 168
     Top = 200
     Width = 81
     Height = 25
@@ -113,7 +113,7 @@ object FrmRules: TFrmRules
     OnClick = BtnOKClick
   end
   object BtnCancel: TButton
-    Left = 264
+    Left = 256
     Top = 200
     Width = 81
     Height = 25

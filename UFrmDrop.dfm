@@ -4,8 +4,8 @@ object FrmDrop: TFrmDrop
   BorderIcons = []
   BorderStyle = bsDialog
   Caption = 'Missing Players'
-  ClientHeight = 333
-  ClientWidth = 465
+  ClientHeight = 301
+  ClientWidth = 473
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -26,16 +26,23 @@ object FrmDrop: TFrmDrop
     Height = 13
     Caption = 'Missing Players'
   end
+  object Bevel1: TBevel
+    Left = 16
+    Top = 248
+    Width = 441
+    Height = 9
+    Shape = bsTopLine
+  end
   object L: TListBox
     Left = 16
     Top = 32
     Width = 313
-    Height = 217
+    Height = 201
     Style = lbOwnerDrawFixed
     TabOrder = 0
   end
   object BtnKill: TBitBtn
-    Left = 336
+    Left = 344
     Top = 48
     Width = 113
     Height = 33
@@ -72,7 +79,7 @@ object FrmDrop: TFrmDrop
   end
   object BtnStop: TBitBtn
     Left = 240
-    Top = 288
+    Top = 256
     Width = 105
     Height = 33
     Caption = 'Stop Game'
@@ -108,7 +115,7 @@ object FrmDrop: TFrmDrop
   end
   object BtnContinue: TBitBtn
     Left = 128
-    Top = 288
+    Top = 256
     Width = 105
     Height = 33
     Caption = 'Continue Game'

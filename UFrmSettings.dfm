@@ -84,6 +84,7 @@ object FrmSettings: TFrmSettings
     Alignment = taRightJustify
     NumbersOnly = True
     TabOrder = 2
+    Text = '100'
   end
   object BtnZoom: TUpDown
     Left = 225
@@ -93,7 +94,7 @@ object FrmSettings: TFrmSettings
     Associate = EdGridZoom
     Min = 50
     Max = 200
-    Position = 50
+    Position = 100
     TabOrder = 3
   end
   object EdLanguage: TComboBox
@@ -112,6 +113,7 @@ object FrmSettings: TFrmSettings
     Alignment = taRightJustify
     NumbersOnly = True
     TabOrder = 4
+    Text = '10'
   end
   object BtnLogFontSize: TUpDown
     Left = 225
@@ -121,7 +123,7 @@ object FrmSettings: TFrmSettings
     Associate = EdLogFontSize
     Min = 7
     Max = 20
-    Position = 50
+    Position = 10
     TabOrder = 5
   end
 end

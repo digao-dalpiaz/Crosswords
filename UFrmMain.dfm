@@ -1,7 +1,7 @@
 object FrmMain: TFrmMain
   Left = 0
   Top = 0
-  Caption = 'Dz Crosswords'
+  Caption = 'Crosswords'
   ClientHeight = 491
   ClientWidth = 742
   Color = clBlack

@@ -45,7 +45,7 @@ end;
 
 function GetIniFilePath: String;
 begin
-  Result := ExtractFilePath(Application.ExeName)+'Scrabble.ini';
+  Result := ExtractFilePath(Application.ExeName)+'Crosswords.ini';
 end;
 
 procedure FixFormWidth(F: TForm);

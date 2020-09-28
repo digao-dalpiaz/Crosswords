@@ -27,7 +27,7 @@ SETTINGS_SOUNDS=Enable Sounds
 SETTINGS_ZOOM=Grid zoom:
 SETTINGS_LOG_FONT_SIZE=Log font size:
 
-START_CAPTION=Welcome to Scrabble
+START_CAPTION=Welcome to Crosswords
 START_NAME=Your name:
 START_HASH=Hash:
 START_OPERATION=Operation mode

@@ -1,4 +1,4 @@
-program Scrabble;
+program Crosswords;
 
 {$R *.dres}
 

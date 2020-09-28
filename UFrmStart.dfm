@@ -22,7 +22,7 @@ object FrmStart: TFrmStart
     Align = alTop
     Alignment = taCenter
     AutoSize = False
-    Caption = 'Welcome to Scrabble'
+    Caption = 'Welcome to Crosswords'
     Color = clYellow
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack

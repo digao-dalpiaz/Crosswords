@@ -31,7 +31,7 @@ type
     procedure SendPlayersList(Exclude: TDzSocket = nil);
     procedure SendLetters(Socket: TDzSocket);
     procedure SelectNextPlayer;
-    procedure SendMatrix;
+    procedure SendMatrix(Socket: TDzSocket = nil);
     procedure LetterReceived(Socket: TDzSocket; const A: string);
     procedure MessageReceived(Socket: TDzSocket; const A: string);
     function GetCurrentPlayer: TClient;
@@ -252,8 +252,11 @@ begin
   C := Socket.Data;
   S.SendAllEx(Socket, 'C', C.PlayerName); //send client connected to others
 
-  SendPlayersList;
+  SendPlayersList; //update players list to all
+
   SendRules(Socket); //send game rules to the player
+  SendMatrix(Socket); //send game rules to the player (may be reconnected)
+  SendLetters(Socket); //send letters to the player (may be reconnected)
 end;
 
 procedure TDMServer.SClientDisconnect(Sender: TObject; Socket: TDzSocket);
@@ -375,9 +378,16 @@ begin
   Result := PlayersList[CurrentPlayerIndex];
 end;
 
-procedure TDMServer.SendMatrix;
+procedure TDMServer.SendMatrix(Socket: TDzSocket = nil);
+var
+  A: string;
 begin
-  S.SendAll('X', Matrix.SaveToString);
+  A := Matrix.SaveToString;
+
+  if Socket<>nil then
+    S.Send(Socket, 'X', A)
+  else
+    S.SendAll('X', A);
 end;
 
 procedure TDMServer.LetterReceived(Socket: TDzSocket; const A: string);

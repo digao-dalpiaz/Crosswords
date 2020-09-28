@@ -28,7 +28,7 @@ type
 
 implementation
 
-uses UVars, System.SysUtils, UDMServer;
+uses UVars, UDictionary, UDMServer, System.SysUtils;
 
 constructor TClient.Create;
 var

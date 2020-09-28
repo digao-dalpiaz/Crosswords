@@ -19,7 +19,8 @@ uses
   UFrmSettings in 'UFrmSettings.pas' {FrmSettings},
   UFrmRules in 'UFrmRules.pas' {FrmRules},
   UFrmDrop in 'UFrmDrop.pas' {FrmDrop},
-  URichEditUnicode in 'URichEditUnicode.pas';
+  URichEditUnicode in 'URichEditUnicode.pas',
+  UDictionary in 'UDictionary.pas';
 
 {$R *.res}
 

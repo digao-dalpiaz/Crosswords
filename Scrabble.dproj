@@ -129,6 +129,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="URichEditUnicode.pas"/>
+        <DCCReference Include="UDictionary.pas"/>
         <RcItem Include="Sounds\pling.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>

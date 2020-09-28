@@ -40,7 +40,8 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, System.SysUtils, UDams, UDMServer, System.IniFiles, ULanguage;
+uses UVars, UDams, UDictionary, ULanguage, UDMServer,
+  System.SysUtils, System.IniFiles;
 
 class procedure TRules.Load;
 var

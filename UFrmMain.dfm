@@ -98,7 +98,6 @@ object FrmMain: TFrmMain
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 711
       object BtnSettings: TSpeedButton
         Left = 0
         Top = 0
@@ -144,7 +143,6 @@ object FrmMain: TFrmMain
       BevelOuter = bvNone
       TabOrder = 0
       Visible = False
-      ExplicitWidth = 520
       object LbLbMode: TLabel
         Left = 0
         Top = 0

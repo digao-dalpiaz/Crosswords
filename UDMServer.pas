@@ -63,7 +63,8 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, System.SysUtils, System.Variants, UFrmRules, UFrmDrop;
+uses UVars, UDictionary, UFrmRules, UFrmDrop,
+  System.SysUtils, System.Variants;
 
 procedure TDMServer.DataModuleCreate(Sender: TObject);
 begin

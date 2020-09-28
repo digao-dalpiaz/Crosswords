@@ -12,6 +12,7 @@ object FrmLog: TFrmLog
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object EdLog: TRichEdit
@@ -23,12 +24,6 @@ object FrmLog: TFrmLog
     Align = alClient
     BorderStyle = bsNone
     Color = 1973790
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -9
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 0

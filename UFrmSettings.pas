@@ -2,7 +2,8 @@ unit UFrmSettings;
 
 interface
 
-uses Vcl.Forms, Vcl.Controls, Vcl.StdCtrls, Vcl.ComCtrls, System.Classes;
+uses Vcl.Forms, Vcl.Controls, Vcl.StdCtrls, Vcl.ComCtrls, System.Classes,
+  Vcl.ExtCtrls;
 
 type
   TFrmSettings = class(TForm)
@@ -14,6 +15,10 @@ type
     BtnZoom: TUpDown;
     LbLanguage: TLabel;
     EdLanguage: TComboBox;
+    LbLogFontSize: TLabel;
+    EdLogFontSize: TEdit;
+    BtnLogFontSize: TUpDown;
+    Bevel1: TBevel;
     procedure FormCreate(Sender: TObject);
     procedure BtnOKClick(Sender: TObject);
   private
@@ -36,7 +41,7 @@ implementation
 {$R *.dfm}
 
 uses UVars, System.IniFiles, System.SysUtils, UFrmGame,
-  ULanguage, UFrmMain, UFrmStart;
+  ULanguage, UFrmMain, UFrmStart, UFrmLog;
 
 class procedure TSettings.Load;
 var
@@ -47,6 +52,7 @@ begin
     pubLanguageID := Ini.ReadString('Global', 'LanguageID', 'EN');
     pubEnableSounds := Ini.ReadBool('Global', 'Sounds', True);
     pubGridZoom := Ini.ReadInteger('Global', 'GridZoom', 100);
+    pubLogFontSize := Ini.ReadInteger('Global', 'LogFontSize', 10);
   finally
     Ini.Free;
   end;
@@ -61,6 +67,7 @@ begin
     Ini.WriteString('Global', 'LanguageID', LST_LANGUAGES[F.EdLanguage.ItemIndex].ID);
     Ini.WriteBool('Global', 'Sounds', F.CkSounds.Checked);
     Ini.WriteInteger('Global', 'GridZoom', F.BtnZoom.Position);
+    Ini.WriteInteger('Global', 'LogFontSize', F.BtnLogFontSize.Position);
   finally
     Ini.Free;
   end;
@@ -79,11 +86,14 @@ end;
 
 procedure TFrmSettings.FormCreate(Sender: TObject);
 begin
+  ClientWidth := ClientWidth+8; //fix theme behavior
+
   //--Translation
   Caption := Lang.Get('SETTINGS_CAPTION');
   LbLanguage.Caption := Lang.Get('SETTINGS_LANGUAGE');
   CkSounds.Caption := Lang.Get('SETTINGS_SOUNDS');
   LbGridZoom.Caption := Lang.Get('SETTINGS_ZOOM');
+  LbLogFontSize.Caption := Lang.Get('SETTINGS_LOG_FONT_SIZE');
 
   BtnOK.Caption := Lang.Get('DLG_OK');
   BtnCancel.Caption := Lang.Get('DLG_CANCEL');
@@ -94,6 +104,7 @@ begin
   EdLanguage.ItemIndex := GetCurrentLanguageIndex;
   CkSounds.Checked := pubEnableSounds;
   BtnZoom.Position := pubGridZoom;
+  BtnLogFontSize.Position := pubLogFontSize;
 end;
 
 procedure TFrmSettings.LoadLanguages;
@@ -115,6 +126,8 @@ begin
   FrmGame.InitTranslation;
 
   FrmGame.PB.UpdateZoom; //reload grid zoom
+
+  FrmLog.UpdateFontSize;
 
   ModalResult := mrOk;
 end;

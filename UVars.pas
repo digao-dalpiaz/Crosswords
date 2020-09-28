@@ -35,6 +35,7 @@ var
   pubLanguageID: string;
   pubEnableSounds: Boolean;
   pubGridZoom: Integer;
+  pubLogFontSize: Integer;
 
 function GetCurrentDictionaryIndex: Integer;
 procedure LoadDictionaryLetters;

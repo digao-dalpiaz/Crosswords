@@ -2,7 +2,7 @@ unit UFrmRules;
 
 interface
 
-uses Vcl.Forms, Vcl.StdCtrls, Vcl.Controls, System.Classes;
+uses Vcl.Forms, Vcl.StdCtrls, Vcl.Controls, System.Classes, Vcl.ExtCtrls;
 
 type
   TFrmRules = class(TForm)
@@ -18,6 +18,7 @@ type
     EdRebuyLetters: TEdit;
     BtnOK: TButton;
     BtnCancel: TButton;
+    Bevel1: TBevel;
     procedure FormCreate(Sender: TObject);
     procedure BtnOKClick(Sender: TObject);
   private
@@ -86,6 +87,8 @@ end;
 
 procedure TFrmRules.FormCreate(Sender: TObject);
 begin
+  ClientWidth := ClientWidth+8; //fix theme behavior
+
   //--Translation
   Caption := Lang.Get('RULES_CAPTION');
   LbTableSize.Caption := Lang.Get('RULES_GRID_SIZE');

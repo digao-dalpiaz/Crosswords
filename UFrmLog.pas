@@ -9,6 +9,9 @@ uses Vcl.Forms, System.Classes, Vcl.Controls, Vcl.StdCtrls, Vcl.ComCtrls,
 type
   TFrmLog = class(TForm)
     EdLog: TRichEdit;
+    procedure FormCreate(Sender: TObject);
+  public
+    procedure UpdateFontSize;
   end;
 
 var
@@ -24,7 +27,7 @@ implementation
 {$R *.dfm}
 
 uses System.SysUtils, Winapi.Windows, Winapi.Messages,
-  UFrmMain;
+  UVars, UFrmMain;
 
 procedure InitLogArea;
 begin
@@ -48,6 +51,18 @@ begin
   R.SelText := #13#10;
 
   SendMessage(R.Handle, WM_VSCROLL, SB_BOTTOM, 0);
+end;
+
+//
+
+procedure TFrmLog.FormCreate(Sender: TObject);
+begin
+  UpdateFontSize;
+end;
+
+procedure TFrmLog.UpdateFontSize;
+begin
+  EdLog.Font.Size := pubLogFontSize;
 end;
 
 end.

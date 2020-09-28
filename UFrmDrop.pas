@@ -51,6 +51,8 @@ end;
 
 procedure TFrmDrop.FormCreate(Sender: TObject);
 begin
+  ClientWidth := ClientWidth+8; //fix theme behavior
+
   //--Language
   Caption := Lang.Get('DROP_CAPTION');
   LbMissingPlayers.Caption := Lang.Get('DROP_LIST_TITLE');

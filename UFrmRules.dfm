@@ -3,7 +3,7 @@ object FrmRules: TFrmRules
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Game Rules'
-  ClientHeight = 251
+  ClientHeight = 235
   ClientWidth = 513
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -51,6 +51,13 @@ object FrmRules: TFrmRules
     Height = 13
     Caption = 'Rebuy letters:'
   end
+  object Bevel1: TBevel
+    Left = 16
+    Top = 192
+    Width = 481
+    Height = 9
+    Shape = bsTopLine
+  end
   object EdSizeW: TEdit
     Left = 128
     Top = 16
@@ -97,7 +104,7 @@ object FrmRules: TFrmRules
   end
   object BtnOK: TButton
     Left = 176
-    Top = 216
+    Top = 200
     Width = 81
     Height = 25
     Caption = 'OK'
@@ -107,7 +114,7 @@ object FrmRules: TFrmRules
   end
   object BtnCancel: TButton
     Left = 264
-    Top = 216
+    Top = 200
     Width = 81
     Height = 25
     Cancel = True

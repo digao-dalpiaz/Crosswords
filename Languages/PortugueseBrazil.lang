@@ -25,6 +25,7 @@ SETTINGS_CAPTION=Configurações
 SETTINGS_LANGUAGE=Linguagem:
 SETTINGS_SOUNDS=Habilitar Sons
 SETTINGS_ZOOM=Zoom da tabela:
+SETTINGS_LOG_FONT_SIZE=Tamanho da fonte do log:
 
 START_CAPTION=Bem-vindo ao Scrabble
 START_NAME=Seu nome:

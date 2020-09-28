@@ -25,6 +25,7 @@ SETTINGS_CAPTION=Settings
 SETTINGS_LANGUAGE=Language:
 SETTINGS_SOUNDS=Enable Sounds
 SETTINGS_ZOOM=Grid zoom:
+SETTINGS_LOG_FONT_SIZE=Log font size:
 
 START_CAPTION=Welcome to Scrabble
 START_NAME=Your name:

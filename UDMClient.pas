@@ -131,7 +131,7 @@ begin
     'X': FrmGame.MatrixReceived(A);
     '>': FrmGame.InitMyTurn;
     'G': FrmGame.AgreementRequestReceived;
-    'K': FrmGame.AgreementFinishReceived;
+    'K': FrmGame.AgreementFinishReceived(A);
     'J': FrmGame.DisagreeReceived;
     'W': begin
            Log(Lang.Get('LOG_WAIT_VALIDATION'));

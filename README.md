@@ -1,6 +1,6 @@
-# Scrabble
+# Crosswords
 
-## Delphi Client/Server Scrabble Game using Socket communication
+## Delphi Client/Server Crosswords Game using Socket communication
 
 ### Demo Screens
 

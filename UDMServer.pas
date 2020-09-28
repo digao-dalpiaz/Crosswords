@@ -437,10 +437,10 @@ var
   C: TClient;
   CurSok: TDzSocket;
 
-  procedure DisableAgreement;
+  procedure DisableAgreement(Accepted: Boolean);
   begin
      Status := ssTurn;
-     S.SendAllEx(CurSok, 'K');
+     S.SendAllEx(CurSok, 'K', ArrayToData([Accepted]));
 
      ClearAllAgreements;
   end;
@@ -458,13 +458,13 @@ begin
 
     if IsAllPlayersAgree(CurSok) then //Check if all players have set agreement
     begin
-      DisableAgreement;
+      DisableAgreement(True);
       CompletePlayerTurn(CurSok); //SendPlayersList will be called here
       Exit;
     end;
   end else
   begin
-    DisableAgreement;
+    DisableAgreement(False);
     S.Send(CurSok, 'J'); //send reject agreement to current player
   end;
 

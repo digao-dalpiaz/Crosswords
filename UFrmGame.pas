@@ -52,7 +52,7 @@ type
     procedure GameStartedReceived;
     procedure InitMyTurn;
     procedure AgreementRequestReceived;
-    procedure AgreementFinishReceived;
+    procedure AgreementFinishReceived(const A: string);
     procedure DisagreeReceived;
     procedure ReceivedPausedByDrop;
     procedure GameOverReceived;
@@ -253,11 +253,14 @@ begin
   DoSound('AGREEMENT');
 end;
 
-procedure TFrmGame.AgreementFinishReceived;
+procedure TFrmGame.AgreementFinishReceived(const A: string);
 begin
   SetStatus(gsPlaying);
 
-  Log(Lang.Get('LOG_AGREEMENT_PERIOD_FINISH'));
+  if DataToArray(A)[0] then
+    Log(Lang.Get('LOG_AGREEMENT_PERIOD_FINISH_ACCEPTED'))
+  else
+    Log(Lang.Get('LOG_AGREEMENT_PERIOD_FINISH_REJECTED'));
   DoSound('AGREEMENT_END');
 end;
 

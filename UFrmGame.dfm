@@ -94,7 +94,6 @@ object FrmGame: TFrmGame
         TabOrder = 0
         StyleElements = [seClient, seBorder]
         Zoom = 100
-        ExplicitHeight = 72
       end
       object EdChatMsg: TEdit
         Left = 0

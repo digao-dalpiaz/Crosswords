@@ -25,7 +25,6 @@ object FrmGame: TFrmGame
     Align = alClient
     BorderStyle = bsNone
     TabOrder = 0
-    ExplicitWidth = 639
   end
   object BoxSide: TPanel
     Left = 622
@@ -35,7 +34,6 @@ object FrmGame: TFrmGame
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 616
     object LbPlayers: TLabel
       Left = 0
       Top = 0
@@ -67,7 +65,6 @@ object FrmGame: TFrmGame
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitWidth = 248
       object LbChat: TLabel
         Left = 0
         Top = 0
@@ -83,13 +80,13 @@ object FrmGame: TFrmGame
         Left = 0
         Top = 13
         Width = 265
-        Height = 72
+        Height = 74
         TabStop = False
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
-        Font.Name = 'Segoe UI Emoji'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         ReadOnly = True
@@ -97,25 +94,23 @@ object FrmGame: TFrmGame
         TabOrder = 0
         StyleElements = [seClient, seBorder]
         Zoom = 100
-        ExplicitWidth = 248
-        ExplicitHeight = 74
+        ExplicitHeight = 72
       end
       object EdChatMsg: TEdit
         Left = 0
-        Top = 85
+        Top = 87
         Width = 265
-        Height = 23
+        Height = 21
         Align = alBottom
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
-        Font.Name = 'Segoe UI Emoji'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         TabOrder = 1
         OnKeyPress = EdChatMsgKeyPress
-        ExplicitTop = 87
-        ExplicitWidth = 248
+        ExplicitTop = 85
       end
     end
     object LPlayers: TListBox
@@ -129,7 +124,6 @@ object FrmGame: TFrmGame
       ItemHeight = 18
       TabOrder = 0
       OnDrawItem = LPlayersDrawItem
-      ExplicitWidth = 248
     end
     object LLetters: TListBox
       Left = 0
@@ -149,7 +143,6 @@ object FrmGame: TFrmGame
       ParentFont = False
       TabOrder = 1
       OnDrawItem = LLettersDrawItem
-      ExplicitWidth = 248
     end
     object BoxOperations: TPanel
       Left = 0
@@ -159,7 +152,6 @@ object FrmGame: TFrmGame
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
-      ExplicitWidth = 248
       object BtnDisagree: TBitBtn
         Left = 136
         Top = 8

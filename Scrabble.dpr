@@ -18,7 +18,8 @@ uses
   UFrmLog in 'UFrmLog.pas' {FrmLog},
   UFrmSettings in 'UFrmSettings.pas' {FrmSettings},
   UFrmRules in 'UFrmRules.pas' {FrmRules},
-  UFrmDrop in 'UFrmDrop.pas' {FrmDrop};
+  UFrmDrop in 'UFrmDrop.pas' {FrmDrop},
+  URichEditUnicode in 'URichEditUnicode.pas';
 
 {$R *.res}
 

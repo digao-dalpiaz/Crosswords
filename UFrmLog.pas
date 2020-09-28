@@ -2,7 +2,9 @@ unit UFrmLog;
 
 interface
 
-uses Vcl.Forms, System.Classes, Vcl.Controls, Vcl.StdCtrls, Vcl.ComCtrls;
+uses Vcl.Forms, System.Classes, Vcl.Controls, Vcl.StdCtrls, Vcl.ComCtrls,
+  //
+  Vcl.Graphics;
 
 type
   TFrmLog = class(TForm)
@@ -15,11 +17,13 @@ var
 procedure InitLogArea;
 procedure Log(const Text: string);
 
+procedure RichEditIncLogLine(R: TRichEdit; const Text1, Text2: string; Color1, Color2: TColor);
+
 implementation
 
 {$R *.dfm}
 
-uses System.SysUtils, Vcl.Graphics, Winapi.Windows, Winapi.Messages,
+uses System.SysUtils, Winapi.Windows, Winapi.Messages,
   UFrmMain;
 
 procedure InitLogArea;
@@ -30,16 +34,17 @@ begin
 end;
 
 procedure Log(const Text: string);
-var
-  R: TRichEdit;
 begin
-  R := FrmLog.EdLog;
+  RichEditIncLogLine(FrmLog.EdLog, FormatDateTime('hh:nn:ss', Now)+' - ', Text, clGray, clWhite);
+end;
 
+procedure RichEditIncLogLine(R: TRichEdit; const Text1, Text2: string; Color1, Color2: TColor);
+begin
   R.SelStart := R.GetTextLen;
-  R.SelAttributes.Color := clGray;
-  R.SelText := FormatDateTime('hh:nn:ss', Now)+' - ';
-  R.SelAttributes.Color := clWhite;
-  R.SelText := Text;
+  R.SelAttributes.Color := Color1;
+  R.SelText := Text1;
+  R.SelAttributes.Color := Color2;
+  R.SelText := Text2;
   R.SelText := #13#10;
 
   SendMessage(R.Handle, WM_VSCROLL, SB_BOTTOM, 0);

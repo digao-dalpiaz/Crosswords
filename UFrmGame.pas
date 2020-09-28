@@ -5,7 +5,7 @@ interface
 uses Vcl.Forms, System.ImageList, Vcl.ImgList, Vcl.Controls, Vcl.StdCtrls,
   Vcl.Buttons, Vcl.ComCtrls, Vcl.ExtCtrls, System.Classes,
   //
-  System.Types, UMatrix;
+  System.Types, URichEditUnicode, UMatrix;
 
 type
   TGameStatus = (gsUnknown, gsPreparing, gsPlaying, gsMyTurn, gsAgreement, gsGameOver);
@@ -127,14 +127,7 @@ end;
 
 procedure TFrmGame.ChatLog(const Player, Text: string);
 begin
-  EdChatLog.SelStart := EdChatLog.GetTextLen;
-  EdChatLog.SelAttributes.Color := clGray;
-  EdChatLog.SelText := Player+': ';
-  EdChatLog.SelAttributes.Color := clLime;
-  EdChatLog.SelText := Text;
-  EdChatLog.SelText := #13#10;
-
-  SendMessage(EdChatLog.Handle, WM_VSCROLL, SB_BOTTOM, 0);
+  RichEditIncLogLine(EdChatLog, Player+': ', Text, clGray, clLime);
 end;
 
 procedure TFrmGame.EdChatMsgKeyPress(Sender: TObject; var Key: Char);

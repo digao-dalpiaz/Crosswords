@@ -3,7 +3,7 @@ unit UVars;
 interface
 
 const
-  STR_VERSION = '1.0 alpha 5';
+  STR_VERSION = '1.0 alpha 6';
   INT_TCP_PORT = 6631;
 
   BLANK_LETTER = #0;

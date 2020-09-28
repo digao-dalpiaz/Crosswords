@@ -18,7 +18,7 @@ type
     EdServerAddress: TEdit;
     CkReconnect: TCheckBox;
     BoxName: TPanel;
-    BoxHash: TPanel;
+    BoxReconnect: TPanel;
     EdPlayerName: TEdit;
     LbPlayerName: TLabel;
     EdHash: TMaskEdit;
@@ -89,7 +89,7 @@ begin
   Reconnect := CkReconnect.Checked and not pubModeServer;
 
   BoxName.Visible := not Reconnect;
-  BoxHash.Visible := Reconnect;
+  BoxReconnect.Visible := Reconnect;
 end;
 
 procedure TFrmStart.BtnJoinClick(Sender: TObject);
@@ -105,7 +105,7 @@ begin
     end;
   end;
 
-  if BoxHash.Visible then
+  if BoxReconnect.Visible then
   begin
     if EdHash.Text = string.Empty then //mask edit
     begin
@@ -149,7 +149,7 @@ begin
   EnableControls(False);
 
   pubPlayerName := IfThen(BoxName.Visible, EdPlayerName.Text);
-  pubPlayerHash := IfThen(BoxHash.Visible, EdHash.Text);
+  pubPlayerHash := IfThen(BoxReconnect.Visible, EdHash.Text);
   pubPassword := EdPassword.Text;
 
   Log(Lang.Get('LOG_CONNECTING'));

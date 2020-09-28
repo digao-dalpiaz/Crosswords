@@ -110,7 +110,10 @@ begin
     if pubModeServer then
       Log(Lang.Get('LOG_PREPARING_GAME_SERVER'))
     else
-      Log(Lang.Get('LOG_PREPARING_GAME_CLIENT'));
+      if FrmStart.BoxReconnect.Visible then
+        Log(Lang.Get('LOG_RECONECTED_GAME_CLIENT'))
+      else
+        Log(Lang.Get('LOG_PREPARING_GAME_CLIENT'));
   end else
   begin
     Log(Format(Lang.Get('LOG_LOGIN_REJECTED'), [Lang.Get('CONN_REJECT_'+Data)]));
@@ -171,6 +174,7 @@ begin
 
   FrmMain.UpdateConnectionBox;
 
+  FrmGame.LbPosition.Caption := string.Empty;
   FrmGame.PB.SetMatrixSize(
     FrmMain.ClientRules.SizeH,
     FrmMain.ClientRules.SizeW);

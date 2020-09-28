@@ -244,7 +244,7 @@ object FrmStart: TFrmStart
       TabOrder = 0
     end
   end
-  object BoxHash: TPanel
+  object BoxReconnect: TPanel
     Left = 8
     Top = 48
     Width = 273

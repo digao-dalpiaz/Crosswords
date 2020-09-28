@@ -49,6 +49,7 @@ LOG_LOGIN_ACCEPTED=Login aceito.
 LOG_LOGIN_REJECTED=Login rejeitado: %s
 LOG_PREPARING_GAME_SERVER=Por favor, aguarde todos os jogadores se conectarem e então clique em "Iniciar Jogo".
 LOG_PREPARING_GAME_CLIENT=Por favor, aguarde o servidor iniciar o jogo. Enquanto isso você pode utilizar o chat.
+LOG_RECONECTED_GAME_CLIENT=Você retornou ao jogo. Aguarde o servidor dar continuidade.
 LOG_PLAYER_JOIN=Jogador %s entrou.
 LOG_PLAYER_LEFT=Jogador %s saiu.
 LOG_WAIT_VALIDATION=Por favor, aguarde enquanto seus oponentes validam suas palavras.

@@ -104,7 +104,7 @@ begin
     FrmMain.UpdateConnectionBox;
     FrmMain.BoxConInfo.Visible := True;
 
-    FrmGame.Initialize;
+    FrmGame.Initialize(FrmStart.BoxReconnect.Visible);
     FrmGame.Show;
 
     if pubModeServer then
@@ -135,23 +135,17 @@ begin
     '>': FrmGame.InitMyTurn;
     'G': FrmGame.AgreementRequestReceived;
     'K': FrmGame.AgreementFinishReceived(A);
-    'J': FrmGame.DisagreeReceived;
-    'W': begin
-           Log(Lang.Get('LOG_WAIT_VALIDATION'));
-           //DoSound('WAIT');
-         end;
+    'W': FrmGame.WaitValidationReceived;
+    'F': FrmGame.ValidationAcceptedReceived;
+    'J': FrmGame.ValidationRejectedReceived;
     'B': begin
            Log(Format(Lang.Get('LOG_REBUY'), [A.ToInteger]));
            DoSound('BUY');
          end;
-    'F': begin
-           Log(Lang.Get('LOG_WORDS_ACCEPTED'));
-           DoSound('DONE');
-         end;
     'E': FrmGame.GameOverReceived;
     'P': FrmGame.ReceivedPreparingNewGame;
     '?': FrmGame.ReceivedPausedByDrop;
-    '/': Log(Lang.Get('LOG_DROP_CONTINUE'));
+    '/': FrmGame.ReceivedDropContinue;
   end;
 end;
 

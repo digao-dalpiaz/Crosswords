@@ -63,6 +63,14 @@ LOG_DROP_CONTINUE=A situação dos jogadores perdidos foi resolvida e o jogo ir�
 START_BTN_JOIN=Iniciar
 START_BTN_EXIT=Sair
 
+GAME_STATUS_PREPARING=Sala de espera
+GAME_STATUS_PLAYING=Jogo em curso
+GAME_STATUS_MYTURN=Sua vez
+GAME_STATUS_WAITVALID=Aguardando validação
+GAME_STATUS_AGREEMENT=Período de validação
+GAME_STATUS_PAUSED=Jogo pausado
+GAME_STATUS_GAMEOVER=Fim de jogo
+
 GAME_GRID_POSITION=Linha %d / Coluna %d
 GAME_BOX_PLAYERS=Jogadores
 GAME_BOX_LETTERS=Letras

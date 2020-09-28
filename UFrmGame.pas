@@ -8,7 +8,10 @@ uses Vcl.Forms, System.ImageList, Vcl.ImgList, Vcl.Controls, Vcl.StdCtrls,
   System.Types, URichEditUnicode, UMatrix;
 
 type
-  TGameStatus = (gsUnknown, gsPreparing, gsPlaying, gsMyTurn, gsAgreement, gsGameOver);
+  TGameStatus = (
+    gsUnknown, gsPreparing,
+    gsPlaying, gsMyTurn, gsWaitValid, gsAgreement,
+    gsPaused, gsGameOver);
 
   TFrmGame = class(TForm)
     BoxSide: TPanel;
@@ -30,7 +33,9 @@ type
     BtnRestart: TBitBtn;
     BoxGrid: TPanel;
     SB: TScrollBox;
+    BoxTopOfGrid: TPanel;
     LbPosition: TLabel;
+    LbStatus: TLabel;
     procedure EdChatMsgKeyPress(Sender: TObject; var Key: Char);
     procedure BtnStartGameClick(Sender: TObject);
     procedure LPlayersDrawItem(Control: TWinControl; Index: Integer;
@@ -48,15 +53,18 @@ type
     PB: TMatrixImage;
 
     procedure InitTranslation;
-    procedure Initialize;
+    procedure Initialize(Reconnected: Boolean);
     procedure MatrixReceived(const A: string);
     procedure ChatLog(const Player, Text: string);
     procedure GameStartedReceived;
     procedure InitMyTurn;
+    procedure WaitValidationReceived;
+    procedure ValidationAcceptedReceived;
+    procedure ValidationRejectedReceived;
     procedure AgreementRequestReceived;
     procedure AgreementFinishReceived(const A: string);
-    procedure DisagreeReceived;
     procedure ReceivedPausedByDrop;
+    procedure ReceivedDropContinue;
     procedure GameOverReceived;
     procedure ReceivedPreparingNewGame;
   private
@@ -98,9 +106,12 @@ begin
   BtnDisagree.Caption := Lang.Get('GAME_BTN_DISAGREE');
 end;
 
-procedure TFrmGame.Initialize;
+procedure TFrmGame.Initialize(Reconnected: Boolean);
 begin
-  SetStatus(gsPreparing);
+  if Reconnected then
+    SetStatus(gsPaused)
+  else
+    SetStatus(gsPreparing);
 
   PB.SetMatrixSize(0, 0);
   LPlayers.Clear;
@@ -110,6 +121,15 @@ begin
 end;
 
 procedure TFrmGame.SetStatus(NewStatus: TGameStatus);
+
+ procedure SetStatusLabel(const LangIdentSufix: string; Color: TColor);
+ begin
+   LbStatus.Caption := Lang.Get('GAME_STATUS_'+LangIdentSufix);
+   LbStatus.Color := Color;
+
+   LbStatus.Visible := True;
+ end;
+
 begin
   Status := NewStatus;
 
@@ -122,6 +142,18 @@ begin
   BtnDisagree.Visible := (Status = gsAgreement);
 
   BtnRestart.Visible := (Status = gsGameOver) and pubModeServer;
+
+  case Status of
+    gsUnknown: LbStatus.Visible := False;
+    gsPreparing: SetStatusLabel('PREPARING', clPurple);
+    gsPlaying: SetStatusLabel('PLAYING', clBlack);
+    gsMyTurn: SetStatusLabel('MYTURN', clGreen);
+    gsWaitValid: SetStatusLabel('WAITVALID', clWebIvory);
+    gsAgreement: SetStatusLabel('AGREEMENT', clBlue);
+    gsPaused: SetStatusLabel('PAUSED', clMaroon);
+    gsGameOver: SetStatusLabel('GAMEOVER', clRed);
+    else raise Exception.Create('Internal: Unsupported status');
+  end;
 end;
 
 procedure TFrmGame.MatrixReceived(const A: string);
@@ -249,6 +281,29 @@ begin
   DoSound('BELL');
 end;
 
+procedure TFrmGame.WaitValidationReceived;
+begin
+  SetStatus(gsWaitValid);
+
+  Log(Lang.Get('LOG_WAIT_VALIDATION'));
+end;
+
+procedure TFrmGame.ValidationAcceptedReceived;
+begin
+  SetStatus(gsPlaying);
+
+  Log(Lang.Get('LOG_WORDS_ACCEPTED'));
+  DoSound('DONE');
+end;
+
+procedure TFrmGame.ValidationRejectedReceived;
+begin
+  SetStatus(gsMyTurn);
+
+  Log(Lang.Get('LOG_DISAGREE_RECEIVED'));
+  DoSound('REJECT');
+end;
+
 procedure TFrmGame.AgreementRequestReceived;
 begin
   SetStatus(gsAgreement);
@@ -268,19 +323,18 @@ begin
   DoSound('AGREEMENT_END');
 end;
 
-procedure TFrmGame.DisagreeReceived;
+procedure TFrmGame.ReceivedPausedByDrop;
 begin
-  SetStatus(gsMyTurn);
+  SetStatus(gsPaused);
 
-  Log(Lang.Get('LOG_DISAGREE_RECEIVED'));
-  DoSound('REJECT');
+  Log(Lang.Get('LOG_PAUSE_BY_DROP'));
 end;
 
-procedure TFrmGame.ReceivedPausedByDrop;
+procedure TFrmGame.ReceivedDropContinue;
 begin
   SetStatus(gsPlaying);
 
-  Log(Lang.Get('LOG_PAUSE_BY_DROP'));
+  Log(Lang.Get('LOG_DROP_CONTINUE'))
 end;
 
 procedure TFrmGame.GameOverReceived;

@@ -372,35 +372,46 @@ object FrmGame: TFrmGame
     BevelOuter = bvNone
     BorderWidth = 2
     TabOrder = 0
-    ExplicitLeft = 16
-    ExplicitTop = 48
-    ExplicitWidth = 417
-    ExplicitHeight = 305
-    object LbPosition: TLabel
-      Left = 2
-      Top = 2
-      Width = 618
-      Height = 13
-      Align = alTop
-      AutoSize = False
-      ExplicitLeft = 296
-      ExplicitTop = 216
-      ExplicitWidth = 31
-    end
     object SB: TScrollBox
       Left = 2
-      Top = 15
+      Top = 17
       Width = 618
-      Height = 427
+      Height = 425
       HorzScrollBar.Tracking = True
       VertScrollBar.Tracking = True
       Align = alClient
       BorderStyle = bsNone
+      TabOrder = 1
+      ExplicitTop = 15
+      ExplicitHeight = 427
+    end
+    object BoxTopOfGrid: TPanel
+      Left = 2
+      Top = 2
+      Width = 618
+      Height = 15
+      Align = alTop
+      BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 622
-      ExplicitHeight = 444
+      object LbPosition: TLabel
+        Left = 0
+        Top = 0
+        Width = 217
+        Height = 15
+        Align = alLeft
+        AutoSize = False
+      end
+      object LbStatus: TLabel
+        Left = 217
+        Top = 0
+        Width = 217
+        Height = 15
+        Align = alLeft
+        Alignment = taCenter
+        AutoSize = False
+        Transparent = False
+        ExplicitLeft = 296
+      end
     end
   end
   object IL: TImageList

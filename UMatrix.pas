@@ -311,7 +311,7 @@ begin
   if (SelBox.Y>Data.Count-1) or
      (SelBox.X>Data.GetColCount-1) then Exit;
 
-  if not (FrmGame.Status in [gsPlaying, gsMyTurn, gsAgreement]) then Exit;
+  if not (FrmGame.Status in [gsPlaying, gsMyTurn, gsWaitValid, gsAgreement]) then Exit;
 
   if FrmGame.Status <> gsMyTurn then
     MsgRaise(Lang.Get('GAME_MSG_NOT_YOUR_TURN'));

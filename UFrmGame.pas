@@ -33,9 +33,8 @@ type
     BtnRestart: TBitBtn;
     BoxGrid: TPanel;
     SB: TScrollBox;
-    BoxTopOfGrid: TPanel;
     LbPosition: TLabel;
-    LbStatus: TLabel;
+    BoxStatus: TPanel;
     procedure EdChatMsgKeyPress(Sender: TObject; var Key: Char);
     procedure BtnStartGameClick(Sender: TObject);
     procedure LPlayersDrawItem(Control: TWinControl; Index: Integer;
@@ -124,10 +123,8 @@ procedure TFrmGame.SetStatus(NewStatus: TGameStatus);
 
  procedure SetStatusLabel(const LangIdentSufix: string; Color: TColor);
  begin
-   LbStatus.Caption := Lang.Get('GAME_STATUS_'+LangIdentSufix);
-   LbStatus.Color := Color;
-
-   LbStatus.Visible := True;
+   BoxStatus.Caption := Lang.Get('GAME_STATUS_'+LangIdentSufix);
+   BoxStatus.Color := Color;
  end;
 
 begin
@@ -144,14 +141,18 @@ begin
   BtnRestart.Visible := (Status = gsGameOver) and pubModeServer;
 
   case Status of
-    gsUnknown: LbStatus.Visible := False;
+    gsUnknown:
+      begin
+         BoxStatus.Caption := string.Empty;
+         BoxStatus.Color := clBtnFace;
+      end;
     gsPreparing: SetStatusLabel('PREPARING', clPurple);
     gsPlaying: SetStatusLabel('PLAYING', clBlack);
     gsMyTurn: SetStatusLabel('MYTURN', clGreen);
-    gsWaitValid: SetStatusLabel('WAITVALID', clWebIvory);
+    gsWaitValid: SetStatusLabel('WAITVALID', clWebBrown);
     gsAgreement: SetStatusLabel('AGREEMENT', clBlue);
-    gsPaused: SetStatusLabel('PAUSED', clMaroon);
-    gsGameOver: SetStatusLabel('GAMEOVER', clRed);
+    gsPaused: SetStatusLabel('PAUSED', $005B5B5B);
+    gsGameOver: SetStatusLabel('GAMEOVER', $002C075C);
     else raise Exception.Create('Internal: Unsupported status');
   end;
 end;

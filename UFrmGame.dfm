@@ -50,10 +50,11 @@ object FrmGame: TFrmGame
       Left = 0
       Top = 295
       Width = 265
-      Height = 108
+      Height = 87
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
+      ExplicitHeight = 108
       object LbChat: TLabel
         Left = 0
         Top = 0
@@ -69,7 +70,7 @@ object FrmGame: TFrmGame
         Left = 0
         Top = 13
         Width = 265
-        Height = 74
+        Height = 53
         TabStop = False
         Align = alClient
         Font.Charset = ANSI_CHARSET
@@ -83,10 +84,11 @@ object FrmGame: TFrmGame
         TabOrder = 0
         StyleElements = [seClient, seBorder]
         Zoom = 100
+        ExplicitHeight = 25
       end
       object EdChatMsg: TEdit
         Left = 0
-        Top = 87
+        Top = 66
         Width = 265
         Height = 21
         Align = alBottom
@@ -98,6 +100,7 @@ object FrmGame: TFrmGame
         ParentFont = False
         TabOrder = 1
         OnKeyPress = EdChatMsgKeyPress
+        ExplicitTop = 87
       end
     end
     object LPlayers: TListBox
@@ -133,7 +136,7 @@ object FrmGame: TFrmGame
     end
     object BoxOperations: TPanel
       Left = 0
-      Top = 403
+      Top = 382
       Width = 265
       Height = 41
       Align = alBottom
@@ -362,6 +365,18 @@ object FrmGame: TFrmGame
         OnClick = BtnRestartClick
       end
     end
+    object BoxStatus: TPanel
+      Left = 0
+      Top = 423
+      Width = 265
+      Height = 21
+      Align = alBottom
+      BevelKind = bkFlat
+      BevelOuter = bvNone
+      TabOrder = 4
+      StyleElements = [seFont, seBorder]
+      ExplicitTop = 430
+    end
   end
   object BoxGrid: TPanel
     Left = 0
@@ -372,46 +387,28 @@ object FrmGame: TFrmGame
     BevelOuter = bvNone
     BorderWidth = 2
     TabOrder = 0
+    object LbPosition: TLabel
+      Left = 2
+      Top = 2
+      Width = 618
+      Height = 13
+      Align = alTop
+      AutoSize = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+    end
     object SB: TScrollBox
       Left = 2
-      Top = 17
+      Top = 15
       Width = 618
-      Height = 425
+      Height = 427
       HorzScrollBar.Tracking = True
       VertScrollBar.Tracking = True
       Align = alClient
       BorderStyle = bsNone
-      TabOrder = 1
-      ExplicitTop = 15
-      ExplicitHeight = 427
-    end
-    object BoxTopOfGrid: TPanel
-      Left = 2
-      Top = 2
-      Width = 618
-      Height = 15
-      Align = alTop
-      BevelOuter = bvNone
       TabOrder = 0
-      object LbPosition: TLabel
-        Left = 0
-        Top = 0
-        Width = 217
-        Height = 15
-        Align = alLeft
-        AutoSize = False
-      end
-      object LbStatus: TLabel
-        Left = 217
-        Top = 0
-        Width = 217
-        Height = 15
-        Align = alLeft
-        Alignment = taCenter
-        AutoSize = False
-        Transparent = False
-        ExplicitLeft = 296
-      end
+      ExplicitTop = 17
+      ExplicitHeight = 425
     end
   end
   object IL: TImageList

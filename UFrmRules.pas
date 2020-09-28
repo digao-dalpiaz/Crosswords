@@ -87,7 +87,7 @@ end;
 
 procedure TFrmRules.FormCreate(Sender: TObject);
 begin
-  ClientWidth := ClientWidth+8; //fix theme behavior
+  FixFormWidth(Self);
 
   //--Translation
   Caption := Lang.Get('RULES_CAPTION');

@@ -34,7 +34,7 @@ implementation
 
 {$R *.dfm}
 
-uses UDams, ULanguage, UFrmMain, UFrmGame, UDMServer, System.SysUtils;
+uses UVars, UDams, ULanguage, UFrmMain, UFrmGame, UDMServer, System.SysUtils;
 
 procedure DoPlayerDroped(C: TClient);
 begin
@@ -51,7 +51,7 @@ end;
 
 procedure TFrmDrop.FormCreate(Sender: TObject);
 begin
-  ClientWidth := ClientWidth+8; //fix theme behavior
+  FixFormWidth(Self);
 
   //--Language
   Caption := Lang.Get('DROP_CAPTION');

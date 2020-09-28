@@ -2,6 +2,8 @@ unit UVars;
 
 interface
 
+uses Vcl.Forms;
+
 const
   STR_VERSION = '1.0 alpha 6';
   INT_TCP_PORT = 6631;
@@ -45,9 +47,11 @@ procedure DoSound(const ResName: string);
 
 function GetIniFilePath: String;
 
+procedure FixFormWidth(F: TForm);
+
 implementation
 
-uses System.Classes, System.SysUtils, Winapi.MMSystem, System.Types, Vcl.Forms;
+uses System.Classes, System.SysUtils, Winapi.MMSystem, System.Types;
 
 function GetCurrentDictionaryIndex: Integer;
 var
@@ -113,6 +117,11 @@ end;
 function GetIniFilePath: String;
 begin
   Result := ExtractFilePath(Application.ExeName)+'Scrabble.ini';
+end;
+
+procedure FixFormWidth(F: TForm);
+begin
+  F.ClientWidth := F.ClientWidth+8; //fix theme behavior
 end;
 
 end.

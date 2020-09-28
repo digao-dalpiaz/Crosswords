@@ -3,7 +3,7 @@ object FrmSettings: TFrmSettings
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Settings'
-  ClientHeight = 219
+  ClientHeight = 162
   ClientWidth = 457
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,23 +18,16 @@ object FrmSettings: TFrmSettings
   TextHeight = 13
   object LbGridZoom: TLabel
     Left = 16
-    Top = 107
+    Top = 51
     Width = 153
     Height = 13
     Alignment = taRightJustify
     AutoSize = False
     Caption = 'Grid zoom:'
   end
-  object LbLanguage: TLabel
-    Left = 16
-    Top = 16
-    Width = 51
-    Height = 13
-    Caption = 'Language:'
-  end
   object LbLogFontSize: TLabel
     Left = 16
-    Top = 139
+    Top = 83
     Width = 153
     Height = 13
     Alignment = taRightJustify
@@ -43,87 +36,79 @@ object FrmSettings: TFrmSettings
   end
   object Bevel1: TBevel
     Left = 16
-    Top = 176
+    Top = 120
     Width = 425
     Height = 9
     Shape = bsTopLine
   end
   object CkSounds: TCheckBox
     Left = 16
-    Top = 72
+    Top = 16
     Width = 97
     Height = 17
     Caption = 'Enable Sounds'
-    TabOrder = 1
+    TabOrder = 0
   end
   object BtnOK: TButton
     Left = 144
-    Top = 184
+    Top = 128
     Width = 81
     Height = 25
     Caption = 'OK'
     Default = True
-    TabOrder = 6
+    TabOrder = 5
     OnClick = BtnOKClick
   end
   object BtnCancel: TButton
     Left = 232
-    Top = 184
+    Top = 128
     Width = 81
     Height = 25
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
-    TabOrder = 7
+    TabOrder = 6
   end
   object EdGridZoom: TEdit
     Left = 176
-    Top = 104
+    Top = 48
     Width = 49
     Height = 21
     Alignment = taRightJustify
     NumbersOnly = True
-    TabOrder = 2
+    TabOrder = 1
     Text = '100'
   end
   object BtnZoom: TUpDown
     Left = 225
-    Top = 104
+    Top = 48
     Width = 16
     Height = 21
     Associate = EdGridZoom
     Min = 50
     Max = 200
     Position = 100
-    TabOrder = 3
-  end
-  object EdLanguage: TComboBox
-    Left = 16
-    Top = 32
-    Width = 249
-    Height = 21
-    Style = csDropDownList
-    TabOrder = 0
+    TabOrder = 2
   end
   object EdLogFontSize: TEdit
     Left = 176
-    Top = 136
+    Top = 80
     Width = 49
     Height = 21
     Alignment = taRightJustify
     NumbersOnly = True
-    TabOrder = 4
+    TabOrder = 3
     Text = '10'
   end
   object BtnLogFontSize: TUpDown
     Left = 225
-    Top = 136
+    Top = 80
     Width = 16
     Height = 21
     Associate = EdLogFontSize
     Min = 7
     Max = 20
     Position = 10
-    TabOrder = 5
+    TabOrder = 4
   end
 end

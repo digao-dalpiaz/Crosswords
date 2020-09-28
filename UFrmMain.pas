@@ -36,15 +36,8 @@ type
     procedure InitStartPage;
     procedure InitGamePage;
   public
-    ClientRules: record
-      Received: Boolean;
-
-      Dictionary: string;
-      SizeW, SizeH, InitialLetters, RebuyLetters: Integer;
-    end;
-
+    procedure ConfigLanguage(Save: Boolean);
     procedure InitTranslation;
-    procedure UpdateConnectionBox;
   end;
 
 var
@@ -56,16 +49,17 @@ implementation
 
 uses UVars, UDams, ULanguage,
   UFrmStart, UFrmGame, UFrmLog, UFrmSettings, UDMClient,
-  System.StrUtils, System.SysUtils, Winapi.ShellAPI;
+  System.SysUtils, System.IniFiles, Winapi.ShellAPI;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
 begin
   ReportMemoryLeaksOnShutdown := True;
 
-  TSettings.Load;
-
+  ConfigLanguage(False); //load config language
   Lang.LoadLanguage;
   InitTranslation;
+
+  TSettings.Load;
 
   Randomize;
 
@@ -74,6 +68,21 @@ begin
   InitGamePage;
 
   FrmStart.Show;
+end;
+
+procedure TFrmMain.ConfigLanguage(Save: Boolean);
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(GetIniFilePath);
+  try
+    if Save then
+      Ini.WriteString('Language', 'ID', pubLanguageID)
+    else
+      pubLanguageID := Ini.ReadString('Language', 'ID', 'EN');
+  finally
+    Ini.Free;
+  end;
 end;
 
 procedure TFrmMain.InitTranslation;
@@ -85,8 +94,6 @@ begin
 
   _QuestionCloseApp.Message := Lang.Get('MSG_CLOSE_APP');
   _QuestionKillPlayer.Message := Lang.Get('MSG_KILL_PLAYER');
-
-  UpdateConnectionBox;
 end;
 
 procedure TFrmMain.InitStartPage;
@@ -110,22 +117,6 @@ end;
 procedure TFrmMain.LbLinkClick(Sender: TObject);
 begin
   ShellExecute(0, '', 'http://digaodalpiaz.com/', '', '', 0);
-end;
-
-procedure TFrmMain.UpdateConnectionBox;
-begin
-  LbMode.Caption := Lang.Get(IfThen(pubModeServer, 'MODE_SERVER', 'MODE_CLIENT'));
-  LbPlayer.Caption := pubPlayerName;
-
-  with ClientRules do
-  begin
-    if Received then
-      LbRules.Caption :=
-        Format(Lang.Get('TITLE_RULES_DEFINITION'), [
-        Dictionary, SizeW, SizeH, InitialLetters, RebuyLetters])
-    else
-      LbRules.Caption := string.Empty;
-  end;
 end;
 
 procedure TFrmMain.BtnSettingsClick(Sender: TObject);

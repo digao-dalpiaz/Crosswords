@@ -54,7 +54,6 @@ object FrmGame: TFrmGame
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitHeight = 108
       object LbChat: TLabel
         Left = 0
         Top = 0
@@ -84,7 +83,6 @@ object FrmGame: TFrmGame
         TabOrder = 0
         StyleElements = [seClient, seBorder]
         Zoom = 100
-        ExplicitHeight = 25
       end
       object EdChatMsg: TEdit
         Left = 0
@@ -100,7 +98,6 @@ object FrmGame: TFrmGame
         ParentFont = False
         TabOrder = 1
         OnKeyPress = EdChatMsgKeyPress
-        ExplicitTop = 87
       end
     end
     object LPlayers: TListBox
@@ -375,7 +372,6 @@ object FrmGame: TFrmGame
       BevelOuter = bvNone
       TabOrder = 4
       StyleElements = [seFont, seBorder]
-      ExplicitTop = 430
     end
   end
   object BoxGrid: TPanel
@@ -407,8 +403,6 @@ object FrmGame: TFrmGame
       Align = alClient
       BorderStyle = bsNone
       TabOrder = 0
-      ExplicitTop = 17
-      ExplicitHeight = 425
     end
   end
   object IL: TImageList

@@ -40,8 +40,9 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, UFrmGame, UFrmLog, UFrmStart, UFrmMain, System.SysUtils, UDMServer,
-  ULanguage;
+uses UVars, ULanguage, UDMServer,
+  UFrmMain, UFrmStart, UFrmGame, UFrmLog,
+  System.SysUtils, System.StrUtils;
 
 procedure TDMClient.DataModuleCreate(Sender: TObject);
 begin
@@ -100,8 +101,9 @@ begin
     pubPlayerName := D[0];
     FrmStart.EdHash.Text := D[1]; //auto-set for use when disconnect
 
-    FrmMain.ClientRules.Received := False;
-    FrmMain.UpdateConnectionBox;
+    FrmMain.LbMode.Caption := Lang.Get(IfThen(pubModeServer, 'MODE_SERVER', 'MODE_CLIENT'));
+    FrmMain.LbPlayer.Caption := pubPlayerName;
+    FrmMain.LbRules.Caption := string.Empty;
     FrmMain.BoxConInfo.Visible := True;
 
     FrmGame.Initialize(FrmStart.BoxReconnect.Visible);
@@ -152,26 +154,23 @@ end;
 procedure TDMClient.RulesReceived(const A: string; ToOne: Boolean);
 var
   D: TMsgArray;
+  Dictionary: string;
+  SizeW, SizeH, InitialLetters, RebuyLetters: Integer;
 begin
   D := DataToArray(A);
 
-  with FrmMain.ClientRules do
-  begin
-    Dictionary := D[0];
-    SizeW := D[1];
-    SizeH := D[2];
-    InitialLetters := D[3];
-    RebuyLetters := D[4];
+  Dictionary := D[0];
+  SizeW := D[1];
+  SizeH := D[2];
+  InitialLetters := D[3];
+  RebuyLetters := D[4];
 
-    Received := True;
-  end;
-
-  FrmMain.UpdateConnectionBox;
+  FrmMain.LbRules.Caption :=
+    Format(Lang.Get('TITLE_RULES_DEFINITION'), [
+      Dictionary, SizeW, SizeH, InitialLetters, RebuyLetters]);
 
   FrmGame.LbPosition.Caption := string.Empty;
-  FrmGame.PB.SetMatrixSize(
-    FrmMain.ClientRules.SizeH,
-    FrmMain.ClientRules.SizeW);
+  FrmGame.PB.SetMatrixSize(SizeH, SizeW);
 
   if not ToOne then
     Log(Lang.Get('LOG_RULES_CHANGED'));

@@ -22,7 +22,6 @@ CONN_REJECT_ALREADY_RUNNING=You cannot join the game because it is already runni
 CONN_REJECT_ALREADY_PLAYER_NAME=This player name already exists!
 
 SETTINGS_CAPTION=Settings
-SETTINGS_LANGUAGE=Language:
 SETTINGS_SOUNDS=Enable Sounds
 SETTINGS_ZOOM=Grid zoom:
 SETTINGS_LOG_FONT_SIZE=Log font size:
@@ -34,6 +33,7 @@ START_OPERATION=Operation mode
 START_RECONNECT=Reconnect
 START_SERVER_ADDR=Server address:
 START_CONN_PASSWORD=Connection password:
+START_LANGUAGE=Language:
 
 START_MSG_BLANK_NAME=Please, type your name.
 START_MSG_BLANK_HASH=Please, type the hash code for reconnection.

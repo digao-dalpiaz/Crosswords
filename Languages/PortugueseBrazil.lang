@@ -22,7 +22,6 @@ CONN_REJECT_ALREADY_RUNNING=Você não pode ser juntar a este jogo pois ele já 
 CONN_REJECT_ALREADY_PLAYER_NAME=Este nome de jogador já existe!
 
 SETTINGS_CAPTION=Configurações
-SETTINGS_LANGUAGE=Linguagem:
 SETTINGS_SOUNDS=Habilitar Sons
 SETTINGS_ZOOM=Zoom da tabela:
 SETTINGS_LOG_FONT_SIZE=Tamanho da fonte do log:
@@ -34,6 +33,7 @@ START_OPERATION=Modo de operação
 START_RECONNECT=Reconectar
 START_SERVER_ADDR=Endereço do servidor:
 START_CONN_PASSWORD=Senha de conexão:
+START_LANGUAGE=Linguagem:
 
 START_MSG_BLANK_NAME=Por favor, digite seu nome.
 START_MSG_BLANK_HASH=Por favor, digite o código para reconexão.

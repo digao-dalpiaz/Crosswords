@@ -43,6 +43,13 @@ object FrmStart: TFrmStart
     Height = 13
     Caption = 'Connection password:'
   end
+  object LbLanguage: TLabel
+    Left = 424
+    Top = 264
+    Width = 51
+    Height = 13
+    Caption = 'Language:'
+  end
   object BtnJoin: TBitBtn
     Left = 192
     Top = 328
@@ -102,7 +109,7 @@ object FrmStart: TFrmStart
       8D97907436342AC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC0
       80FFC080FFC080FF72727085847E8B898385837E71716FC080FF}
     NumGlyphs = 2
-    TabOrder = 6
+    TabOrder = 7
     OnClick = BtnJoinClick
   end
   object BtnExit: TBitBtn
@@ -169,7 +176,7 @@ object FrmStart: TFrmStart
       FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC0
       80FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FF}
     NumGlyphs = 2
-    TabOrder = 7
+    TabOrder = 8
     OnClick = BtnExitClick
   end
   object EdPassword: TEdit
@@ -268,5 +275,15 @@ object FrmStart: TFrmStart
       TabOrder = 0
       Text = ''
     end
+  end
+  object EdLanguage: TComboBox
+    Left = 424
+    Top = 280
+    Width = 185
+    Height = 21
+    Style = csDropDownList
+    TabOrder = 6
+    TabStop = False
+    OnChange = EdLanguageChange
   end
 end

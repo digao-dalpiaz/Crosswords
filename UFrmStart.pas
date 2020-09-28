@@ -23,13 +23,18 @@ type
     LbPlayerName: TLabel;
     EdHash: TMaskEdit;
     LbHash: TLabel;
+    LbLanguage: TLabel;
+    EdLanguage: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure BtnExitClick(Sender: TObject);
     procedure BtnJoinClick(Sender: TObject);
     procedure BoxOperClick(Sender: TObject);
     procedure CkReconnectClick(Sender: TObject);
-  public
+    procedure EdLanguageChange(Sender: TObject);
+  private
     procedure InitTransation;
+    procedure LoadLanguages;
+  public
     procedure EnableControls(En: Boolean);
   end;
 
@@ -40,12 +45,16 @@ implementation
 
 {$R *.dfm}
 
-uses UDMClient, UDMServer, UVars, UDams, System.SysUtils, System.StrUtils,
-  UFrmLog, ULanguage;
+uses UDMClient, UDMServer, UVars, UDams,
+  System.SysUtils, System.StrUtils,
+  UFrmMain, UFrmLog, ULanguage;
 
 procedure TFrmStart.FormCreate(Sender: TObject);
 begin
   InitTransation;
+
+  LoadLanguages;
+  EdLanguage.ItemIndex := GetCurrentLanguageIndex;
 
   EdPlayerName.MaxLength := 30;
 
@@ -64,6 +73,7 @@ begin
   CkReconnect.Caption := Lang.Get('START_RECONNECT');
   LbServerAddress.Caption := Lang.Get('START_SERVER_ADDR');
   LbPassword.Caption := Lang.Get('START_CONN_PASSWORD');
+  LbLanguage.Caption := Lang.Get('START_LANGUAGE');
 
   BoxOper.Items[0] := Lang.Get('MODE_CLIENT');
   BoxOper.Items[1] := Lang.Get('MODE_SERVER');
@@ -166,6 +176,23 @@ end;
 procedure TFrmStart.BtnExitClick(Sender: TObject);
 begin
   Application.Terminate;
+end;
+
+procedure TFrmStart.LoadLanguages;
+var
+  D: TLangDefinition;
+begin
+  for D in LST_LANGUAGES do
+    EdLanguage.Items.Add(D.Name);
+end;
+
+procedure TFrmStart.EdLanguageChange(Sender: TObject);
+begin
+  pubLanguageID := LST_LANGUAGES[EdLanguage.ItemIndex].ID;
+  FrmMain.ConfigLanguage(True); //save config language
+  Lang.LoadLanguage; //reload language
+  FrmMain.InitTranslation;
+  FrmStart.InitTransation;
 end;
 
 end.

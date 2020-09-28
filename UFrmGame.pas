@@ -51,7 +51,6 @@ type
     Status: TGameStatus;
     PB: TMatrixImage;
 
-    procedure InitTranslation;
     procedure Initialize(Reconnected: Boolean);
     procedure MatrixReceived(const A: string);
     procedure ChatLog(const Player, Text: string);
@@ -67,6 +66,7 @@ type
     procedure GameOverReceived;
     procedure ReceivedPreparingNewGame;
   private
+    procedure InitTranslation;
     procedure SetStatus(NewStatus: TGameStatus);
   end;
 

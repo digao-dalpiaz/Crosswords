@@ -2,8 +2,8 @@ unit UFrmSettings;
 
 interface
 
-uses Vcl.Forms, Vcl.Controls, Vcl.StdCtrls, Vcl.ComCtrls, System.Classes,
-  Vcl.ExtCtrls;
+uses Vcl.Forms, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.Controls, Vcl.ExtCtrls,
+  System.Classes;
 
 type
   TFrmSettings = class(TForm)
@@ -13,16 +13,12 @@ type
     LbGridZoom: TLabel;
     EdGridZoom: TEdit;
     BtnZoom: TUpDown;
-    LbLanguage: TLabel;
-    EdLanguage: TComboBox;
     LbLogFontSize: TLabel;
     EdLogFontSize: TEdit;
     BtnLogFontSize: TUpDown;
     Bevel1: TBevel;
     procedure FormCreate(Sender: TObject);
     procedure BtnOKClick(Sender: TObject);
-  private
-    procedure LoadLanguages;
   end;
 
   TSettings = class
@@ -40,8 +36,8 @@ implementation
 
 {$R *.dfm}
 
-uses UVars, System.IniFiles, System.SysUtils, UFrmGame,
-  ULanguage, UFrmMain, UFrmStart, UFrmLog;
+uses UVars, ULanguage, System.IniFiles,
+  UFrmGame, UFrmLog;
 
 class procedure TSettings.Load;
 var
@@ -49,7 +45,6 @@ var
 begin
   Ini := TIniFile.Create(GetIniFilePath);
   try
-    pubLanguageID := Ini.ReadString('Global', 'LanguageID', 'EN');
     pubEnableSounds := Ini.ReadBool('Global', 'Sounds', True);
     pubGridZoom := Ini.ReadInteger('Global', 'GridZoom', 100);
     pubLogFontSize := Ini.ReadInteger('Global', 'LogFontSize', 10);
@@ -64,7 +59,6 @@ var
 begin
   Ini := TIniFile.Create(GetIniFilePath);
   try
-    Ini.WriteString('Global', 'LanguageID', LST_LANGUAGES[F.EdLanguage.ItemIndex].ID);
     Ini.WriteBool('Global', 'Sounds', F.CkSounds.Checked);
     Ini.WriteInteger('Global', 'GridZoom', F.BtnZoom.Position);
     Ini.WriteInteger('Global', 'LogFontSize', F.BtnLogFontSize.Position);
@@ -90,7 +84,6 @@ begin
 
   //--Translation
   Caption := Lang.Get('SETTINGS_CAPTION');
-  LbLanguage.Caption := Lang.Get('SETTINGS_LANGUAGE');
   CkSounds.Caption := Lang.Get('SETTINGS_SOUNDS');
   LbGridZoom.Caption := Lang.Get('SETTINGS_ZOOM');
   LbLogFontSize.Caption := Lang.Get('SETTINGS_LOG_FONT_SIZE');
@@ -99,20 +92,9 @@ begin
   BtnCancel.Caption := Lang.Get('DLG_CANCEL');
   //--
 
-  LoadLanguages;
-
-  EdLanguage.ItemIndex := GetCurrentLanguageIndex;
   CkSounds.Checked := pubEnableSounds;
   BtnZoom.Position := pubGridZoom;
   BtnLogFontSize.Position := pubLogFontSize;
-end;
-
-procedure TFrmSettings.LoadLanguages;
-var
-  D: TLangDefinition;
-begin
-  for D in LST_LANGUAGES do
-    EdLanguage.Items.Add(D.Name);
 end;
 
 procedure TFrmSettings.BtnOKClick(Sender: TObject);
@@ -120,14 +102,8 @@ begin
   TSettings.Save(Self);
   TSettings.Load; //reload settings
 
-  Lang.LoadLanguage; //reload language
-  FrmMain.InitTranslation;
-  FrmStart.InitTransation;
-  FrmGame.InitTranslation;
-
-  FrmGame.PB.UpdateZoom; //reload grid zoom
-
-  FrmLog.UpdateFontSize;
+  FrmGame.PB.UpdateZoom; //update grid zoom
+  FrmLog.UpdateFontSize; //update font size
 
   ModalResult := mrOk;
 end;

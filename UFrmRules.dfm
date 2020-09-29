@@ -40,15 +40,19 @@ object FrmRules: TFrmRules
   object LbInitialLetters: TLabel
     Left = 16
     Top = 123
-    Width = 99
+    Width = 169
     Height = 13
+    Alignment = taRightJustify
+    AutoSize = False
     Caption = 'Initial letters pocket:'
   end
   object LbRebuyLetters: TLabel
     Left = 16
     Top = 147
-    Width = 69
+    Width = 169
     Height = 13
+    Alignment = taRightJustify
+    AutoSize = False
     Caption = 'Rebuy letters:'
   end
   object Bevel1: TBevel
@@ -85,7 +89,7 @@ object FrmRules: TFrmRules
     TabOrder = 2
   end
   object EdInitialLetters: TEdit
-    Left = 128
+    Left = 192
     Top = 120
     Width = 41
     Height = 21
@@ -94,7 +98,7 @@ object FrmRules: TFrmRules
     TabOrder = 3
   end
   object EdRebuyLetters: TEdit
-    Left = 128
+    Left = 192
     Top = 144
     Width = 41
     Height = 21

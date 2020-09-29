@@ -2,6 +2,8 @@
 
 ## Delphi Client/Server Crosswords Game using Socket communication
 
+[Download alpha version](/releases)
+
 ### Demo Screens
 
 ![Welcome screen](Images/demo_welcome.png)
@@ -32,6 +34,9 @@ You can play with as many opponents as you like.
 Choose one to be the server, and the rest will be the clients that will connect to the server.
 On the server, remember to allow incoming connections to the Windows firewall (usually the first time the game is opened in server mode, Windows itself will ask if you want to open the game port for external access).
 The server can define the rules of the game, while waiting for all players to connect.
+
+> Remember to set the correct dictionary in Game Rules (this is not the game language, but the dictionary to get random letters).
+
 When all players are connected, the server can start the game.
 You can chat to all players at any time using side panel.
 
@@ -41,12 +46,15 @@ The idea is to build words, using as many letters as possible.
 The game ends when a player has no letters left.
 Each time you complete your move, all other players must accept the words you entered. If any player does not accept, you will have to review your move. You can use chat to argue.
 If you are unable to form a word in a move, you will automatically receive more letters in your pot.
-**A move can only be completed when all words entered are complete and valid.**
+**A move can only be completed when all words entered are valid.**
+*Players must define with each other before starting the game what kind of words will be accepted. Normally, only words in the dictionary are accepted.*
 
 ### Supported languages
 
 - English
 - Portuguese Brazil
+
+> There is a folder containing translation files (.lang). You can send me a new language translation if you like.
 
 ### Supported letters dictionaries
 
@@ -54,9 +62,9 @@ For now, the game supports letters in:
 - English
 - Portuguese Brazil
 
-For each language, there is a dictionary resource file, which basically indicates all the letters of the alphabet supported and how many times each occurs.
+*For each language, there is a dictionary resource file, which basically indicates all the letters of the alphabet supported and how many times each occurs.*
 
-> You can send me a dictionary in the desired language, and so we will increase support for new dictionaries.
+> There is a folder containing dictionary files (.dic). You can send me a dictionary in the desired language.
 
 ### Required components:
 

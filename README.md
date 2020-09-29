@@ -87,7 +87,7 @@ The server works on Port TCP 6631.
 - ~~Allow server change settings while waiting players~~
 - ~~Implement end of game~~
 - ~~Logic to check if inserted letters is according with game rules~~
-- Better way to show that it's your turn?
+- ~~Better way to show that it's your turn~~
 - ~~Zoom function in game grid~~
 - Time-out rule to a player turn?
 - ~~If language changed during game, the rules info in title bar remains in previous language~~

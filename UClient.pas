@@ -24,11 +24,15 @@ type
     procedure ResetGameData;
   end;
 
-  TPlayersList = class(TObjectList<TClient>);
+  TPlayersList = class(TObjectList<TClient>)
+  public
+    procedure RandomList;
+  end;
 
 implementation
 
-uses UVars, UDictionary, UDMServer, System.SysUtils;
+uses UVars, UDictionary, UDMServer, System.SysUtils,
+  System.Generics.Defaults;
 
 constructor TClient.Create;
 var
@@ -57,6 +61,18 @@ begin
   Letters := string.Empty;
   Score := 0;
   Agree := False;
+end;
+
+//
+
+procedure TPlayersList.RandomList;
+begin
+  Sort(TComparer<TClient>.Construct(
+    function(const L, R: TClient): Integer
+    begin
+      Result := Random(3)-1; //-1 or 0 or 1
+    end
+  ));
 end;
 
 end.

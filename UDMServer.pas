@@ -329,6 +329,7 @@ end;
 procedure TDMServer.StartGame;
 begin
   Status := ssTurn;
+  PlayersList.RandomList; //random players order
 
   LoadDictionaryLetters;
 

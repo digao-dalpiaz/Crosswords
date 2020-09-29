@@ -2,7 +2,7 @@
 
 ## Delphi Client/Server Crosswords Game using Socket communication
 
-[Download alpha version](/releases)
+[Download alpha version](https://github.com/digao-dalpiaz/Crosswords/releases)
 
 ### Demo Screens
 

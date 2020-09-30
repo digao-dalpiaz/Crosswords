@@ -13,6 +13,7 @@ DLG_CANCEL=Cancel
 
 MSG_CLOSE_APP=<b><fc:clRed>There is a connection established.</fc></b><br><br>Are you sure you want to leave?
 MSG_KILL_PLAYER=Are you sure you want to delete the selected player?
+MSG_STOP_GAME=<b>Are you sure you want to stop the game?</b>
 
 CONN_REJECT_VERSION_WRONG=This version is incompatible with the server!
 CONN_REJECT_PASSWORD_WRONG=The password to this game is incorrect.

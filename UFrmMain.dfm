@@ -295,5 +295,11 @@ object FrmMain: TFrmMain
       SwapFocus = True
       Dam = Dam
     end
+    object _QuestionStopGame: TDamMsg
+      Icon = diQuest
+      Buttons = dbYesNo
+      SwapFocus = True
+      Dam = Dam
+    end
   end
 end

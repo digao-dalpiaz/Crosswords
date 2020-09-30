@@ -120,6 +120,8 @@ end;
 
 procedure TFrmDrop.BtnStopClick(Sender: TObject);
 begin
+  if not QuestionStopGame then Exit;  
+
   DMServer.RestartGame;
 
   ModalResult := mrOk;

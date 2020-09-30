@@ -27,6 +27,7 @@ type
     LbLbRules: TLabel;
     LbRules: TLabel;
     _QuestionKillPlayer: TDamMsg;
+    _QuestionStopGame: TDamMsg;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure BtnSettingsClick(Sender: TObject);
@@ -94,6 +95,7 @@ begin
 
   _QuestionCloseApp.Message := Lang.Get('MSG_CLOSE_APP');
   _QuestionKillPlayer.Message := Lang.Get('MSG_KILL_PLAYER');
+  _QuestionStopGame.Message := Lang.Get('MSG_STOP_GAME');
 end;
 
 procedure TFrmMain.InitStartPage;

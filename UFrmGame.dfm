@@ -23,17 +23,6 @@ object FrmGame: TFrmGame
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 1
-    object LbPlayers: TLabel
-      Left = 0
-      Top = 0
-      Width = 265
-      Height = 13
-      Align = alTop
-      Alignment = taCenter
-      AutoSize = False
-      Caption = 'Players'
-      ExplicitWidth = 35
-    end
     object LbLetters: TLabel
       Left = 0
       Top = 201
@@ -53,7 +42,7 @@ object FrmGame: TFrmGame
       Height = 87
       Align = alClient
       BevelOuter = bvNone
-      TabOrder = 2
+      TabOrder = 3
       object LbChat: TLabel
         Left = 0
         Top = 0
@@ -83,6 +72,7 @@ object FrmGame: TFrmGame
         TabOrder = 0
         StyleElements = [seClient, seBorder]
         Zoom = 100
+        ExplicitHeight = 40
       end
       object EdChatMsg: TEdit
         Left = 0
@@ -109,7 +99,7 @@ object FrmGame: TFrmGame
       Style = lbOwnerDrawFixed
       Align = alTop
       ItemHeight = 18
-      TabOrder = 0
+      TabOrder = 1
       OnDrawItem = LPlayersDrawItem
     end
     object LLetters: TListBox
@@ -128,7 +118,7 @@ object FrmGame: TFrmGame
       Font.Style = [fsBold]
       ItemHeight = 19
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 2
       OnDrawItem = LLettersDrawItem
     end
     object BoxOperations: TPanel
@@ -138,7 +128,7 @@ object FrmGame: TFrmGame
       Height = 41
       Align = alBottom
       BevelOuter = bvNone
-      TabOrder = 3
+      TabOrder = 4
       object BtnDisagree: TBitBtn
         Left = 136
         Top = 8
@@ -370,8 +360,39 @@ object FrmGame: TFrmGame
       Align = alBottom
       BevelKind = bkFlat
       BevelOuter = bvNone
-      TabOrder = 4
+      TabOrder = 5
       StyleElements = [seFont, seBorder]
+    end
+    object BoxHeaderPlayers: TPanel
+      Left = 0
+      Top = 0
+      Width = 265
+      Height = 13
+      Align = alTop
+      BevelOuter = bvNone
+      TabOrder = 0
+      ExplicitTop = 13
+      object LbHeaderPlayer: TLabel
+        Left = 24
+        Top = 0
+        Width = 30
+        Height = 13
+        Caption = 'Player'
+      end
+      object LbHeaderLetters: TLabel
+        Left = 160
+        Top = 0
+        Width = 34
+        Height = 13
+        Caption = 'Letters'
+      end
+      object LbHeaderScore: TLabel
+        Left = 208
+        Top = 0
+        Width = 27
+        Height = 13
+        Caption = 'Score'
+      end
     end
   end
   object BoxGrid: TPanel

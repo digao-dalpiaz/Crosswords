@@ -22,7 +22,6 @@ type
     LLetters: TListBox;
     BoxOperations: TPanel;
     BtnStartGame: TBitBtn;
-    LbPlayers: TLabel;
     LbLetters: TLabel;
     LbChat: TLabel;
     IL: TImageList;
@@ -35,6 +34,10 @@ type
     SB: TScrollBox;
     LbPosition: TLabel;
     BoxStatus: TPanel;
+    BoxHeaderPlayers: TPanel;
+    LbHeaderPlayer: TLabel;
+    LbHeaderLetters: TLabel;
+    LbHeaderScore: TLabel;
     procedure EdChatMsgKeyPress(Sender: TObject; var Key: Char);
     procedure BtnStartGameClick(Sender: TObject);
     procedure LPlayersDrawItem(Control: TWinControl; Index: Integer;
@@ -91,7 +94,10 @@ end;
 
 procedure TFrmGame.InitTranslation;
 begin
-  LbPlayers.Caption := Lang.Get('GAME_BOX_PLAYERS');
+  LbHeaderPlayer.Caption := Lang.Get('GAME_HEADER_PLAYER');
+  LbHeaderLetters.Caption := Lang.Get('GAME_HEADER_LETTERS');
+  LbHeaderScore.Caption := Lang.Get('GAME_HEADER_SCORE');
+
   LbLetters.Caption := Lang.Get('GAME_BOX_LETTERS');
   LbChat.Caption := Lang.Get('GAME_BOX_CHAT');
 
@@ -202,9 +208,9 @@ begin
 
   D := DataToArray(LPlayers.Items[Index]);
 
-  LPlayers.Canvas.TextOut(25, Rect.Top+2, D[0]); //player name
-  TextRight(200, Rect.Top+2, D[1]); //letters
-  TextRight(236, Rect.Top+2, D[2]); //score
+  LPlayers.Canvas.TextOut(LbHeaderPlayer.Left, Rect.Top+2, D[0]); //player name
+  TextRight(LbHeaderLetters.Left+LbHeaderLetters.Width, Rect.Top+2, D[1]); //letters
+  TextRight(LbHeaderScore.Left+LbHeaderScore.Width, Rect.Top+2, D[2]); //score
 
   if D[3] then
     IL.Draw(LPlayers.Canvas, 3, Rect.Top+1, 0); //this player turn
@@ -213,7 +219,7 @@ begin
     IL.Draw(LPlayers.Canvas, 3, Rect.Top+1, 1); //agree
 
   if D[5] then
-    IL.Draw(LPlayers.Canvas, 160, Rect.Top+1, 2); //disconnected
+    IL.Draw(LPlayers.Canvas, LbHeaderLetters.Left-20, Rect.Top+1, 2); //disconnected
 end;
 
 procedure TFrmGame.LLettersDrawItem(Control: TWinControl; Index: Integer;

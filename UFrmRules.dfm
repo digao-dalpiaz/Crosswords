@@ -37,23 +37,12 @@ object FrmRules: TFrmRules
     Height = 13
     Caption = 'Dictionary:'
   end
-  object LbInitialLetters: TLabel
+  object LbHandLetters: TLabel
     Left = 16
     Top = 123
-    Width = 169
+    Width = 76
     Height = 13
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Initial letters pocket:'
-  end
-  object LbRebuyLetters: TLabel
-    Left = 16
-    Top = 147
-    Width = 169
-    Height = 13
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Rebuy letters:'
+    Caption = 'Letters in hand:'
   end
   object Bevel1: TBevel
     Left = 16
@@ -64,7 +53,7 @@ object FrmRules: TFrmRules
   end
   object LbSeconds: TLabel
     Left = 32
-    Top = 211
+    Top = 195
     Width = 44
     Height = 13
     Caption = 'Seconds:'
@@ -95,23 +84,14 @@ object FrmRules: TFrmRules
     Style = csDropDownList
     TabOrder = 2
   end
-  object EdInitialLetters: TEdit
-    Left = 192
+  object EdHandLetters: TEdit
+    Left = 112
     Top = 120
     Width = 41
     Height = 21
     Alignment = taRightJustify
     NumbersOnly = True
     TabOrder = 3
-  end
-  object EdRebuyLetters: TEdit
-    Left = 192
-    Top = 144
-    Width = 41
-    Height = 21
-    Alignment = taRightJustify
-    NumbersOnly = True
-    TabOrder = 4
   end
   object BtnOK: TButton
     Left = 168
@@ -120,7 +100,7 @@ object FrmRules: TFrmRules
     Height = 25
     Caption = 'OK'
     Default = True
-    TabOrder = 7
+    TabOrder = 6
     OnClick = BtnOKClick
   end
   object BtnCancel: TButton
@@ -131,23 +111,23 @@ object FrmRules: TFrmRules
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
-    TabOrder = 8
+    TabOrder = 7
   end
   object CkTurnTimeout: TCheckBox
     Left = 16
-    Top = 184
+    Top = 168
     Width = 153
     Height = 17
     Caption = 'Player turn time-out'
-    TabOrder = 5
+    TabOrder = 4
   end
   object EdSeconds: TEdit
-    Left = 88
-    Top = 208
+    Left = 96
+    Top = 192
     Width = 49
     Height = 21
     Alignment = taRightJustify
     NumbersOnly = True
-    TabOrder = 6
+    TabOrder = 5
   end
 end

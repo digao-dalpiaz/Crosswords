@@ -6,7 +6,7 @@ TITLE_RULES=Regras:
 MODE_SERVER=Servidor
 MODE_CLIENT=Cliente
 
-TITLE_RULES_DEFINITION=Dicionário: %s / Tamanho: %d x %d / Letras início: %d / Compra: %d / Tempo: %d seg
+TITLE_RULES_DEFINITION=Dicionário: %s / Tamanho: %d x %d / Letras: %d / Tempo: %d seg
 
 DLG_OK=OK
 DLG_CANCEL=Cancelar
@@ -54,7 +54,7 @@ LOG_RECONECTED_GAME_CLIENT=Você retornou ao jogo. Aguarde o servidor dar contin
 LOG_PLAYER_JOIN=Jogador %s entrou.
 LOG_PLAYER_LEFT=Jogador %s saiu.
 LOG_WAIT_VALIDATION=Por favor, aguarde enquanto seus oponentes validam suas palavras.
-LOG_REBUY=Você comprou mais %d letra(s) já que não preencheu nada nesta rodada.
+LOG_LETTERS_EXCHANGED=Suas letras foram todas trocadas já que você não preencheu nada nesta rodada.
 LOG_WORDS_ACCEPTED=Suas palavras foram aceitas e a sua vez terminou.
 LOG_RULES_CHANGED=As regras do jogo foram modificadas pelo servidor.
 
@@ -75,10 +75,10 @@ GAME_STATUS_GAMEOVER=Fim de jogo
 
 GAME_GRID_POSITION=Linha %d / Coluna %d
 GAME_HEADER_PLAYER=Jogador
-GAME_HEADER_LETTERS=Letras
 GAME_HEADER_SCORE=Pontos
 GAME_BOX_LETTERS=Letras
 GAME_BOX_CHAT=Chat
+GAME_TIMER=Tempo restante: %d segundo(s)
 
 GAME_BTN_RESTART=Novo Jogo
 GAME_BTN_START=Iniciar Jogo
@@ -113,8 +113,7 @@ LOG_RESTART_GAME=O servidor está preparando um novo jogo.
 RULES_CAPTION=Regras do Jogo
 RULES_GRID_SIZE=Tamanho da tabela:
 RULES_DICTIONARY=Dicionário de letras:
-RULES_INITIAL_LETTERS=Letras iniciais:
-RULES_REBUY_LETTERS=Letras de compra:
+RULES_HAND_LETTERS=Letras na mão:
 RULES_TURN_TIMEOUT_FLAG=Tempo limite para jogada
 RULES_TURN_TIMEOUT_SECONDS=Segundos:
 

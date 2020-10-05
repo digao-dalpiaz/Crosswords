@@ -46,13 +46,12 @@ type
     procedure ClearAllAgreements;
     function IsAllPlayersAgree(WithSocket: TDzSocket): Boolean;
     procedure CompletePlayerTurn(Socket: TDzSocket);
-    procedure RebuyLetters(Socket: TDzSocket);
     procedure ForConnections(P: TForConnectionsProc);
     procedure SetGameOver;
     procedure RemoveAllDisconectedPlayers;
     procedure ContestReceived(Socket: TDzSocket; const A: string);
     procedure StartAgreementPeriod(Socket: TDzSocket);
-    procedure RemovePlayerLettersByRejection(Socket: TDzSocket);
+    procedure RemoveTempPlayerLetters(Socket: TDzSocket);
     procedure StopTimer;
   public
     procedure Initialize;
@@ -290,6 +289,7 @@ begin
       S.SendAll('?'); //send paused by connection drop signal
       DoPlayerDroped(C); //player disconnected during the game
       ClearAllAgreements; //if in agreement, clear because will back in turn status
+      RemoveTempPlayerLetters(nil);
     end;
   end else
     PlayersList.Remove(C);
@@ -329,7 +329,7 @@ begin
     ForConnections(
       procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
       begin
-        Lst.Add(ArrayToData([C.PlayerName, C.Letters.Length, C.Score, C=CurPlayer, C.Agree, C.Socket=nil]));
+        Lst.Add(ArrayToData([C.PlayerName, C.Score, C=CurPlayer, C.Agree, C.Socket=nil]));
       end
     );
 
@@ -350,7 +350,7 @@ begin
   ForConnections(
     procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
     begin
-      C.RandomizeInitialLetters;
+      C.RandomizeLetters(True);
       SendLetters(Sok);
     end
   );
@@ -451,6 +451,8 @@ begin
 end;
 
 procedure TDMServer.PlayerTurnDoneReceived(Socket: TDzSocket; ByTimeout: Boolean);
+var
+  C: TClient;
 begin
   if Status<>ssTurn then
     raise Exception.Create('Internal: A player tried to set its turn done when status is not turn');
@@ -460,13 +462,15 @@ begin
 
   StopTimer;
 
+  C := Socket.Data;
+
   if Matrix.ContainsAnyTemp then //player put letters in the grid
   begin
     if Matrix.ContainsAnyInvalid then
     begin
       if ByTimeout then
       begin
-        RemovePlayerLettersByRejection(Socket);
+        RemoveTempPlayerLetters(Socket);
         S.Send(Socket, '&'); //send auto rejected by invalid letters signal
         SelectNextPlayer;
         Exit;
@@ -477,7 +481,10 @@ begin
     StartAgreementPeriod(Socket);
   end else
   begin
-    RebuyLetters(Socket);
+    C.RandomizeLetters(True);
+    SendLetters(Socket);
+    S.Send(Socket, 'B'); //send letters exchanged signal
+
     SelectNextPlayer;
   end;
 end;
@@ -552,7 +559,7 @@ begin
 
   if Accept then
   begin
-    RemovePlayerLettersByRejection(Socket);
+    RemoveTempPlayerLetters(Socket);
 
     Status := ssTurn;
     SelectNextPlayer;
@@ -563,11 +570,13 @@ begin
   end;
 end;
 
-procedure TDMServer.RemovePlayerLettersByRejection(Socket: TDzSocket);
+procedure TDMServer.RemoveTempPlayerLetters(Socket: TDzSocket);
 begin
   Matrix.RemoveAllTempLetters;
   SendMatrix;
-  SendLetters(Socket);
+
+  if Socket<>nil then
+    SendLetters(Socket);
 end;
 
 function TDMServer.IsAllPlayersAgree(WithSocket: TDzSocket): Boolean;
@@ -628,6 +637,9 @@ begin
   Inc(C.Score, Length(C.Letters) - Length(StoLetters));
   C.Letters := StoLetters;
 
+  C.RandomizeLetters(False);
+  SendLetters(Socket);
+
   SendMatrix;
   S.Send(Socket, 'F'); //finish turn log
 
@@ -645,20 +657,6 @@ begin
   S.SendAll('E'); //send end game signal
 end;
 
-procedure TDMServer.RebuyLetters(Socket: TDzSocket);
-var
-  I: Integer;
-  C: TClient;
-begin
-  C := Socket.Data;
-
-  for I := 1 to pubServerProps.RebuyLetters do
-    C.Letters := C.Letters + GetRandomLetter;
-
-  SendLetters(Socket);
-  S.Send(Socket, 'B', pubServerProps.RebuyLetters.ToString);
-end;
-
 procedure TDMServer.SendRules(Socket: TDzSocket);
 var
   A: string;
@@ -667,8 +665,7 @@ begin
     LST_DICTIONARY[GetCurrentDictionaryIndex].LanguageName,
     pubServerProps.SizeW,
     pubServerProps.SizeH,
-    pubServerProps.InitialLetters,
-    pubServerProps.RebuyLetters,
+    pubServerProps.HandLetters,
     IfThen(pubServerProps.TurnTimeout, pubServerProps.TimeoutSeconds)]);
 
   if Socket<>nil then

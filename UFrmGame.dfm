@@ -39,7 +39,7 @@ object FrmGame: TFrmGame
       Left = 0
       Top = 295
       Width = 265
-      Height = 87
+      Height = 77
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 3
@@ -58,7 +58,7 @@ object FrmGame: TFrmGame
         Left = 0
         Top = 13
         Width = 265
-        Height = 53
+        Height = 43
         TabStop = False
         Align = alClient
         Font.Charset = ANSI_CHARSET
@@ -75,7 +75,7 @@ object FrmGame: TFrmGame
       end
       object EdChatMsg: TEdit
         Left = 0
-        Top = 66
+        Top = 56
         Width = 265
         Height = 21
         Align = alBottom
@@ -122,12 +122,19 @@ object FrmGame: TFrmGame
     end
     object BoxOperations: TPanel
       Left = 0
-      Top = 382
+      Top = 372
       Width = 265
-      Height = 41
+      Height = 51
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 4
+      object LbTimer: TLabel
+        Left = 8
+        Top = 36
+        Width = 37
+        Height = 13
+        Caption = 'LbTimer'
+      end
       object BtnDisagree: TBitBtn
         Left = 136
         Top = 8
@@ -433,13 +440,6 @@ object FrmGame: TFrmGame
       BevelOuter = bvNone
       TabOrder = 5
       StyleElements = [seFont, seBorder]
-      object LbTimer: TLabel
-        Left = 216
-        Top = 0
-        Width = 37
-        Height = 13
-        Caption = 'LbTimer'
-      end
     end
     object BoxHeaderPlayers: TPanel
       Left = 0
@@ -455,13 +455,6 @@ object FrmGame: TFrmGame
         Width = 30
         Height = 13
         Caption = 'Player'
-      end
-      object LbHeaderLetters: TLabel
-        Left = 160
-        Top = 0
-        Width = 34
-        Height = 13
-        Caption = 'Letters'
       end
       object LbHeaderScore: TLabel
         Left = 208

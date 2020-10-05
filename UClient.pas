@@ -20,7 +20,7 @@ type
 
     constructor Create;
 
-    procedure RandomizeInitialLetters;
+    procedure RandomizeLetters(ChangeAll: Boolean);
     procedure ResetGameData;
   end;
 
@@ -45,14 +45,17 @@ begin
   Hash := TmpHash;
 end;
 
-procedure TClient.RandomizeInitialLetters;
+procedure TClient.RandomizeLetters(ChangeAll: Boolean);
 var
   I: Integer;
 begin
-  if not Letters.IsEmpty then
-    raise Exception.Create('Internal: Player letters should be empty');
+  if (not ChangeAll) and (Letters.Length = pubServerProps.HandLetters) then
+    raise Exception.Create('Internal: Cannot randomize letters without change all when hand is full');
 
-  for I := 1 to pubServerProps.InitialLetters do
+  if ChangeAll then
+    Letters := string.Empty;
+
+  for I := Letters.Length+1 to pubServerProps.HandLetters do
     Letters := Letters + GetRandomLetter;
 end;
 

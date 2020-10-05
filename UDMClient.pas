@@ -62,6 +62,7 @@ begin
 
   if pubModeServer then DMServer.S.Close; //turn off server
 
+  FrmGame.Timer.Enabled := False;
   FrmGame.Hide;
 
   FrmMain.BoxConInfo.Visible := False;
@@ -143,10 +144,7 @@ begin
     'F': FrmGame.ValidationAcceptedReceived;
     'J': FrmGame.ValidationRejectedReceived;
     'O': FrmGame.OpenContestPeriodReceived;
-    'B': begin
-           Log(Format(Lang.Get('LOG_REBUY'), [A.ToInteger]));
-           DoSound('BUY');
-         end;
+    'B': FrmGame.LettersExchangedReceived;
     'E': FrmGame.GameOverReceived;
     'P': FrmGame.ReceivedPreparingNewGame;
     '?': FrmGame.ReceivedPausedByDrop;
@@ -162,20 +160,19 @@ procedure TDMClient.RulesReceived(const A: string; ToOne: Boolean);
 var
   D: TMsgArray;
   Dictionary: string;
-  SizeW, SizeH, InitialLetters, RebuyLetters, TimeoutSeconds: Integer;
+  SizeW, SizeH, HandLetters, TimeoutSeconds: Integer;
 begin
   D := DataToArray(A);
 
   Dictionary := D[0];
   SizeW := D[1];
   SizeH := D[2];
-  InitialLetters := D[3];
-  RebuyLetters := D[4];
-  TimeoutSeconds := D[5];
+  HandLetters := D[3];
+  TimeoutSeconds := D[4];
 
   FrmMain.LbRules.Caption :=
     Format(Lang.Get('TITLE_RULES_DEFINITION'), [
-      Dictionary, SizeW, SizeH, InitialLetters, RebuyLetters, TimeoutSeconds]);
+      Dictionary, SizeW, SizeH, HandLetters, TimeoutSeconds]);
 
   FrmGame.LbPosition.Caption := string.Empty;
   FrmGame.PB.SetMatrixSize(SizeH, SizeW);

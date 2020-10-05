@@ -6,7 +6,7 @@ TITLE_RULES=Rules:
 MODE_SERVER=Server
 MODE_CLIENT=Client
 
-TITLE_RULES_DEFINITION=Dictionary: %s / Size: %d x %d / Init. Letters: %d / Rebuy: %d / Time: %d sec
+TITLE_RULES_DEFINITION=Dictionary: %s / Size: %d x %d / Letters: %d / Time: %d sec
 
 DLG_OK=OK
 DLG_CANCEL=Cancel
@@ -54,7 +54,7 @@ LOG_RECONECTED_GAME_CLIENT=You have returned to the game. Wait for the server to
 LOG_PLAYER_JOIN=Player %s just joined.
 LOG_PLAYER_LEFT=Player %s left.
 LOG_WAIT_VALIDATION=Please, wait while your opponents validate your words.
-LOG_REBUY=You bought %d more letter(s) since you didn't fill anything in this round.
+LOG_LETTERS_EXCHANGED=Your letters have all been exchanged since you haven't filled anything in this round.
 LOG_WORDS_ACCEPTED=Your words were accepted and your turn to play is over.
 LOG_RULES_CHANGED=The game rules have been changed by the server.
 
@@ -75,10 +75,10 @@ GAME_STATUS_GAMEOVER=Game over
 
 GAME_GRID_POSITION=Line %d / Column %d
 GAME_HEADER_PLAYER=Player
-GAME_HEADER_LETTERS=Letters
 GAME_HEADER_SCORE=Score
 GAME_BOX_LETTERS=Letters
 GAME_BOX_CHAT=Chat
+GAME_TIMER=Time left: %d second(s)
 
 GAME_BTN_RESTART=New Game 
 GAME_BTN_START=Start Game
@@ -113,8 +113,7 @@ LOG_RESTART_GAME=The server is preparing a new game.
 RULES_CAPTION=Game Rules
 RULES_GRID_SIZE=Table size:
 RULES_DICTIONARY=Letters dictionary:
-RULES_INITIAL_LETTERS=Initial letters pocket:
-RULES_REBUY_LETTERS=Rebuy letters:
+RULES_HAND_LETTERS=Letters in hand:
 RULES_TURN_TIMEOUT_FLAG=Player turn time-out
 RULES_TURN_TIMEOUT_SECONDS=Seconds:
 

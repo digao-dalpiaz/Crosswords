@@ -36,7 +36,6 @@ type
     BoxStatus: TPanel;
     BoxHeaderPlayers: TPanel;
     LbHeaderPlayer: TLabel;
-    LbHeaderLetters: TLabel;
     LbHeaderScore: TLabel;
     BtnContestAccept: TBitBtn;
     BtnContestReject: TBitBtn;
@@ -77,12 +76,11 @@ type
     procedure ReceivedDropContinue;
     procedure GameOverReceived;
     procedure ReceivedPreparingNewGame;
-
     procedure ReceivedTimerStart(const A: string);
     procedure ReceivedTimerStop;
-
     procedure ReceivedAutoRejectedByInvalidLetters;
     procedure ReceivedContestResponse(const A: string);
+    procedure LettersExchangedReceived;
   private
     TimerSeconds: Integer;
 
@@ -112,7 +110,6 @@ end;
 procedure TFrmGame.InitTranslation;
 begin
   LbHeaderPlayer.Caption := Lang.Get('GAME_HEADER_PLAYER');
-  LbHeaderLetters.Caption := Lang.Get('GAME_HEADER_LETTERS');
   LbHeaderScore.Caption := Lang.Get('GAME_HEADER_SCORE');
 
   LbLetters.Caption := Lang.Get('GAME_BOX_LETTERS');
@@ -142,6 +139,7 @@ begin
   LLetters.Clear;
 
   LbPosition.Caption := string.Empty;
+  LbTimer.Caption := string.Empty;
 end;
 
 procedure TFrmGame.SetStatus(NewStatus: TGameStatus);
@@ -232,17 +230,16 @@ begin
   D := DataToArray(LPlayers.Items[Index]);
 
   LPlayers.Canvas.TextOut(LbHeaderPlayer.Left, Rect.Top+2, D[0]); //player name
-  TextRight(LbHeaderLetters.Left+LbHeaderLetters.Width, Rect.Top+2, D[1]); //letters
-  TextRight(LbHeaderScore.Left+LbHeaderScore.Width, Rect.Top+2, D[2]); //score
+  TextRight(LbHeaderScore.Left+LbHeaderScore.Width, Rect.Top+2, D[1]); //score
 
-  if D[3] then
+  if D[2] then
     IL.Draw(LPlayers.Canvas, 3, Rect.Top+1, 0); //this player turn
 
-  if D[4] then
+  if D[3] then
     IL.Draw(LPlayers.Canvas, 3, Rect.Top+1, 1); //agree
 
-  if D[5] then
-    IL.Draw(LPlayers.Canvas, LbHeaderLetters.Left-20, Rect.Top+1, 2); //disconnected
+  if D[4] then
+    IL.Draw(LPlayers.Canvas, LbHeaderScore.Left-25, Rect.Top+1, 2); //disconnected
 end;
 
 procedure TFrmGame.LLettersDrawItem(Control: TWinControl; Index: Integer;
@@ -316,7 +313,6 @@ begin
   SetStatus(gsPlaying);
 
   Log(Lang.Get('LOG_GAME_STARTED'));
-  DoSound('START');
 end;
 
 procedure TFrmGame.InitMyTurn;
@@ -332,6 +328,11 @@ begin
   SetStatus(gsPlaying);
 
   Log(Lang.Get('LOG_TURN_TIMEOUT'));
+end;
+
+procedure TFrmGame.LettersExchangedReceived;
+begin
+  Log(Lang.Get('LOG_LETTERS_EXCHANGED'));
 end;
 
 procedure TFrmGame.ReceivedAutoRejectedByInvalidLetters;
@@ -441,7 +442,7 @@ procedure TFrmGame.TimerTimer(Sender: TObject);
 begin
   if TimerSeconds=0 then Exit;
 
-  LbTimer.Caption := TimerSeconds.ToString;
+  LbTimer.Caption := Format(Lang.Get('GAME_TIMER'), [TimerSeconds]);
   Dec(TimerSeconds);
 end;
 

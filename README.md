@@ -91,7 +91,7 @@ The server works on Port TCP 6631.
 - ~~Review random letters logic~~
 - ~~Include English dictionary~~
 - ~~App translation to Portuguese Brazil and support any language translation~~
-- Review game rules
+- ~~Review game rules~~
 - ~~Behavior when user drop connection when the game is running~~
 - ~~Password to connect~~
 - ~~Allow server change settings while waiting players~~
@@ -99,5 +99,5 @@ The server works on Port TCP 6631.
 - ~~Logic to check if inserted letters is according with game rules~~
 - ~~Better way to show that it's your turn~~
 - ~~Zoom function in game grid~~
-- Time-out rule to a player turn?
+- ~~Time-out rule to a player turn~~
 - ~~If language changed during game, the rules info in title bar remains in previous language~~

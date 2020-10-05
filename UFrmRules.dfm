@@ -3,7 +3,7 @@ object FrmRules: TFrmRules
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Game Rules'
-  ClientHeight = 235
+  ClientHeight = 283
   ClientWidth = 505
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -57,10 +57,17 @@ object FrmRules: TFrmRules
   end
   object Bevel1: TBevel
     Left = 16
-    Top = 192
+    Top = 240
     Width = 473
     Height = 9
     Shape = bsTopLine
+  end
+  object LbSeconds: TLabel
+    Left = 32
+    Top = 211
+    Width = 44
+    Height = 13
+    Caption = 'Seconds:'
   end
   object EdSizeW: TEdit
     Left = 128
@@ -108,22 +115,39 @@ object FrmRules: TFrmRules
   end
   object BtnOK: TButton
     Left = 168
-    Top = 200
+    Top = 248
     Width = 81
     Height = 25
     Caption = 'OK'
     Default = True
-    TabOrder = 5
+    TabOrder = 7
     OnClick = BtnOKClick
   end
   object BtnCancel: TButton
     Left = 256
-    Top = 200
+    Top = 248
     Width = 81
     Height = 25
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
+    TabOrder = 8
+  end
+  object CkTurnTimeout: TCheckBox
+    Left = 16
+    Top = 184
+    Width = 153
+    Height = 17
+    Caption = 'Player turn time-out'
+    TabOrder = 5
+  end
+  object EdSeconds: TEdit
+    Left = 88
+    Top = 208
+    Width = 49
+    Height = 21
+    Alignment = taRightJustify
+    NumbersOnly = True
     TabOrder = 6
   end
 end

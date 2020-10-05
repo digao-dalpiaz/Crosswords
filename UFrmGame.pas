@@ -10,7 +10,7 @@ uses Vcl.Forms, System.ImageList, Vcl.ImgList, Vcl.Controls, Vcl.StdCtrls,
 type
   TGameStatus = (
     gsUnknown, gsPreparing,
-    gsPlaying, gsMyTurn, gsWaitValid, gsAgreement,
+    gsPlaying, gsMyTurn, gsWaitValid, gsAgreement, gsContest,
     gsPaused, gsGameOver);
 
   TFrmGame = class(TForm)
@@ -38,6 +38,10 @@ type
     LbHeaderPlayer: TLabel;
     LbHeaderLetters: TLabel;
     LbHeaderScore: TLabel;
+    BtnContestAccept: TBitBtn;
+    BtnContestReject: TBitBtn;
+    Timer: TTimer;
+    LbTimer: TLabel;
     procedure EdChatMsgKeyPress(Sender: TObject; var Key: Char);
     procedure BtnStartGameClick(Sender: TObject);
     procedure LPlayersDrawItem(Control: TWinControl; Index: Integer;
@@ -50,6 +54,9 @@ type
     procedure BtnDisagreeClick(Sender: TObject);
     procedure BtnRulesClick(Sender: TObject);
     procedure BtnRestartClick(Sender: TObject);
+    procedure BtnContestAcceptClick(Sender: TObject);
+    procedure BtnContestRejectClick(Sender: TObject);
+    procedure TimerTimer(Sender: TObject);
   public
     Status: TGameStatus;
     PB: TMatrixImage;
@@ -59,16 +66,26 @@ type
     procedure ChatLog(const Player, Text: string);
     procedure GameStartedReceived;
     procedure InitMyTurn;
+    procedure MyTurnTimeoutReceived;
     procedure WaitValidationReceived;
     procedure ValidationAcceptedReceived;
     procedure ValidationRejectedReceived;
     procedure AgreementRequestReceived;
     procedure AgreementFinishReceived(const A: string);
+    procedure OpenContestPeriodReceived;
     procedure ReceivedPausedByDrop;
     procedure ReceivedDropContinue;
     procedure GameOverReceived;
     procedure ReceivedPreparingNewGame;
+
+    procedure ReceivedTimerStart(const A: string);
+    procedure ReceivedTimerStop;
+
+    procedure ReceivedAutoRejectedByInvalidLetters;
+    procedure ReceivedContestResponse(const A: string);
   private
+    TimerSeconds: Integer;
+
     procedure InitTranslation;
     procedure SetStatus(NewStatus: TGameStatus);
   end;
@@ -107,6 +124,8 @@ begin
   BtnDone.Caption := Lang.Get('GAME_BTN_DONE');
   BtnAgree.Caption := Lang.Get('GAME_BTN_AGREE');
   BtnDisagree.Caption := Lang.Get('GAME_BTN_DISAGREE');
+  BtnContestAccept.Caption := Lang.Get('GAME_BTN_CONTEST_ACCEPT');
+  BtnContestReject.Caption := Lang.Get('GAME_BTN_CONTEST_REJECT');
 end;
 
 procedure TFrmGame.Initialize(Reconnected: Boolean);
@@ -144,6 +163,9 @@ begin
   BtnAgree.Visible := (Status = gsAgreement);
   BtnDisagree.Visible := (Status = gsAgreement);
 
+  BtnContestAccept.Visible := (Status = gsContest);
+  BtnContestReject.Visible := (Status = gsContest);
+
   BtnRestart.Visible := (Status = gsGameOver) and pubModeServer;
 
   case Status of
@@ -157,6 +179,7 @@ begin
     gsMyTurn: SetStatusLabel('MYTURN', clGreen);
     gsWaitValid: SetStatusLabel('WAITVALID', clWebBrown);
     gsAgreement: SetStatusLabel('AGREEMENT', clBlue);
+    gsContest: SetStatusLabel('CONTEST', $00656225);
     gsPaused: SetStatusLabel('PAUSED', $005B5B5B);
     gsGameOver: SetStatusLabel('GAMEOVER', $002C075C);
     else raise Exception.Create('Internal: Unsupported status');
@@ -272,6 +295,22 @@ begin
   Log(Lang.Get('LOG_DISAGREE_SENT'));
 end;
 
+procedure TFrmGame.BtnContestAcceptClick(Sender: TObject);
+begin
+  SetStatus(gsPlaying);
+  DMClient.SendContest(True);
+
+  Log(Lang.Get('LOG_CONTEST_ACCEPT_SENT'));
+end;
+
+procedure TFrmGame.BtnContestRejectClick(Sender: TObject);
+begin
+  SetStatus(gsPlaying);
+  DMClient.SendContest(False);
+
+  Log(Lang.Get('LOG_CONTEST_REJECT_SENT'));
+end;
+
 procedure TFrmGame.GameStartedReceived;
 begin
   SetStatus(gsPlaying);
@@ -286,6 +325,18 @@ begin
 
   Log(Lang.Get('LOG_YOUR_TURN'));
   DoSound('BELL');
+end;
+
+procedure TFrmGame.MyTurnTimeoutReceived;
+begin
+  SetStatus(gsPlaying);
+
+  Log(Lang.Get('LOG_TURN_TIMEOUT'));
+end;
+
+procedure TFrmGame.ReceivedAutoRejectedByInvalidLetters;
+begin
+  Log(Lang.Get('LOG_AUTO_REJECTED_BY_INVALID_LETTERS'));
 end;
 
 procedure TFrmGame.WaitValidationReceived;
@@ -330,6 +381,21 @@ begin
   DoSound('AGREEMENT_END');
 end;
 
+procedure TFrmGame.OpenContestPeriodReceived;
+begin
+  SetStatus(gsContest);
+
+  Log(Lang.Get('LOG_CONTEST_PERIOD_START'))
+end;
+
+procedure TFrmGame.ReceivedContestResponse(const A: string);
+begin
+  if DataToArray(A)[0]{Accept} then
+    Log(Lang.Get('LOG_RECEIVED_CONTEST_RESPONSE_ACCEPT'))
+  else
+    Log(Lang.Get('LOG_RECEIVED_CONTEST_RESPONSE_REJECT'));
+end;
+
 procedure TFrmGame.ReceivedPausedByDrop;
 begin
   SetStatus(gsPaused);
@@ -356,6 +422,27 @@ begin
   SetStatus(gsPreparing);
 
   Log(Lang.Get('LOG_RESTART_GAME'));
+end;
+
+procedure TFrmGame.ReceivedTimerStart(const A: string);
+begin
+  TimerSeconds := A.ToInteger;
+  TimerTimer(nil);
+  Timer.Enabled := True;
+end;
+
+procedure TFrmGame.ReceivedTimerStop;
+begin
+  Timer.Enabled := False;
+  LbTimer.Caption := string.Empty;
+end;
+
+procedure TFrmGame.TimerTimer(Sender: TObject);
+begin
+  if TimerSeconds=0 then Exit;
+
+  LbTimer.Caption := TimerSeconds.ToString;
+  Dec(TimerSeconds);
 end;
 
 end.

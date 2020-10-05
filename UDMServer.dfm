@@ -12,4 +12,10 @@ object DMServer: TDMServer
     Left = 88
     Top = 112
   end
+  object Timer: TTimer
+    Enabled = False
+    OnTimer = TimerTimer
+    Left = 184
+    Top = 80
+  end
 end

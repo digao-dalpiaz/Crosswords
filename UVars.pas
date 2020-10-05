@@ -19,6 +19,7 @@ var
     SizeW, SizeH: Integer;
     DictionaryID: string;
     InitialLetters, RebuyLetters: Integer;
+    TurnTimeout: Boolean; TimeoutSeconds: Integer;
 
     Letters: string;
   end;

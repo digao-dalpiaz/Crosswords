@@ -6,7 +6,7 @@ TITLE_RULES=Regras:
 MODE_SERVER=Servidor
 MODE_CLIENT=Cliente
 
-TITLE_RULES_DEFINITION=Dicionário: %s / Tamanho: %d x %d / Letras início: %d / Compra: %d
+TITLE_RULES_DEFINITION=Dicionário: %s / Tamanho: %d x %d / Letras início: %d / Compra: %d / Tempo: %d seg
 
 DLG_OK=OK
 DLG_CANCEL=Cancelar
@@ -69,6 +69,7 @@ GAME_STATUS_PLAYING=Jogo em curso
 GAME_STATUS_MYTURN=Sua vez
 GAME_STATUS_WAITVALID=Aguardando validação
 GAME_STATUS_AGREEMENT=Período de validação
+GAME_STATUS_CONTEST=Período de contestação
 GAME_STATUS_PAUSED=Jogo pausado
 GAME_STATUS_GAMEOVER=Fim de jogo
 
@@ -85,18 +86,27 @@ GAME_BTN_RULES=Regras do Jogo
 GAME_BTN_DONE=Pronto
 GAME_BTN_AGREE=Eu concordo
 GAME_BTN_DISAGREE=Eu discordo
+GAME_BTN_CONTEST_ACCEPT=Aceito
+GAME_BTN_CONTEST_REJECT=Contesto
 
 GAME_MSG_START_WITH_NOBODY=Precisamos pelo menos de dois jogadores para começar o jogo!
 GAME_MSG_CHAT_WITH_NOBODY=Não há outros jogadores para conversar!
 
 LOG_GAME_STARTED=Se prepare. Começando o jogo agora!
 LOG_YOUR_TURN=Vai, é a sua vez!
+LOG_TURN_TIMEOUT=O seu tempo acabou.
 LOG_AGREE_SENT=Você enviou uma concordância com as palavras.
 LOG_DISAGREE_SENT=Você enviou uma discordância com as palavras.
 LOG_AGREEMENT_PERIOD_START=Por favor, verifique se você concorda com as palavras de seu oponente.
 LOG_AGREEMENT_PERIOD_FINISH_ACCEPTED=O período de concordância terminou e as palavras foram aceitas.
 LOG_AGREEMENT_PERIOD_FINISH_REJECTED=O período de concordância terminou e as palavras foram rejeitadas.
 LOG_DISAGREE_RECEIVED=Pelo menos um jogador não concorda com suas palavras. Por favor, revise-as ou use o chat para argumentar.
+LOG_CONTEST_PERIOD_START=Suas palavras foram rejeitadas. Agora você pode aceitar ou contestar a rejeição.
+LOG_CONTEST_ACCEPT_SENT=Você aceitou a rejeição de suas palavras.
+LOG_CONTEST_REJECT_SENT=Você contestou a rejeição de suas palavras.
+LOG_AUTO_REJECTED_BY_INVALID_LETTERS=Sua jogada foi automaticamente rejeitada pois você colocou uma sequência inválida de letras.
+LOG_RECEIVED_CONTEST_RESPONSE_ACCEPT=O jogador atual aceitou a rejeição das palavras.
+LOG_RECEIVED_CONTEST_RESPONSE_REJECT=O jogador atual contestou a rejeição das palavras.
 LOG_GAME_OVER=Fim do jogo.
 LOG_RESTART_GAME=O servidor está preparando um novo jogo.
 
@@ -105,6 +115,8 @@ RULES_GRID_SIZE=Tamanho da tabela:
 RULES_DICTIONARY=Dicionário de letras:
 RULES_INITIAL_LETTERS=Letras iniciais:
 RULES_REBUY_LETTERS=Letras de compra:
+RULES_TURN_TIMEOUT_FLAG=Tempo limite para jogada
+RULES_TURN_TIMEOUT_SECONDS=Segundos:
 
 RULES_MSG_BLANK_FIELD=Por favor, especifique a configuração obrigatória.
 

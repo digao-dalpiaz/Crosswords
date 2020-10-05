@@ -34,6 +34,7 @@ type
     procedure ValidateSequence(CenterBlock: TBlock);
     function ContainsAnyInvalid: Boolean;
     function ContainsAnyTemp: Boolean;
+    procedure RemoveAllTempLetters;
 
     procedure LoadFromString(const A: string);
     function SaveToString: string;
@@ -196,6 +197,20 @@ begin
   Result := False;
 end;
 
+procedure TMatrixData.RemoveAllTempLetters;
+var
+  Row: TMatrixDataRow;
+  B: TBlock;
+begin
+  for Row in Self do
+    for B in Row do
+      if B.Temp then
+      begin
+        B.&Set(BLANK_LETTER, False);
+        B.Invalid := False; //could be invalid letters if player turn have reached time-out
+      end;
+end;
+
 function TMatrixData.SaveToString: string;
 var
   S: TStringList;
@@ -311,7 +326,7 @@ begin
   if (SelBox.Y>Data.Count-1) or
      (SelBox.X>Data.GetColCount-1) then Exit;
 
-  if not (FrmGame.Status in [gsPlaying, gsMyTurn, gsWaitValid, gsAgreement]) then Exit;
+  if not (FrmGame.Status in [gsPlaying, gsMyTurn, gsWaitValid, gsAgreement, gsContest]) then Exit;
 
   if FrmGame.Status <> gsMyTurn then
     MsgRaise(Lang.Get('GAME_MSG_NOT_YOUR_TURN'));

@@ -19,6 +19,9 @@ type
     BtnOK: TButton;
     BtnCancel: TButton;
     Bevel1: TBevel;
+    CkTurnTimeout: TCheckBox;
+    LbSeconds: TLabel;
+    EdSeconds: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure BtnOKClick(Sender: TObject);
   private
@@ -54,6 +57,8 @@ begin
     pubServerProps.DictionaryID := Ini.ReadString('Rules', 'DictionaryID', 'EN');
     pubServerProps.InitialLetters := Ini.ReadInteger('Rules', 'InitialLetters', 10);
     pubServerProps.RebuyLetters := Ini.ReadInteger('Rules', 'RebuyLetters', 5);
+    pubServerProps.TurnTimeout := Ini.ReadBool('Rules', 'TurnTimeout', False);
+    pubServerProps.TimeoutSeconds := Ini.ReadInteger('Rules', 'TimeoutSeconds', 60);
   finally
     Ini.Free;
   end;
@@ -70,6 +75,8 @@ begin
     Ini.WriteString('Rules', 'DictionaryID', LST_DICTIONARY[F.EdDictionary.ItemIndex].ID);
     Ini.WriteInteger('Rules', 'InitialLetters', StrToInt(F.EdInitialLetters.Text));
     Ini.WriteInteger('Rules', 'RebuyLetters', StrToInt(F.EdRebuyLetters.Text));
+    Ini.WriteBool('Rules', 'TurnTimeout', F.CkTurnTimeout.Checked);
+    Ini.WriteInteger('Rules', 'TimeoutSeconds', StrToInt(F.EdSeconds.Text));
   finally
     Ini.Free;
   end;
@@ -96,6 +103,8 @@ begin
   LbDictionary.Caption := Lang.Get('RULES_DICTIONARY');
   LbInitialLetters.Caption := Lang.Get('RULES_INITIAL_LETTERS');
   LbRebuyLetters.Caption := Lang.Get('RULES_REBUY_LETTERS');
+  CkTurnTimeout.Caption := Lang.Get('RULES_TURN_TIMEOUT_FLAG');
+  LbSeconds.Caption := Lang.Get('RULES_TURN_TIMEOUT_SECONDS');
 
   BtnOK.Caption := Lang.Get('DLG_OK');
   BtnCancel.Caption := Lang.Get('DLG_CANCEL');
@@ -108,6 +117,8 @@ begin
   EdDictionary.ItemIndex := GetCurrentDictionaryIndex;
   EdInitialLetters.Text := IntToStr(pubServerProps.InitialLetters);
   EdRebuyLetters.Text := IntToStr(pubServerProps.RebuyLetters);
+  CkTurnTimeout.Checked := pubServerProps.TurnTimeout;
+  EdSeconds.Text := IntToStr(pubServerProps.TimeoutSeconds);
 end;
 
 procedure TFrmRules.LoadDictionaryList;
@@ -118,19 +129,20 @@ begin
 end;
 
 procedure TFrmRules.BtnOKClick(Sender: TObject);
+
+  procedure CheckIntField(Ed: TEdit);
+  begin
+    if StrToIntDef(Ed.Text, 0) = 0 then
+    begin
+      MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
+      Ed.SetFocus;
+      Exit;
+    end;
+  end;
+
 begin
-  if StrToIntDef(EdSizeW.Text, 0) = 0 then
-  begin
-    MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
-    EdSizeW.SetFocus;
-    Exit;
-  end;
-  if StrToIntDef(EdSizeH.Text, 0) = 0 then
-  begin
-    MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
-    EdSizeH.SetFocus;
-    Exit;
-  end;
+  CheckIntField(EdSizeW);
+  CheckIntField(EdSizeH);
 
   if EdDictionary.ItemIndex = -1 then
   begin
@@ -139,18 +151,11 @@ begin
     Exit;
   end;
 
-  if StrToIntDef(EdInitialLetters.Text, 0) = 0 then
-  begin
-    MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
-    EdInitialLetters.SetFocus;
-    Exit;
-  end;
-  if StrToIntDef(EdRebuyLetters.Text, 0) = 0 then
-  begin
-    MsgError(Lang.Get('RULES_MSG_BLANK_FIELD'));
-    EdRebuyLetters.SetFocus;
-    Exit;
-  end;
+  CheckIntField(EdInitialLetters);
+  CheckIntField(EdRebuyLetters);
+
+  if CkTurnTimeout.Checked then
+    CheckIntField(EdSeconds);
 
   //
 

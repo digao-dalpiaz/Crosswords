@@ -676,6 +676,8 @@ end;
 
 procedure TDMServer.RestartGame;
 begin
+  StopTimer; //if restarting during the game
+
   //If players left when game is over, object remains in list to show score,
   //so when restarting game, this objects must be removed.
   //The same situation when server stops the game directly from drop form.

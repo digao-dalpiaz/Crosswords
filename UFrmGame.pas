@@ -441,9 +441,12 @@ end;
 
 procedure TFrmGame.TimerTimer(Sender: TObject);
 begin
-  if TimerSeconds=0 then Exit;
-
   LbTimer.Caption := Format(Lang.Get('GAME_TIMER'), [TimerSeconds]);
+  if TimerSeconds=0 then
+  begin
+    Timer.Enabled := False;
+    Exit;
+  end;
   Dec(TimerSeconds);
 end;
 

@@ -165,6 +165,7 @@ begin
   BtnContestReject.Visible := (Status = gsContest);
 
   BtnRestart.Visible := (Status = gsGameOver) and pubModeServer;
+  FrmMain.BtnRestart.Visible := pubModeServer;
 
   case Status of
     gsUnknown:

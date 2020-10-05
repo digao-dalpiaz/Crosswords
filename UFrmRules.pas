@@ -20,6 +20,8 @@ type
     CkTurnTimeout: TCheckBox;
     LbSeconds: TLabel;
     EdSeconds: TEdit;
+    LbGoalScore: TLabel;
+    EdGoalScore: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure BtnOKClick(Sender: TObject);
   private
@@ -54,6 +56,7 @@ begin
     pubServerProps.SizeH := Ini.ReadInteger('Rules', 'SizeH', 20);
     pubServerProps.DictionaryID := Ini.ReadString('Rules', 'DictionaryID', 'EN');
     pubServerProps.HandLetters := Ini.ReadInteger('Rules', 'HandLetters', 7);
+    pubServerProps.GoalScore := Ini.ReadInteger('Rules', 'GoalScore', 50);
     pubServerProps.TurnTimeout := Ini.ReadBool('Rules', 'TurnTimeout', False);
     pubServerProps.TimeoutSeconds := Ini.ReadInteger('Rules', 'TimeoutSeconds', 60);
   finally
@@ -71,6 +74,7 @@ begin
     Ini.WriteInteger('Rules', 'SizeH', StrToInt(F.EdSizeH.Text));
     Ini.WriteString('Rules', 'DictionaryID', LST_DICTIONARY[F.EdDictionary.ItemIndex].ID);
     Ini.WriteInteger('Rules', 'HandLetters', StrToInt(F.EdHandLetters.Text));
+    Ini.WriteInteger('Rules', 'GoalScore', StrToInt(F.EdGoalScore.Text));
     Ini.WriteBool('Rules', 'TurnTimeout', F.CkTurnTimeout.Checked);
     Ini.WriteInteger('Rules', 'TimeoutSeconds', StrToInt(F.EdSeconds.Text));
   finally
@@ -98,6 +102,7 @@ begin
   LbTableSize.Caption := Lang.Get('RULES_GRID_SIZE');
   LbDictionary.Caption := Lang.Get('RULES_DICTIONARY');
   LbHandLetters.Caption := Lang.Get('RULES_HAND_LETTERS');
+  LbGoalScore.Caption := Lang.Get('RULES_GOAL_SCORE');
   CkTurnTimeout.Caption := Lang.Get('RULES_TURN_TIMEOUT_FLAG');
   LbSeconds.Caption := Lang.Get('RULES_TURN_TIMEOUT_SECONDS');
 
@@ -111,6 +116,7 @@ begin
   EdSizeH.Text := IntToStr(pubServerProps.SizeH);
   EdDictionary.ItemIndex := GetCurrentDictionaryIndex;
   EdHandLetters.Text := IntToStr(pubServerProps.HandLetters);
+  EdGoalScore.Text := IntToStr(pubServerProps.GoalScore);
   CkTurnTimeout.Checked := pubServerProps.TurnTimeout;
   EdSeconds.Text := IntToStr(pubServerProps.TimeoutSeconds);
 end;
@@ -146,6 +152,7 @@ begin
   end;
 
   CheckIntField(EdHandLetters);
+  CheckIntField(EdGoalScore);
 
   if CkTurnTimeout.Checked then
     CheckIntField(EdSeconds);

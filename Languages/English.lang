@@ -2,6 +2,7 @@ TITLE_VERSION=Version %s
 TITLE_MODE=Mode:
 TITLE_PLAYER=Player:
 TITLE_RULES=Rules:
+TITLE_RESTART=Restart
 
 MODE_SERVER=Server
 MODE_CLIENT=Client
@@ -14,6 +15,7 @@ DLG_CANCEL=Cancel
 MSG_CLOSE_APP=<b><fc:clRed>There is a connection established.</fc></b><br><br>Are you sure you want to leave?
 MSG_KILL_PLAYER=Are you sure you want to delete the selected player?
 MSG_STOP_GAME=<b>Are you sure you want to stop the game?</b>
+MSG_RESTART_GAME=<b>Are you sure you want to restart the game?</b>
 
 CONN_REJECT_VERSION_WRONG=This version is incompatible with the server!
 CONN_REJECT_PASSWORD_WRONG=The password to this game is incorrect.
@@ -114,6 +116,7 @@ RULES_CAPTION=Game Rules
 RULES_GRID_SIZE=Table size:
 RULES_DICTIONARY=Letters dictionary:
 RULES_HAND_LETTERS=Letters in hand:
+RULES_GOAL_SCORE=Goal score:
 RULES_TURN_TIMEOUT_FLAG=Player turn time-out
 RULES_TURN_TIMEOUT_SECONDS=Seconds:
 

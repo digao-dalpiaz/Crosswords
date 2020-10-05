@@ -101,8 +101,9 @@ object FrmMain: TFrmMain
       object BtnSettings: TSpeedButton
         Left = 0
         Top = 0
-        Width = 25
+        Width = 26
         Height = 25
+        Align = alClient
         Flat = True
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
@@ -132,6 +133,7 @@ object FrmMain: TFrmMain
           03C080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FF07070632
           3027323027070706C080FFC080FFC080FFC080FFC080FFC080FF}
         OnClick = BtnSettingsClick
+        ExplicitWidth = 25
       end
     end
     object BoxConInfo: TPanel
@@ -269,6 +271,24 @@ object FrmMain: TFrmMain
         StyleElements = [seClient, seBorder]
         ExplicitHeight = 13
       end
+      object BtnRestart: TSpeedButton
+        Left = 474
+        Top = 0
+        Width = 80
+        Height = 25
+        Align = alRight
+        Caption = 'Restart'
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        StyleElements = [seClient, seBorder]
+        OnClick = BtnRestartClick
+        ExplicitLeft = 465
+      end
     end
   end
   object Dam: TDam
@@ -296,6 +316,12 @@ object FrmMain: TFrmMain
       Dam = Dam
     end
     object _QuestionStopGame: TDamMsg
+      Icon = diQuest
+      Buttons = dbYesNo
+      SwapFocus = True
+      Dam = Dam
+    end
+    object _QuestionRestartGame: TDamMsg
       Icon = diQuest
       Buttons = dbYesNo
       SwapFocus = True

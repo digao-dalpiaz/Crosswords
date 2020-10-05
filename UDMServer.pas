@@ -47,12 +47,12 @@ type
     function IsAllPlayersAgree(WithSocket: TDzSocket): Boolean;
     procedure CompletePlayerTurn(Socket: TDzSocket);
     procedure ForConnections(P: TForConnectionsProc);
-    procedure SetGameOver;
     procedure RemoveAllDisconectedPlayers;
     procedure ContestReceived(Socket: TDzSocket; const A: string);
     procedure StartAgreementPeriod(Socket: TDzSocket);
     procedure RemoveTempPlayerLetters(Socket: TDzSocket);
     procedure StopTimer;
+    procedure SetGameOver;
   public
     procedure Initialize;
     procedure StartGame;
@@ -643,7 +643,7 @@ begin
   SendMatrix;
   S.Send(Socket, 'F'); //finish turn log
 
-  if C.Letters.IsEmpty then
+  if C.Score >= pubServerProps.GoalScore then
     SetGameOver
   else
     SelectNextPlayer;

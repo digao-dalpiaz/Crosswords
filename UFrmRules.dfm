@@ -39,7 +39,7 @@ object FrmRules: TFrmRules
   end
   object LbHandLetters: TLabel
     Left = 16
-    Top = 123
+    Top = 115
     Width = 76
     Height = 13
     Caption = 'Letters in hand:'
@@ -53,10 +53,17 @@ object FrmRules: TFrmRules
   end
   object LbSeconds: TLabel
     Left = 32
-    Top = 195
+    Top = 203
     Width = 44
     Height = 13
     Caption = 'Seconds:'
+  end
+  object LbGoalScore: TLabel
+    Left = 16
+    Top = 139
+    Width = 54
+    Height = 13
+    Caption = 'Goal score:'
   end
   object EdSizeW: TEdit
     Left = 128
@@ -86,7 +93,7 @@ object FrmRules: TFrmRules
   end
   object EdHandLetters: TEdit
     Left = 112
-    Top = 120
+    Top = 112
     Width = 41
     Height = 21
     Alignment = taRightJustify
@@ -100,7 +107,7 @@ object FrmRules: TFrmRules
     Height = 25
     Caption = 'OK'
     Default = True
-    TabOrder = 6
+    TabOrder = 7
     OnClick = BtnOKClick
   end
   object BtnCancel: TButton
@@ -111,23 +118,32 @@ object FrmRules: TFrmRules
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
-    TabOrder = 7
+    TabOrder = 8
   end
   object CkTurnTimeout: TCheckBox
     Left = 16
-    Top = 168
+    Top = 176
     Width = 153
     Height = 17
     Caption = 'Player turn time-out'
-    TabOrder = 4
+    TabOrder = 5
   end
   object EdSeconds: TEdit
     Left = 96
-    Top = 192
+    Top = 200
     Width = 49
     Height = 21
     Alignment = taRightJustify
     NumbersOnly = True
-    TabOrder = 5
+    TabOrder = 6
+  end
+  object EdGoalScore: TEdit
+    Left = 112
+    Top = 136
+    Width = 41
+    Height = 21
+    Alignment = taRightJustify
+    NumbersOnly = True
+    TabOrder = 4
   end
 end

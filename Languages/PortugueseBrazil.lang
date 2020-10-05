@@ -2,6 +2,7 @@ TITLE_VERSION=Versão %s
 TITLE_MODE=Modo:
 TITLE_PLAYER=Jogador:
 TITLE_RULES=Regras:
+TITLE_RESTART=Reiniciar
 
 MODE_SERVER=Servidor
 MODE_CLIENT=Cliente
@@ -14,6 +15,7 @@ DLG_CANCEL=Cancelar
 MSG_CLOSE_APP=<b><fc:clRed>Existe uma conexão estabelecida.</fc></b><br><br>Tem certeza de que deseja sair?
 MSG_KILL_PLAYER=Tem certeza de que deseja eliminar o jogador selecionado?
 MSG_STOP_GAME=<b>Tem certeza de que deseja parar o jogo?</b>
+MSG_RESTART_GAME=<b>Tem certeza de que deseja reiniciar o jogo?</b>
 
 CONN_REJECT_VERSION_WRONG=Esta versão é incompatível com o servidor!
 CONN_REJECT_PASSWORD_WRONG=A senha do jogo está incorreta.
@@ -114,6 +116,7 @@ RULES_CAPTION=Regras do Jogo
 RULES_GRID_SIZE=Tamanho da tabela:
 RULES_DICTIONARY=Dicionário de letras:
 RULES_HAND_LETTERS=Letras na mão:
+RULES_GOAL_SCORE=Pontuação vencedora:
 RULES_TURN_TIMEOUT_FLAG=Tempo limite para jogada
 RULES_TURN_TIMEOUT_SECONDS=Segundos:
 

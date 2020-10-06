@@ -43,11 +43,17 @@ You can chat to all players at any time using side panel.
 Each player has his turn, in sequential order, indicated on the side panel.
 All players will initially receive the same amount of letters.
 The idea is to build words, using as many letters as possible.
-The game ends when a player has no letters left.
-Each time you complete your move, all other players must accept the words you entered. If any player does not accept, you will have to review your move. You can use chat to argue.
-If you are unable to form a word in a move, you will automatically receive more letters in your pot.
+The game ends when a player reaches the score defined in the rules (goal letters).
+Each time you complete your move, all other players must accept the words you entered. If any player does not accept, your move will be disregarded. You can use chat to argue.
+
+At the end of each move, your letters will always be completed to maintain the same amount. If you don't use any letters in a move, all your letters will be exchanged.
+
 **A move can only be completed when all words entered are valid.**
 *Players must define with each other before starting the game what kind of words will be accepted. Normally, only words in the dictionary are accepted.*
+
+### Player turn logic diagram
+
+![Player turn diagram](Images/diagram.png)
 
 ### Supported languages
 
@@ -89,7 +95,7 @@ The server works on Port TCP 6631.
 - ~~Review random letters logic~~
 - ~~Include English dictionary~~
 - ~~App translation to Portuguese Brazil and support any language translation~~
-- Review game rules
+- ~~Review game rules~~
 - ~~Behavior when user drop connection when the game is running~~
 - ~~Password to connect~~
 - ~~Allow server change settings while waiting players~~
@@ -97,5 +103,5 @@ The server works on Port TCP 6631.
 - ~~Logic to check if inserted letters is according with game rules~~
 - ~~Better way to show that it's your turn~~
 - ~~Zoom function in game grid~~
-- Time-out rule to a player turn?
+- ~~Time-out rule to a player turn~~
 - ~~If language changed during game, the rules info in title bar remains in previous language~~

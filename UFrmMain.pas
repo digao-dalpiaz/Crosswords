@@ -28,11 +28,14 @@ type
     LbRules: TLabel;
     _QuestionKillPlayer: TDamMsg;
     _QuestionStopGame: TDamMsg;
+    BtnRestart: TSpeedButton;
+    _QuestionRestartGame: TDamMsg;
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure BtnSettingsClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure LbLinkClick(Sender: TObject);
+    procedure BtnRestartClick(Sender: TObject);
   private
     procedure InitStartPage;
     procedure InitGamePage;
@@ -49,7 +52,7 @@ implementation
 {$R *.dfm}
 
 uses UVars, UDams, ULanguage,
-  UFrmStart, UFrmGame, UFrmLog, UFrmSettings, UDMClient,
+  UFrmStart, UFrmGame, UFrmLog, UFrmSettings, UDMClient, UDMServer,
   System.SysUtils, System.IniFiles, Winapi.ShellAPI;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
@@ -92,10 +95,12 @@ begin
   LbLbMode.Caption := Lang.Get('TITLE_MODE')+' ';
   LbLbPlayer.Caption := Lang.Get('TITLE_PLAYER')+' ';
   LbLbRules.Caption := Lang.Get('TITLE_RULES')+' ';
+  BtnRestart.Caption := Lang.Get('TITLE_RESTART');
 
   _QuestionCloseApp.Message := Lang.Get('MSG_CLOSE_APP');
   _QuestionKillPlayer.Message := Lang.Get('MSG_KILL_PLAYER');
   _QuestionStopGame.Message := Lang.Get('MSG_STOP_GAME');
+  _QuestionRestartGame.Message := Lang.Get('MSG_RESTART_GAME');
 end;
 
 procedure TFrmMain.InitStartPage;
@@ -119,6 +124,12 @@ end;
 procedure TFrmMain.LbLinkClick(Sender: TObject);
 begin
   ShellExecute(0, '', 'http://digaodalpiaz.com/', '', '', 0);
+end;
+
+procedure TFrmMain.BtnRestartClick(Sender: TObject);
+begin
+  if QuestionRestartGame then
+    DMServer.RestartGame;
 end;
 
 procedure TFrmMain.BtnSettingsClick(Sender: TObject);

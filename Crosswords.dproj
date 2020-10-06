@@ -139,16 +139,6 @@
             <ResourceType>WAVE</ResourceType>
             <ResourceId>SND_REJECT</ResourceId>
         </RcItem>
-        <RcItem Include="Sounds\start.wav">
-            <ContainerId>ResourceItem</ContainerId>
-            <ResourceType>WAVE</ResourceType>
-            <ResourceId>SND_START</ResourceId>
-        </RcItem>
-        <RcItem Include="Sounds\buy.wav">
-            <ContainerId>ResourceItem</ContainerId>
-            <ResourceType>WAVE</ResourceType>
-            <ResourceId>SND_BUY</ResourceId>
-        </RcItem>
         <RcItem Include="Sounds\done.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>WAVE</ResourceType>
@@ -215,18 +205,6 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Sounds\start.wav" Configuration="Release" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="Sounds\buy.wav" Configuration="Release" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="Dictionaries\PortugueseBrazil.dic" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>

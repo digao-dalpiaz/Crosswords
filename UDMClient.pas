@@ -29,6 +29,7 @@ type
   public
     procedure SendLetter(X, Y: Integer; const Letter: Char);
     procedure SendAgreement(Agree: Boolean);
+    procedure SendContest(Accept: Boolean);
   end;
 
 var
@@ -61,6 +62,7 @@ begin
 
   if pubModeServer then DMServer.S.Close; //turn off server
 
+  FrmGame.Timer.Enabled := False;
   FrmGame.Hide;
 
   FrmMain.BoxConInfo.Visible := False;
@@ -135,19 +137,22 @@ begin
     'R': FrmGame.GameStartedReceived;
     'X': FrmGame.MatrixReceived(A);
     '>': FrmGame.InitMyTurn;
+    '~': FrmGame.MyTurnTimeoutReceived;
     'G': FrmGame.AgreementRequestReceived;
     'K': FrmGame.AgreementFinishReceived(A);
     'W': FrmGame.WaitValidationReceived;
     'F': FrmGame.ValidationAcceptedReceived;
     'J': FrmGame.ValidationRejectedReceived;
-    'B': begin
-           Log(Format(Lang.Get('LOG_REBUY'), [A.ToInteger]));
-           DoSound('BUY');
-         end;
+    'O': FrmGame.OpenContestPeriodReceived;
+    'B': FrmGame.LettersExchangedReceived;
     'E': FrmGame.GameOverReceived;
     'P': FrmGame.ReceivedPreparingNewGame;
     '?': FrmGame.ReceivedPausedByDrop;
     '/': FrmGame.ReceivedDropContinue;
+    ':': FrmGame.ReceivedTimerStart(A);
+    '.': FrmGame.ReceivedTimerStop;
+    '&': FrmGame.ReceivedAutoRejectedByInvalidLetters;
+    'Q': FrmGame.ReceivedContestResponse(A);
   end;
 end;
 
@@ -155,19 +160,19 @@ procedure TDMClient.RulesReceived(const A: string; ToOne: Boolean);
 var
   D: TMsgArray;
   Dictionary: string;
-  SizeW, SizeH, InitialLetters, RebuyLetters: Integer;
+  SizeW, SizeH, HandLetters, TimeoutSeconds: Integer;
 begin
   D := DataToArray(A);
 
   Dictionary := D[0];
   SizeW := D[1];
   SizeH := D[2];
-  InitialLetters := D[3];
-  RebuyLetters := D[4];
+  HandLetters := D[3];
+  TimeoutSeconds := D[4];
 
   FrmMain.LbRules.Caption :=
     Format(Lang.Get('TITLE_RULES_DEFINITION'), [
-      Dictionary, SizeW, SizeH, InitialLetters, RebuyLetters]);
+      Dictionary, SizeW, SizeH, HandLetters, TimeoutSeconds]);
 
   FrmGame.LbPosition.Caption := string.Empty;
   FrmGame.PB.SetMatrixSize(SizeH, SizeW);
@@ -216,6 +221,11 @@ end;
 procedure TDMClient.SendAgreement(Agree: Boolean);
 begin
   C.Send('H', ArrayToData([Agree]));
+end;
+
+procedure TDMClient.SendContest(Accept: Boolean);
+begin
+  C.Send('Y', ArrayToData([Accept]));
 end;
 
 end.

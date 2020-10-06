@@ -18,7 +18,8 @@ var
   pubServerProps: record
     SizeW, SizeH: Integer;
     DictionaryID: string;
-    InitialLetters, RebuyLetters: Integer;
+    HandLetters, GoalScore: Integer;
+    TurnTimeout: Boolean; TimeoutSeconds: Integer;
 
     Letters: string;
   end;

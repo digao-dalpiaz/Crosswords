@@ -3,15 +3,18 @@ unit UDMServer;
 interface
 
 uses
-  System.Classes, DzSocket, UMatrix, UClient;
+  System.Classes, Vcl.ExtCtrls, DzSocket,
+  //
+  UMatrix, UClient;
 
 type
   TForConnectionsProc = reference to procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean);
 
-  TServerStatus = (ssPreparing, ssTurn, ssAgreement, ssFreezed, ssOver);
+  TServerStatus = (ssPreparing, ssTurn, ssAgreement, ssContest, ssFreezed, ssOver);
 
   TDMServer = class(TDataModule)
     S: TDzTCPServer;
+    Timer: TTimer;
     procedure DataModuleCreate(Sender: TObject);
     procedure SClientLoginCheck(Sender: TObject; Socket: TDzSocket;
       var Accept: Boolean; const RequestData: string; var ResponseData: string);
@@ -20,6 +23,7 @@ type
     procedure SClientRead(Sender: TObject; Socket: TDzSocket; const Cmd: Char;
       const A: string);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure TimerTimer(Sender: TObject);
   private
     PlayersList: TPlayersList;
     CurrentPlayerIndex: Integer;
@@ -27,23 +31,28 @@ type
     Matrix: TMatrixData;
     CenterBlock: TBlock;
 
+    TimerSeconds: Integer;
+
     function PlayerNameAlreadyExists(const PlayerName: string): Boolean;
-    procedure SendPlayersList(Exclude: TDzSocket = nil);
+    procedure SendPlayersList;
     procedure SendLetters(Socket: TDzSocket);
     procedure SelectNextPlayer;
     procedure SendMatrix(Socket: TDzSocket = nil);
     procedure LetterReceived(Socket: TDzSocket; const A: string);
     procedure MessageReceived(Socket: TDzSocket; const A: string);
     function GetCurrentPlayer: TClient;
-    procedure PlayerTurnDoneReceived(Socket: TDzSocket);
+    procedure PlayerTurnDoneReceived(Socket: TDzSocket; ByTimeout: Boolean);
     procedure AgreementReceived(Socket: TDzSocket; const A: string);
     procedure ClearAllAgreements;
     function IsAllPlayersAgree(WithSocket: TDzSocket): Boolean;
     procedure CompletePlayerTurn(Socket: TDzSocket);
-    procedure RebuyLetters(Socket: TDzSocket);
     procedure ForConnections(P: TForConnectionsProc);
-    procedure SetGameOver;
     procedure RemoveAllDisconectedPlayers;
+    procedure ContestReceived(Socket: TDzSocket; const A: string);
+    procedure StartAgreementPeriod(Socket: TDzSocket);
+    procedure RemoveTempPlayerLetters(Socket: TDzSocket);
+    procedure StopTimer;
+    procedure SetGameOver;
   public
     procedure Initialize;
     procedure StartGame;
@@ -64,7 +73,7 @@ implementation
 {$R *.dfm}
 
 uses UVars, UDictionary, UFrmRules, UFrmDrop,
-  System.SysUtils, System.Variants;
+  System.SysUtils, System.StrUtils, System.Variants, System.Math;
 
 procedure TDMServer.DataModuleCreate(Sender: TObject);
 begin
@@ -266,7 +275,7 @@ begin
   if not Socket.Auth then Exit;
 
   C := Socket.Data;
-  S.SendAllEx(Socket, 'D', C.PlayerName); //send client disconnected to others
+  S.SendAll('D', C.PlayerName); //send client disconnected to others
 
   C.Socket := nil;
   if Status<>ssPreparing then
@@ -275,14 +284,17 @@ begin
     begin
       //this will enter every player that disconnects
       Status := ssFreezed;
+      StopTimer;
+
       S.SendAll('?'); //send paused by connection drop signal
       DoPlayerDroped(C); //player disconnected during the game
       ClearAllAgreements; //if in agreement, clear because will back in turn status
+      RemoveTempPlayerLetters(nil);
     end;
   end else
     PlayersList.Remove(C);
 
-  SendPlayersList(Socket);
+  SendPlayersList;
 end;
 
 procedure TDMServer.SClientRead(Sender: TObject; Socket: TDzSocket;
@@ -291,8 +303,9 @@ begin
   case Cmd of
     'M': MessageReceived(Socket, A);
     '#': LetterReceived(Socket, A);
-    '!': PlayerTurnDoneReceived(Socket);
+    '!': PlayerTurnDoneReceived(Socket, False);
     'H': AgreementReceived(Socket, A);
+    'Y': ContestReceived(Socket, A);
   end;
 end;
 
@@ -304,7 +317,7 @@ begin
   S.SendAllEx(Socket, 'M', ArrayToData([C.PlayerName, A]));
 end;
 
-procedure TDMServer.SendPlayersList(Exclude: TDzSocket = nil);
+procedure TDMServer.SendPlayersList;
 var
   CurPlayer: TClient;
   Lst: TStringList;
@@ -316,11 +329,11 @@ begin
     ForConnections(
       procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
       begin
-        Lst.Add(ArrayToData([C.PlayerName, C.Letters.Length, C.Score, C=CurPlayer, C.Agree, C.Socket=nil]));
+        Lst.Add(ArrayToData([C.PlayerName, C.Score, C=CurPlayer, C.Agree, C.Socket=nil]));
       end
     );
 
-    S.SendAllEx(Exclude, 'L', Lst.Text);
+    S.SendAll('L', Lst.Text);
   finally
     Lst.Free;
   end;
@@ -337,7 +350,7 @@ begin
   ForConnections(
     procedure(Sok: TDzSocket; C: TClient; var Cancel: Boolean)
     begin
-      C.RandomizeInitialLetters;
+      C.RandomizeLetters(True);
       SendLetters(Sok);
     end
   );
@@ -370,6 +383,22 @@ begin
   SendPlayersList; //update players list
 
   S.Send(GetCurrentPlayer.Socket, '>'); //send to current player its turn signal
+
+  if pubServerProps.TurnTimeout then
+  begin
+    TimerSeconds := pubServerProps.TimeoutSeconds;
+    Timer.Enabled := True;
+    S.SendAll(':', pubServerProps.TimeoutSeconds.ToString); //send timer start signal
+  end;
+end;
+
+procedure TDMServer.StopTimer;
+begin
+  if Timer.Enabled then
+  begin
+    Timer.Enabled := False;
+    S.SendAll('.'); //send stop timer signal
+  end;
 end;
 
 function TDMServer.GetCurrentPlayer: TClient;
@@ -421,7 +450,9 @@ begin
   SendMatrix; //send updated matrix to all
 end;
 
-procedure TDMServer.PlayerTurnDoneReceived(Socket: TDzSocket);
+procedure TDMServer.PlayerTurnDoneReceived(Socket: TDzSocket; ByTimeout: Boolean);
+var
+  C: TClient;
 begin
   if Status<>ssTurn then
     raise Exception.Create('Internal: A player tried to set its turn done when status is not turn');
@@ -429,19 +460,40 @@ begin
   if Socket<>GetCurrentPlayer.Socket then
     raise Exception.Create('Internal: A player tried to set its turn done when is not its turn');
 
+  StopTimer;
+
+  C := Socket.Data;
+
   if Matrix.ContainsAnyTemp then //player put letters in the grid
   begin
     if Matrix.ContainsAnyInvalid then
-      raise Exception.Create('Internal: A player tried to set its turn done having letters out of sequence');
+    begin
+      if ByTimeout then
+      begin
+        RemoveTempPlayerLetters(Socket);
+        S.Send(Socket, '&'); //send auto rejected by invalid letters signal
+        SelectNextPlayer;
+        Exit;
+      end else
+        raise Exception.Create('Internal: A player tried to set its turn done having letters out of sequence');
+    end;
 
-    Status := ssAgreement;
-    S.Send(Socket, 'W'); //send wait log
-    S.SendAllEx(Socket, 'G'); //send agreement request signal
+    StartAgreementPeriod(Socket);
   end else
   begin
-    RebuyLetters(Socket);
+    C.RandomizeLetters(True);
+    SendLetters(Socket);
+    S.Send(Socket, 'B'); //send letters exchanged signal
+
     SelectNextPlayer;
   end;
+end;
+
+procedure TDMServer.StartAgreementPeriod(Socket: TDzSocket);
+begin
+  Status := ssAgreement;
+  S.Send(Socket, 'W'); //send wait log
+  S.SendAllEx(Socket, 'G'); //send agreement request signal
 end;
 
 procedure TDMServer.AgreementReceived(Socket: TDzSocket; const A: string);
@@ -451,9 +503,7 @@ var
 
   procedure DisableAgreement(Accepted: Boolean);
   begin
-     Status := ssTurn;
      S.SendAllEx(CurSok, 'K', ArrayToData([Accepted]));
-
      ClearAllAgreements;
   end;
 
@@ -470,17 +520,63 @@ begin
 
     if IsAllPlayersAgree(CurSok) then //Check if all players have set agreement
     begin
+      Status := ssTurn;
       DisableAgreement(True);
       CompletePlayerTurn(CurSok); //SendPlayersList will be called here
       Exit;
     end;
   end else
   begin
+    if pubServerProps.TurnTimeout then
+    begin
+      Status := ssContest;
+      S.Send(CurSok, 'O'); //send open contest period to current player
+    end else
+    begin
+      Status := ssTurn;
+      S.Send(CurSok, 'J'); //send reject agreement to current player
+    end;
+
     DisableAgreement(False);
-    S.Send(CurSok, 'J'); //send reject agreement to current player
   end;
 
   SendPlayersList; //update players list
+end;
+
+procedure TDMServer.ContestReceived(Socket: TDzSocket; const A: string);
+var
+  Accept: Boolean;
+begin
+  if Status<>ssContest then
+    raise Exception.Create('Internal: A player tried to set contest when status is not contest');
+
+  if Socket<>GetCurrentPlayer.Socket then
+    raise Exception.Create('Internal: A player tried to set contest when is not its turn');
+
+  Accept := DataToArray(A)[0]{Accept};
+
+  S.SendAllEx(Socket, 'Q', ArrayToData([Accept]));
+
+  if Accept then
+  begin
+    RemoveTempPlayerLetters(Socket);
+
+    Status := ssTurn;
+    SelectNextPlayer;
+  end else
+  begin
+    //request a new agreement period
+    StartAgreementPeriod(Socket);
+  end;
+end;
+
+procedure TDMServer.RemoveTempPlayerLetters(Socket: TDzSocket);
+begin
+  Matrix.RemoveAllTempLetters;
+  SendMatrix;
+
+  if Socket<>nil then
+    SendLetters(Socket);
 end;
 
 function TDMServer.IsAllPlayersAgree(WithSocket: TDzSocket): Boolean;
@@ -541,10 +637,13 @@ begin
   Inc(C.Score, Length(C.Letters) - Length(StoLetters));
   C.Letters := StoLetters;
 
+  C.RandomizeLetters(False);
+  SendLetters(Socket);
+
   SendMatrix;
   S.Send(Socket, 'F'); //finish turn log
 
-  if C.Letters.IsEmpty then
+  if C.Score >= pubServerProps.GoalScore then
     SetGameOver
   else
     SelectNextPlayer;
@@ -558,20 +657,6 @@ begin
   S.SendAll('E'); //send end game signal
 end;
 
-procedure TDMServer.RebuyLetters(Socket: TDzSocket);
-var
-  I: Integer;
-  C: TClient;
-begin
-  C := Socket.Data;
-
-  for I := 1 to pubServerProps.RebuyLetters do
-    C.Letters := C.Letters + GetRandomLetter;
-
-  SendLetters(Socket);
-  S.Send(Socket, 'B', pubServerProps.RebuyLetters.ToString);
-end;
-
 procedure TDMServer.SendRules(Socket: TDzSocket);
 var
   A: string;
@@ -580,8 +665,8 @@ begin
     LST_DICTIONARY[GetCurrentDictionaryIndex].LanguageName,
     pubServerProps.SizeW,
     pubServerProps.SizeH,
-    pubServerProps.InitialLetters,
-    pubServerProps.RebuyLetters]);
+    pubServerProps.HandLetters,
+    IfThen(pubServerProps.TurnTimeout, pubServerProps.TimeoutSeconds)]);
 
   if Socket<>nil then
     S.Send(Socket, 'u', A)
@@ -591,6 +676,8 @@ end;
 
 procedure TDMServer.RestartGame;
 begin
+  StopTimer; //if restarting during the game
+
   //If players left when game is over, object remains in list to show score,
   //so when restarting game, this objects must be removed.
   //The same situation when server stops the game directly from drop form.
@@ -640,6 +727,20 @@ begin
 
   Dec(CurrentPlayerIndex); //just because will inc on select next player
   SelectNextPlayer;
+end;
+
+procedure TDMServer.TimerTimer(Sender: TObject);
+var C: TClient;
+begin
+  Dec(TimerSeconds);
+  if TimerSeconds<0 then raise Exception.Create('Internal: Negative timer');
+
+  if TimerSeconds=0 then
+  begin
+    C := GetCurrentPlayer;
+    S.Send(C.Socket, '~'); //send player time out signal
+    PlayerTurnDoneReceived(C.Socket, True);
+  end;
 end;
 
 end.

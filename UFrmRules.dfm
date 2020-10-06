@@ -3,7 +3,7 @@ object FrmRules: TFrmRules
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Game Rules'
-  ClientHeight = 235
+  ClientHeight = 283
   ClientWidth = 505
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -37,30 +37,33 @@ object FrmRules: TFrmRules
     Height = 13
     Caption = 'Dictionary:'
   end
-  object LbInitialLetters: TLabel
+  object LbHandLetters: TLabel
     Left = 16
-    Top = 123
-    Width = 169
+    Top = 115
+    Width = 76
     Height = 13
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Initial letters pocket:'
-  end
-  object LbRebuyLetters: TLabel
-    Left = 16
-    Top = 147
-    Width = 169
-    Height = 13
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Rebuy letters:'
+    Caption = 'Letters in hand:'
   end
   object Bevel1: TBevel
     Left = 16
-    Top = 192
+    Top = 240
     Width = 473
     Height = 9
     Shape = bsTopLine
+  end
+  object LbSeconds: TLabel
+    Left = 32
+    Top = 203
+    Width = 44
+    Height = 13
+    Caption = 'Seconds:'
+  end
+  object LbGoalScore: TLabel
+    Left = 16
+    Top = 139
+    Width = 54
+    Height = 13
+    Caption = 'Goal score:'
   end
   object EdSizeW: TEdit
     Left = 128
@@ -88,42 +91,59 @@ object FrmRules: TFrmRules
     Style = csDropDownList
     TabOrder = 2
   end
-  object EdInitialLetters: TEdit
-    Left = 192
-    Top = 120
+  object EdHandLetters: TEdit
+    Left = 112
+    Top = 112
     Width = 41
     Height = 21
     Alignment = taRightJustify
     NumbersOnly = True
     TabOrder = 3
   end
-  object EdRebuyLetters: TEdit
-    Left = 192
-    Top = 144
-    Width = 41
-    Height = 21
-    Alignment = taRightJustify
-    NumbersOnly = True
-    TabOrder = 4
-  end
   object BtnOK: TButton
     Left = 168
-    Top = 200
+    Top = 248
     Width = 81
     Height = 25
     Caption = 'OK'
     Default = True
-    TabOrder = 5
+    TabOrder = 7
     OnClick = BtnOKClick
   end
   object BtnCancel: TButton
     Left = 256
-    Top = 200
+    Top = 248
     Width = 81
     Height = 25
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
+    TabOrder = 8
+  end
+  object CkTurnTimeout: TCheckBox
+    Left = 16
+    Top = 176
+    Width = 153
+    Height = 17
+    Caption = 'Player turn time-out'
+    TabOrder = 5
+  end
+  object EdSeconds: TEdit
+    Left = 96
+    Top = 200
+    Width = 49
+    Height = 21
+    Alignment = taRightJustify
+    NumbersOnly = True
     TabOrder = 6
+  end
+  object EdGoalScore: TEdit
+    Left = 112
+    Top = 136
+    Width = 41
+    Height = 21
+    Alignment = taRightJustify
+    NumbersOnly = True
+    TabOrder = 4
   end
 end

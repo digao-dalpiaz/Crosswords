@@ -51,6 +51,10 @@ At the end of each move, your letters will always be completed to maintain the s
 **A move can only be completed when all words entered are valid.**
 *Players must define with each other before starting the game what kind of words will be accepted. Normally, only words in the dictionary are accepted.*
 
+### Player turn logic diagram
+
+![Player turn diagram](Images/diagram.png)
+
 ### Supported languages
 
 - English

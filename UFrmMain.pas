@@ -52,7 +52,7 @@ implementation
 {$R *.dfm}
 
 uses UVars, UDams, ULanguage,
-  UFrmStart, UFrmGame, UFrmLog, UFrmSettings, UDMClient, UDMServer,
+  UFrmStart, UFrmGame, UFrmLog, UFrmSettings, UDMClient, UDMServer, UFrmDrop,
   System.SysUtils, System.IniFiles, Winapi.ShellAPI;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
@@ -128,6 +128,8 @@ end;
 
 procedure TFrmMain.BtnRestartClick(Sender: TObject);
 begin
+  if Assigned(FrmDrop) then Exit;
+
   if QuestionRestartGame then
     DMServer.RestartGame;
 end;

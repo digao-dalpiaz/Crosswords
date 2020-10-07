@@ -204,6 +204,13 @@ begin
 
   if D[2]<>string.Empty then //Hash
   begin
+    if Status<>ssFreezed then
+    begin
+      ResponseData := 'NOT_FREEZED';
+      Exit;
+    end;
+
+    //FIND PLAYER BY HASH
     C := FindPlayerByHash(D[2]);
 
     if C=nil then

@@ -19,6 +19,7 @@ MSG_RESTART_GAME=<b>Are you sure you want to restart the game?</b>
 
 CONN_REJECT_VERSION_WRONG=This version is incompatible with the server!
 CONN_REJECT_PASSWORD_WRONG=The password to this game is incorrect.
+CONN_REJECT_NOT_FREEZED=The game is not in the status of waiting for reconnections.
 CONN_REJECT_HASH_WRONG=Your player was not found by this hash code.
 CONN_REJECT_ALREADY_CONNECTED=There is an existing connection for this player already.
 CONN_REJECT_ALREADY_RUNNING=You cannot join the game because it is already running!

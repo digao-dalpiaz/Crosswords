@@ -179,6 +179,16 @@
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>LANG_BR</ResourceId>
         </RcItem>
+        <RcItem Include="Sounds\contest.wav">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>WAVE</ResourceType>
+            <ResourceId>SND_CONTEST</ResourceId>
+        </RcItem>
+        <RcItem Include="Sounds\timeout.wav">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>WAVE</ResourceType>
+            <ResourceId>SND_TIMEOUT</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -205,6 +215,12 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
+                <DeployFile LocalName="Sounds\timeout.wav" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Dictionaries\PortugueseBrazil.dic" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -218,6 +234,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Sounds\agreement_end.wav" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Sounds\contest.wav" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>

@@ -329,6 +329,7 @@ begin
   SetStatus(gsPlaying);
 
   Log(Lang.Get('LOG_TURN_TIMEOUT'));
+  DoSound('TIMEOUT');
 end;
 
 procedure TFrmGame.LettersExchangedReceived;
@@ -387,7 +388,8 @@ procedure TFrmGame.OpenContestPeriodReceived;
 begin
   SetStatus(gsContest);
 
-  Log(Lang.Get('LOG_CONTEST_PERIOD_START'))
+  Log(Lang.Get('LOG_CONTEST_PERIOD_START'));
+  DoSound('CONTEST');
 end;
 
 procedure TFrmGame.ReceivedContestResponse(const A: string);

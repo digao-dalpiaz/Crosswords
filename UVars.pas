@@ -5,7 +5,7 @@ interface
 uses Vcl.Forms;
 
 const
-  STR_VERSION = '1.0 alpha 10';
+  STR_VERSION = '1.0 alpha 11';
   INT_TCP_PORT = 6631;
 
   BLANK_LETTER = #0;

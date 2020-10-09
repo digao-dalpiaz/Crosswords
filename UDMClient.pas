@@ -160,7 +160,7 @@ procedure TDMClient.RulesReceived(const A: string; ToOne: Boolean);
 var
   D: TMsgArray;
   Dictionary: string;
-  SizeW, SizeH, HandLetters, TimeoutSeconds: Integer;
+  SizeW, SizeH, HandLetters, GoalScore, TurnTimeout, AgreementTimeout: Integer;
 begin
   D := DataToArray(A);
 
@@ -168,11 +168,13 @@ begin
   SizeW := D[1];
   SizeH := D[2];
   HandLetters := D[3];
-  TimeoutSeconds := D[4];
+  GoalScore := D[4];
+  TurnTimeout := D[5];
+  AgreementTimeout := D[6];
 
   FrmMain.LbRules.Caption :=
     Format(Lang.Get('TITLE_RULES_DEFINITION'), [
-      Dictionary, SizeW, SizeH, HandLetters, TimeoutSeconds]);
+      Dictionary, SizeW, SizeH, HandLetters, GoalScore, TurnTimeout, AgreementTimeout]);
 
   FrmGame.LbPosition.Caption := string.Empty;
   FrmGame.PB.SetMatrixSize(SizeH, SizeW);
@@ -187,7 +189,7 @@ var
   D: TMsgArray;
 begin
   D := DataToArray(A);
-  FrmGame.ChatLog(D[0], D[1]);
+  FrmGame.ChatLog(D[0], D[1], True);
 
   DoSound('PLING');
 end;

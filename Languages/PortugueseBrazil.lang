@@ -7,7 +7,7 @@ TITLE_RESTART=Reiniciar
 MODE_SERVER=Servidor
 MODE_CLIENT=Cliente
 
-TITLE_RULES_DEFINITION=Dicionário: %s / Tamanho: %d x %d / Letras: %d / Tempo: %d seg
+TITLE_RULES_DEFINITION=Dicionário: %s / Tamanho: %d x %d / Letras: %d / Objetivo: %d / Tempo: %d+%d seg
 
 DLG_OK=OK
 DLG_CANCEL=Cancelar

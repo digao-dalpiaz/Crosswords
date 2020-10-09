@@ -62,7 +62,7 @@ type
 
     procedure Initialize(Reconnected: Boolean);
     procedure MatrixReceived(const A: string);
-    procedure ChatLog(const Player, Text: string);
+    procedure ChatLog(const Player, Text: string; Other: Boolean);
     procedure GameStartedReceived;
     procedure InitMyTurn;
     procedure MyTurnTimeoutReceived;
@@ -190,9 +190,13 @@ begin
   PB.UpdateData(A);
 end;
 
-procedure TFrmGame.ChatLog(const Player, Text: string);
+procedure TFrmGame.ChatLog(const Player, Text: string; Other: Boolean);
+var
+  Color: TColor;
 begin
-  RichEditIncLogLine(EdChatLog, Player+': ', Text, clGray, clLime);
+  if Other then Color := clLime else Color := $000080FF;
+
+  RichEditIncLogLine(EdChatLog, Player+': ', Text, clGray, Color);
 end;
 
 procedure TFrmGame.EdChatMsgKeyPress(Sender: TObject; var Key: Char);
@@ -207,7 +211,7 @@ begin
     if not (LPlayers.Count>1) then
       MsgRaise(Lang.Get('GAME_MSG_CHAT_WITH_NOBODY'));
 
-    ChatLog(pubPlayerName, EdChatMsg.Text);
+    ChatLog(pubPlayerName, EdChatMsg.Text, False);
     DMClient.C.Send('M', EdChatMsg.Text);
     EdChatMsg.Clear;
   end;

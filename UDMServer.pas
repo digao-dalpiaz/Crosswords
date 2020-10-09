@@ -50,7 +50,7 @@ type
     procedure RemoveAllDisconectedPlayers;
     procedure ContestReceived(Socket: TDzSocket; const A: string);
     procedure StartAgreementPeriod(Socket: TDzSocket);
-    procedure RemoveTempPlayerLetters(Socket: TDzSocket);
+    procedure RemoveTempPlayerLetters;
     procedure StopTimer;
     procedure SetGameOver;
     procedure StartTimer(Seconds: Integer);
@@ -299,6 +299,7 @@ begin
       S.SendAll('?'); //send paused by connection drop signal
       DoPlayerDroped(C); //player disconnected during the game
       ClearAllAgreements; //if in agreement, clear because will back in turn status
+      RemoveTempPlayerLetters;
     end;
   end else
     PlayersList.Remove(C);
@@ -482,7 +483,7 @@ begin
     begin
       if ByTimeout then
       begin
-        RemoveTempPlayerLetters(Socket);
+        RemoveTempPlayerLetters;
         S.Send(Socket, '&'); //send auto rejected by invalid letters signal
         SelectNextPlayer;
         Exit;
@@ -579,7 +580,7 @@ begin
 
   if Accept then
   begin
-    RemoveTempPlayerLetters(Socket);
+    RemoveTempPlayerLetters;
 
     Status := ssTurn;
     SelectNextPlayer;
@@ -590,13 +591,16 @@ begin
   end;
 end;
 
-procedure TDMServer.RemoveTempPlayerLetters(Socket: TDzSocket);
+procedure TDMServer.RemoveTempPlayerLetters;
+var
+  C: TClient;
 begin
   Matrix.RemoveAllTempLetters;
   SendMatrix;
 
-  if Socket<>nil then
-    SendLetters(Socket);
+  C := GetCurrentPlayer;
+  if C.Socket<>nil then //when a player disconnects, its socket is nil
+    SendLetters(C.Socket); //return letters to player hand
 end;
 
 function TDMServer.IsAllPlayersAgree(WithSocket: TDzSocket): Boolean;
@@ -686,7 +690,9 @@ begin
     pubServerProps.SizeW,
     pubServerProps.SizeH,
     pubServerProps.HandLetters,
-    IfThen(pubServerProps.TurnTimeout, pubServerProps.TurnTimeoutSecs)]);
+    pubServerProps.GoalScore,
+    IfThen(pubServerProps.TurnTimeout, pubServerProps.TurnTimeoutSecs),
+    IfThen(pubServerProps.TurnTimeout, pubServerProps.AgreementTimeoutSecs)]);
 
   if Socket<>nil then
     S.Send(Socket, 'u', A)
@@ -733,8 +739,6 @@ begin
     raise Exception.Create('Internal: Player object not found');
 
   PlayersList.Delete(I);
-
-  if I=CurrentPlayerIndex then RemoveTempPlayerLetters(nil);  
 
   if CurrentPlayerIndex>I then Dec(CurrentPlayerIndex);
   if CurrentPlayerIndex>PlayersList.Count-1 then CurrentPlayerIndex := 0;

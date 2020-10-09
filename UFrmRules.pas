@@ -2,7 +2,7 @@ unit UFrmRules;
 
 interface
 
-uses Vcl.Forms, Vcl.StdCtrls, Vcl.Controls, System.Classes, Vcl.ExtCtrls;
+uses Vcl.Forms, Vcl.StdCtrls, Vcl.Controls, Vcl.ExtCtrls, System.Classes;
 
 type
   TFrmRules = class(TForm)
@@ -18,10 +18,12 @@ type
     BtnCancel: TButton;
     Bevel1: TBevel;
     CkTurnTimeout: TCheckBox;
-    LbSeconds: TLabel;
-    EdSeconds: TEdit;
+    LbTurnTimeoutSecs: TLabel;
+    EdTurnTimeoutSecs: TEdit;
     LbGoalScore: TLabel;
     EdGoalScore: TEdit;
+    EdAgreementTimeoutSecs: TEdit;
+    LbAgreementTimeoutSecs: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure BtnOKClick(Sender: TObject);
   private
@@ -58,7 +60,8 @@ begin
     pubServerProps.HandLetters := Ini.ReadInteger('Rules', 'HandLetters', 7);
     pubServerProps.GoalScore := Ini.ReadInteger('Rules', 'GoalScore', 50);
     pubServerProps.TurnTimeout := Ini.ReadBool('Rules', 'TurnTimeout', False);
-    pubServerProps.TimeoutSeconds := Ini.ReadInteger('Rules', 'TimeoutSeconds', 60);
+    pubServerProps.TurnTimeoutSecs := Ini.ReadInteger('Rules', 'TurnTimeoutSecs', 60);
+    pubServerProps.AgreementTimeoutSecs := Ini.ReadInteger('Rules', 'AgreementTimeoutSecs', 10);
   finally
     Ini.Free;
   end;
@@ -76,7 +79,8 @@ begin
     Ini.WriteInteger('Rules', 'HandLetters', StrToInt(F.EdHandLetters.Text));
     Ini.WriteInteger('Rules', 'GoalScore', StrToInt(F.EdGoalScore.Text));
     Ini.WriteBool('Rules', 'TurnTimeout', F.CkTurnTimeout.Checked);
-    Ini.WriteInteger('Rules', 'TimeoutSeconds', StrToInt(F.EdSeconds.Text));
+    Ini.WriteInteger('Rules', 'TurnTimeoutSecs', StrToInt(F.EdTurnTimeoutSecs.Text));
+    Ini.WriteInteger('Rules', 'AgreementTimeoutSecs', StrToInt(F.EdAgreementTimeoutSecs.Text));
   finally
     Ini.Free;
   end;
@@ -104,7 +108,8 @@ begin
   LbHandLetters.Caption := Lang.Get('RULES_HAND_LETTERS');
   LbGoalScore.Caption := Lang.Get('RULES_GOAL_SCORE');
   CkTurnTimeout.Caption := Lang.Get('RULES_TURN_TIMEOUT_FLAG');
-  LbSeconds.Caption := Lang.Get('RULES_TURN_TIMEOUT_SECONDS');
+  LbTurnTimeoutSecs.Caption := Lang.Get('RULES_TURN_TIMEOUT_SECS');
+  LbAgreementTimeoutSecs.Caption := Lang.Get('RULES_AGREEMENT_TIMEOUT_SECS');
 
   BtnOK.Caption := Lang.Get('DLG_OK');
   BtnCancel.Caption := Lang.Get('DLG_CANCEL');
@@ -118,7 +123,8 @@ begin
   EdHandLetters.Text := IntToStr(pubServerProps.HandLetters);
   EdGoalScore.Text := IntToStr(pubServerProps.GoalScore);
   CkTurnTimeout.Checked := pubServerProps.TurnTimeout;
-  EdSeconds.Text := IntToStr(pubServerProps.TimeoutSeconds);
+  EdTurnTimeoutSecs.Text := IntToStr(pubServerProps.TurnTimeoutSecs);
+  EdAgreementTimeoutSecs.Text := IntToStr(pubServerProps.AgreementTimeoutSecs);
 end;
 
 procedure TFrmRules.LoadDictionaryList;
@@ -155,7 +161,10 @@ begin
   CheckIntField(EdGoalScore);
 
   if CkTurnTimeout.Checked then
-    CheckIntField(EdSeconds);
+  begin
+    CheckIntField(EdTurnTimeoutSecs);
+    CheckIntField(EdAgreementTimeoutSecs);
+  end;
 
   //
 

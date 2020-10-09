@@ -7,7 +7,7 @@ TITLE_RESTART=Restart
 MODE_SERVER=Server
 MODE_CLIENT=Client
 
-TITLE_RULES_DEFINITION=Dictionary: %s / Size: %d x %d / Letters: %d / Time: %d sec
+TITLE_RULES_DEFINITION=Dictionary: %s / Size: %d x %d / Letters: %d / Goal: %d / Time: %d+%d sec
 
 DLG_OK=OK
 DLG_CANCEL=Cancel
@@ -119,7 +119,8 @@ RULES_DICTIONARY=Letters dictionary:
 RULES_HAND_LETTERS=Letters in hand:
 RULES_GOAL_SCORE=Goal score:
 RULES_TURN_TIMEOUT_FLAG=Player turn time-out
-RULES_TURN_TIMEOUT_SECONDS=Seconds:
+RULES_TURN_TIMEOUT_SECS=Turn timeout (sec):
+RULES_AGREEMENT_TIMEOUT_SECS=Agreement timeout (sec):
 
 RULES_MSG_BLANK_FIELD=Please, specify the mandatory setting.
 

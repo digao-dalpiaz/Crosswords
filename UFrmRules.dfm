@@ -3,7 +3,7 @@ object FrmRules: TFrmRules
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Game Rules'
-  ClientHeight = 283
+  ClientHeight = 297
   ClientWidth = 505
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -40,30 +40,45 @@ object FrmRules: TFrmRules
   object LbHandLetters: TLabel
     Left = 16
     Top = 115
-    Width = 76
+    Width = 169
     Height = 13
+    Alignment = taRightJustify
+    AutoSize = False
     Caption = 'Letters in hand:'
   end
   object Bevel1: TBevel
     Left = 16
-    Top = 240
+    Top = 256
     Width = 473
     Height = 9
     Shape = bsTopLine
   end
-  object LbSeconds: TLabel
+  object LbTurnTimeoutSecs: TLabel
     Left = 32
     Top = 203
-    Width = 44
+    Width = 169
     Height = 13
-    Caption = 'Seconds:'
+    Alignment = taRightJustify
+    AutoSize = False
+    Caption = 'Turn timeout (sec):'
   end
   object LbGoalScore: TLabel
     Left = 16
     Top = 139
-    Width = 54
+    Width = 169
     Height = 13
+    Alignment = taRightJustify
+    AutoSize = False
     Caption = 'Goal score:'
+  end
+  object LbAgreementTimeoutSecs: TLabel
+    Left = 32
+    Top = 227
+    Width = 169
+    Height = 13
+    Alignment = taRightJustify
+    AutoSize = False
+    Caption = 'Agreement timeout (sec):'
   end
   object EdSizeW: TEdit
     Left = 128
@@ -92,7 +107,7 @@ object FrmRules: TFrmRules
     TabOrder = 2
   end
   object EdHandLetters: TEdit
-    Left = 112
+    Left = 192
     Top = 112
     Width = 41
     Height = 21
@@ -102,23 +117,23 @@ object FrmRules: TFrmRules
   end
   object BtnOK: TButton
     Left = 168
-    Top = 248
+    Top = 264
     Width = 81
     Height = 25
     Caption = 'OK'
     Default = True
-    TabOrder = 7
+    TabOrder = 8
     OnClick = BtnOKClick
   end
   object BtnCancel: TButton
     Left = 256
-    Top = 248
+    Top = 264
     Width = 81
     Height = 25
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
-    TabOrder = 8
+    TabOrder = 9
   end
   object CkTurnTimeout: TCheckBox
     Left = 16
@@ -128,8 +143,8 @@ object FrmRules: TFrmRules
     Caption = 'Player turn time-out'
     TabOrder = 5
   end
-  object EdSeconds: TEdit
-    Left = 96
+  object EdTurnTimeoutSecs: TEdit
+    Left = 208
     Top = 200
     Width = 49
     Height = 21
@@ -138,12 +153,21 @@ object FrmRules: TFrmRules
     TabOrder = 6
   end
   object EdGoalScore: TEdit
-    Left = 112
+    Left = 192
     Top = 136
     Width = 41
     Height = 21
     Alignment = taRightJustify
     NumbersOnly = True
     TabOrder = 4
+  end
+  object EdAgreementTimeoutSecs: TEdit
+    Left = 208
+    Top = 224
+    Width = 49
+    Height = 21
+    Alignment = taRightJustify
+    NumbersOnly = True
+    TabOrder = 7
   end
 end

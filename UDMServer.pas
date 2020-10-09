@@ -53,6 +53,9 @@ type
     procedure RemoveTempPlayerLetters(Socket: TDzSocket);
     procedure StopTimer;
     procedure SetGameOver;
+    procedure StartTimer(Seconds: Integer);
+    procedure StopAgreementPeriod(Socket: TDzSocket; Accepted: Boolean);
+    procedure AgreementAllAccepted(Socket: TDzSocket);
   public
     procedure Initialize;
     procedure StartGame;
@@ -296,7 +299,6 @@ begin
       S.SendAll('?'); //send paused by connection drop signal
       DoPlayerDroped(C); //player disconnected during the game
       ClearAllAgreements; //if in agreement, clear because will back in turn status
-      RemoveTempPlayerLetters(nil);
     end;
   end else
     PlayersList.Remove(C);
@@ -392,11 +394,14 @@ begin
   S.Send(GetCurrentPlayer.Socket, '>'); //send to current player its turn signal
 
   if pubServerProps.TurnTimeout then
-  begin
-    TimerSeconds := pubServerProps.TimeoutSeconds;
-    Timer.Enabled := True;
-    S.SendAll(':', pubServerProps.TimeoutSeconds.ToString); //send timer start signal
-  end;
+    StartTimer(pubServerProps.TurnTimeoutSecs);
+end;
+
+procedure TDMServer.StartTimer(Seconds: Integer);
+begin
+  TimerSeconds := Seconds;
+  Timer.Enabled := True;
+  S.SendAll(':', Seconds.ToString); //send timer start signal
 end;
 
 procedure TDMServer.StopTimer;
@@ -501,19 +506,22 @@ begin
   Status := ssAgreement;
   S.Send(Socket, 'W'); //send wait log
   S.SendAllEx(Socket, 'G'); //send agreement request signal
+
+  if pubServerProps.TurnTimeout then
+    StartTimer(pubServerProps.AgreementTimeoutSecs);
+end;
+
+procedure TDMServer.StopAgreementPeriod(Socket: TDzSocket; Accepted: Boolean);
+begin
+  StopTimer;
+  S.SendAllEx(Socket, 'K', ArrayToData([Accepted]));
+  ClearAllAgreements;
 end;
 
 procedure TDMServer.AgreementReceived(Socket: TDzSocket; const A: string);
 var
   C: TClient;
   CurSok: TDzSocket;
-
-  procedure DisableAgreement(Accepted: Boolean);
-  begin
-     S.SendAllEx(CurSok, 'K', ArrayToData([Accepted]));
-     ClearAllAgreements;
-  end;
-
 begin
   if Status<>ssAgreement then
     raise Exception.Create('Internal: A player tried to set agreement when status is not agreeement');
@@ -527,9 +535,7 @@ begin
 
     if IsAllPlayersAgree(CurSok) then //Check if all players have set agreement
     begin
-      Status := ssTurn;
-      DisableAgreement(True);
-      CompletePlayerTurn(CurSok); //SendPlayersList will be called here
+      AgreementAllAccepted(CurSok); //SendPlayersList will be called here
       Exit;
     end;
   end else
@@ -544,10 +550,17 @@ begin
       S.Send(CurSok, 'J'); //send reject agreement to current player
     end;
 
-    DisableAgreement(False);
+    StopAgreementPeriod(CurSok, False);
   end;
 
   SendPlayersList; //update players list
+end;
+
+procedure TDMServer.AgreementAllAccepted(Socket: TDzSocket);
+begin
+  Status := ssTurn;
+  StopAgreementPeriod(Socket, True);
+  CompletePlayerTurn(Socket);
 end;
 
 procedure TDMServer.ContestReceived(Socket: TDzSocket; const A: string);
@@ -673,7 +686,7 @@ begin
     pubServerProps.SizeW,
     pubServerProps.SizeH,
     pubServerProps.HandLetters,
-    IfThen(pubServerProps.TurnTimeout, pubServerProps.TimeoutSeconds)]);
+    IfThen(pubServerProps.TurnTimeout, pubServerProps.TurnTimeoutSecs)]);
 
   if Socket<>nil then
     S.Send(Socket, 'u', A)
@@ -721,6 +734,8 @@ begin
 
   PlayersList.Delete(I);
 
+  if I=CurrentPlayerIndex then RemoveTempPlayerLetters(nil);  
+
   if CurrentPlayerIndex>I then Dec(CurrentPlayerIndex);
   if CurrentPlayerIndex>PlayersList.Count-1 then CurrentPlayerIndex := 0;
   SendPlayersList;
@@ -745,8 +760,21 @@ begin
   if TimerSeconds=0 then
   begin
     C := GetCurrentPlayer;
-    S.Send(C.Socket, '~'); //send player time out signal
-    PlayerTurnDoneReceived(C.Socket, True);
+
+    case Status of
+      ssTurn:
+      begin
+        S.Send(C.Socket, '~'); //send player time out signal
+        PlayerTurnDoneReceived(C.Socket, True);
+      end;
+
+      ssAgreement:
+      begin
+        AgreementAllAccepted(C.Socket);
+      end;
+
+      else raise Exception.Create('Internal: Timeout in incorrect status');
+    end;
   end;
 end;
 

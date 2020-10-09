@@ -119,7 +119,8 @@ RULES_DICTIONARY=Dicionário de letras:
 RULES_HAND_LETTERS=Letras na mão:
 RULES_GOAL_SCORE=Pontuação vencedora:
 RULES_TURN_TIMEOUT_FLAG=Tempo limite para jogada
-RULES_TURN_TIMEOUT_SECONDS=Segundos:
+RULES_TURN_TIMEOUT_SECS=Tempo da jogada (seg):
+RULES_AGREEMENT_TIMEOUT_SECS=Tempo da avaliação (seg):
 
 RULES_MSG_BLANK_FIELD=Por favor, especifique a configuração obrigatória.
 

@@ -19,7 +19,7 @@ var
     SizeW, SizeH: Integer;
     DictionaryID: string;
     HandLetters, GoalScore: Integer;
-    TurnTimeout: Boolean; TimeoutSeconds: Integer;
+    TurnTimeout: Boolean; TurnTimeoutSecs, AgreementTimeoutSecs: Integer;
 
     Letters: string;
   end;

@@ -729,7 +729,7 @@ end;
 
 procedure TDMServer.KillPlayer(C: TClient);
 var
-  I: Integer;
+  I, PlayerIndex: Integer;
 begin
   I := PlayersList.IndexOf(C);
   if I=-1 then
@@ -737,8 +737,9 @@ begin
 
   PlayersList.Delete(I);
 
-  if CurrentPlayerIndex>I then
-    CurrentPlayerIndex := CurrentPlayerIndex-1;
+  PlayerIndex := CurrentPlayerIndex;
+  if PlayerIndex>I then Dec(PlayerIndex);
+  CurrentPlayerIndex := PlayerIndex;
 
   SendPlayersList;
 end;

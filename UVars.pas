@@ -31,7 +31,7 @@ var
   pubLogFontSize: Integer;
 
 procedure DoSound(const ResName: string);
-function GetIniFilePath: String;
+function GetIniFilePath: string;
 procedure FixFormWidth(F: TForm);
 
 implementation
@@ -44,7 +44,7 @@ begin
     PlaySound(PChar('SND_'+ResName), HInstance, SND_RESOURCE or SND_ASYNC);
 end;
 
-function GetIniFilePath: String;
+function GetIniFilePath: string;
 begin
   Result := ExtractFilePath(Application.ExeName)+'Crosswords.ini';
 end;

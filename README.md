@@ -1,6 +1,6 @@
 # Crosswords
 
-## Delphi Client/Server Crosswords Game using Socket communication
+## Delphi VCL Client/Server Crosswords Game using Socket communication
 
 [Download alpha version](https://github.com/digao-dalpiaz/Crosswords/releases)
 

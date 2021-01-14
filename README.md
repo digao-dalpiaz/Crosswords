@@ -10,8 +10,6 @@
 
 ![Playing screen](Images/demo_playing.png)
 
-**Attention! This game is under development, still in alpha version.**
-
 ### Why this game?
 
 The objective of developing this game is actually the study of the controls performed in the client / server communication.

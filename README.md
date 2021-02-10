@@ -2,7 +2,7 @@
 
 ## Delphi VCL Client/Server Crosswords Game using Socket communication
 
-[Download alpha version](https://github.com/digao-dalpiaz/Crosswords/releases)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C53LVFN)
 
 ### Demo Screens
 
